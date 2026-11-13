@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Security Control System v2.0 (Firebase Cloud)</title>
+<style>
+:root{--bg:#f4f6f8;--sf:#fff;--tx:#1b1f24;--mu:#667085;--bd:#c9d0d8;--ac:#1d5fd1;--ok:#13795b;--wa:#b54708;--er:#c4322b;--hd:#e9edf2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--sf:#1d2128;--tx:#e8ebef;--mu:#98a2b3;--bd:#3a424d;--ac:#6aa0ff;--ok:#4cc9a0;--wa:#f5a24b;--er:#ff7a72;--hd:#262c35;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14171c;--sf:#1d2128;--tx:#e8ebef;--mu:#98a2b3;--bd:#3a424d;--ac:#6aa0ff;--ok:#4cc9a0;--wa:#f5a24b;--er:#ff7a72;--hd:#262c35;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{min-width:0}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 "Sarabun","Noto Sans Thai",system-ui,sans-serif;overflow-x:hidden}
+.w{max-width:1020px;margin:0 auto;padding:10px}
+h1{font-size:18px;margin:0}.mu{color:var(--mu);font-size:12.5px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:8px}
+.seg,.nav{display:flex;gap:4px;margin-bottom:8px}.seg button,.nav button{flex:1;padding:8px 2px;font-size:13.5px}
+.nav button.em{border-color:var(--er);color:var(--er)}.nav button.em.on{background:var(--er);color:#fff;border-color:var(--er)}
+.nav button.ad{border-color:#8b5cf6;color:#8b5cf6}.nav button.ad.on{background:#8b5cf6;color:#fff;border-color:#8b5cf6}
+.seg.m button{margin:0}
+button,input,select{font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:9px 10px}
+button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+button.danger{background:var(--er);border-color:var(--er);color:#fff}
+button:disabled{opacity:.4;cursor:not-allowed}
+.seg button.on,.nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.c{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px;margin-bottom:8px}
+.r{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.r>input{flex:1;min-width:110px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--bd);padding:5px 7px;text-align:left;vertical-align:top;overflow-wrap:anywhere;font-size:14px;line-height:1.35}
+th{background:var(--hd);font-size:12.5px;color:var(--mu);font-weight:600}
+td.n,th.n{text-align:center}.nw{white-space:nowrap;width:1%}
+.sc{max-height:42vh;overflow-y:auto;margin-top:6px}.sc thead th{position:sticky;top:0;z-index:1;box-shadow:0 1px 0 var(--bd)}
+.it{cursor:pointer}.it.on td{background:color-mix(in srgb,var(--ac) 14%,transparent)}.it.x td{opacity:.45}
+.lt td{vertical-align:middle;padding:6px 8px}.lt .no{font-size:15px;font-weight:700;white-space:nowrap;width:1%;text-align:center}.lt .st{white-space:nowrap;width:1%;text-align:right;font-size:12.5px;line-height:1.4}.lt .co{font-size:15px;font-weight:700;line-height:1.3}.lt .sub{font-size:13px;color:var(--mu);line-height:1.3}
+.b{font-size:12.5px}.ok{color:var(--ok)}.wa{color:var(--wa)}.er{color:var(--er)}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px}.k div{text-align:center;font-size:13px}.k b{display:block;font-size:24px}
+tr.tot td{font-weight:700;background:var(--hd)}
+details{border:1px solid var(--bd);border-radius:8px;margin-top:6px;padding:6px 8px}summary{cursor:pointer;font-weight:600}
+.wk{margin-top:8px;padding-top:6px;border-top:1px dashed var(--bd)}.wk table{margin-top:4px}
+.th{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px}.th button{padding:5px 8px;font-size:12.5px}
+.chip{display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:8px;padding:6px 8px;margin-top:4px}.pk{cursor:pointer}
+textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size:13px;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px}
+#lock{position:fixed;inset:0;background:rgba(15,23,42,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:99}
+.badge{padding:2px 8px;border-radius:99px;font-size:11.5px;font-weight:600;display:inline-block}
+.badge-admin{background:#ede9fe;color:#6d28d9}
+.badge-staff{background:#e0f2fe;color:#0369a1}
+.badge-wa{background:#fef3c7;color:#b45309}
+.badge-ok{background:#dcfce7;color:#15803d}
+@media (max-width:640px){
+ body{font-size:14px}.w{padding:8px}h1{font-size:16px}
+ .nav button,.seg button{font-size:12px;padding:8px 1px}
+ .lb,.lb tbody{display:block}.lb thead{display:none}
+ .nav{display:grid;grid-template-columns:repeat(3,1fr)}.nav button{font-size:12.5px;padding:8px 2px}
+ .lb tr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--bd);padding:2px 0}
+ .lb td{border:0;padding:3px 6px;width:auto;white-space:normal}.lb td[data-l]::before{display:block;content:attr(data-l);font-size:11px;font-weight:400;color:var(--mu)}
+ .sel td{font-size:15px}td,th{font-size:12.5px;padding:4px}.k b{font-size:20px}
+}
+@media print{.bar,.nav,#cat,#t-gate,#t-trk,#t-work,#t-ros,#t-dash,#t-sum,#t-usr,.np{display:none!important}#t-emg{display:block!important}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+
+<!-- Login & Register Modal -->
+<div id="lock">
+  <div class="c" style="width:340px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.25)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h1>Security Control</h1>
+      <span class="badge badge-admin">Cloud v2.0</span>
+    </div>
+    <div class="seg" id="auth_tab">
+      <button id="tb_login" class="on">เข้าสู่ระบบ</button>
+      <button id="tb_reg">ลงทะเบียนใหม่</button>
+    </div>
+
+    <!-- Login View -->
+    <div id="v_login">
+      <p class="mu" style="margin-top:4px">ผู้ดูแลระบบ: User <b>admin</b> · รหัส <b>1234</b></p>
+      <div class="r" style="flex-direction:column;align-items:stretch;margin-top:8px">
+        <input id="nm" placeholder="ชื่อผู้ใช้งาน (User / Email)" autocomplete="username">
+        <input id="pin" type="password" placeholder="รหัสผ่าน (Password)" autocomplete="current-password">
+        <button class="p" id="go" style="margin-top:4px">เข้าสู่ระบบ</button>
+        <div id="le" class="er" style="font-size:13px;margin-top:4px"></div>
+      </div>
+    </div>
+
+    <!-- Register View -->
+    <div id="v_reg" hidden>
+      <p class="mu" style="margin-top:4px">สมัครใช้งานใหม่ (รอผู้ดูแลระบบอนุมัติ)</p>
+      <div class="r" style="flex-direction:column;align-items:stretch;margin-top:8px">
+        <input id="reg_nm" placeholder="ชื่อผู้ใช้งาน (User)" autocomplete="off">
+        <input id="reg_fullname" placeholder="ชื่อ - นามสกุลจริง (และสังกัด เช่น ป้อม 1)">
+        <input id="reg_pin" type="password" placeholder="ตั้งรหัสผ่าน">
+        <button class="p" id="reg_go" style="margin-top:4px">ส่งคำขอลงทะเบียน</button>
+        <div id="reg_msg" style="font-size:13px;margin-top:4px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="w">
+  <div class="bar">
+    <div>
+      <h1 id="h1">Contractor</h1>
+      <div class="mu"><span id="st">กำลังเชื่อมต่อ Google Firebase Cloud…</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="who" class="mu"></span>
+      <button id="btn_logout" style="padding:4px 8px;font-size:12px">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <!-- Date Navigation Bar -->
+  <div class="c">
+    <div class="r">
+      <button id="dp">‹</button>
+      <input type="date" id="dsel" style="flex:1">
+      <button id="dn">›</button>
+      <button id="dt">วันนี้</button>
+    </div>
+    <div id="dw" class="mu" style="margin-top:4px"></div>
+    <div id="date_perm_msg" class="wa" style="font-size:12px;display:none;margin-top:4px">🔒 คุณอยู่ในสิทธิ์เจ้าหน้าที่ทั่วไป ดูและบันทึกได้เฉพาะวันปัจจุบัน (Admin เท่านั้นที่แก้ย้อนหลังได้)</div>
+  </div>
+
+  <div class="seg" id="cat">
+    <button data-cat="c" class="on">Contractor</button>
+    <button data-cat="g1">Transportor G1</button>
+    <button data-cat="g2">Transportor G2</button>
+  </div>
+
+  <div class="nav" id="nav">
+    <button data-t="gate" class="on" id="nb1">รับ/คืนบัตร</button>
+    <button data-t="work" id="nbw">Work</button>
+    <button data-t="ros" id="nbr">รายชื่อ</button>
+    <button data-t="dash">Dashboard</button>
+    <button data-t="sum">สรุป</button>
+    <button data-t="emg" class="em">ฉุกเฉิน</button>
+    <button data-t="usr" class="ad" id="nb_usr" hidden>จัดการผู้ใช้/นโยบาย 3 ปี</button>
+  </div>
+
+  <!-- GATE SECTION -->
+  <section id="t-gate">
+    <div class="c">
+      <input id="q" placeholder="ค้นหา Work / บริษัท / พื้นที่ / เจ้าของงาน" style="width:100%;box-sizing:border-box">
+      <div class="sc">
+        <table class="lt">
+          <thead><tr><th class="nw n">เลขที่</th><th>บริษัท · พื้นที่ · เจ้าของงาน</th><th class="nw">สถานะ</th></tr></thead>
+          <tbody id="wl"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="c">
+      <div id="sel" class="mu">ยังไม่ได้เลือก Work</div>
+      <div class="r" style="margin-top:6px"><button id="bis2">ผรม. รับ Work</button><button id="bw2">คืน Work →</button></div>
+      <div class="r" style="margin-top:8px"><input id="ps" placeholder="เลือกรายชื่อ ผรม. (เลข/ชื่อ) ไม่บังคับ"></div>
+      <div id="pk"></div>
+      <div class="seg" id="nat" style="margin-top:8px"><button data-nat="th">ไทย</button><button data-nat="fo">ต่างชาติ</button><button data-nat="mg">ต่างด้าว</button></div>
+      <div class="r"><input id="cn" placeholder="เลขบัตร" inputmode="numeric"><button class="p" id="bin">รับบัตร</button></div>
+      <div id="msg" style="margin-top:6px"></div>
+      <div id="cl"></div>
+    </div>
+
+    <div class="c">
+      <div class="mu">คืนบัตรด่วน (ไม่ต้องเลือก Work)</div>
+      <div class="r"><input id="rn" placeholder="เลขบัตร" inputmode="numeric"><button id="bout">คืนบัตร</button></div>
+      <div id="rm"></div>
+    </div>
+
+    <div class="c" id="lostc">
+      <b>บัตรหาย / บัตรค้าง · เอาออกจากรายการติดตาม</b>
+      <div class="mu">ใช้เมื่อผู้ถือบัตรออกไปแล้วแต่ไม่ได้คืนบัตร ต้องใส่หมายเหตุ เลขบัตรนี้จะใช้ได้อีกครั้งหลังเอาออก</div>
+      <div class="r" style="margin-top:6px"><input id="lcn" placeholder="เลขบัตร" inputmode="numeric"></div>
+      <div class="r" style="margin-top:6px"><input id="lrs" placeholder="หมายเหตุ (เช่น บัตรหาย ผรม.แจ้งหาย)"></div>
+      <div class="r" style="margin-top:6px"><button class="p" id="lgo">เอาออกจากรายการ</button><button id="lcx">ล้างช่อง</button></div>
+      <div id="lm"></div>
+    </div>
+  </section>
+
+  <!-- TRANSPORTOR TRUCK SECTION -->
+  <section id="t-trk" hidden>
+    <div class="c">
+      <b id="tt">บันทึกรถเข้า</b>
+      
+      <!-- ประเภทรถ -->
+      <div style="margin-top:8px">
+        <span class="mu" style="display:block;margin-bottom:4px">ประเภทรถ:</span>
+        <div class="seg" id="trk_type">
+          <button data-type="ผู้รับเหมา" class="on">ผู้รับเหมา</button>
+          <button data-type="รับส่งของทั่วไป">รับส่งของทั่วไป</button>
+          <button data-type="รับยาง">รับยาง</button>
+          <button data-type="อื่นๆ">อื่นๆ</button>
+        </div>
+        <div id="trk_other_box" style="display:none;margin-top:6px">
+          <input id="trk_type_other" placeholder="ระบุประเภทอื่นๆ เช่น ส่งสารเคมี, ผู้บริหารเข้าตรวจ..." style="width:100%;box-sizing:border-box">
+        </div>
+      </div>
+
+      <div class="seg" id="job" style="margin-top:8px"><button data-job="รับของ">รับของ</button><button data-job="ส่งของ">ส่งของ</button></div>
+      <div class="r"><input id="tco" list="dco" placeholder="บริษัท"><input id="tpl" placeholder="ทะเบียน"></div>
+      <div class="r" style="margin-top:6px"><input id="tdv" list="ddv" placeholder="ผู้ขับรถ"><input id="tdp" list="ddp" placeholder="ติดต่อแผนก/อาคาร"></div>
+      <datalist id="dco"></datalist><datalist id="ddv"></datalist><datalist id="ddp"></datalist>
+      <div class="r" style="margin-top:8px"><button class="p" id="btin">บันทึกเข้า (เวลาเข้าอัตโนมัติ)</button></div>
+      <div id="tm" style="margin-top:6px"></div>
+    </div>
+
+    <div class="c"><b>รถในพื้นที่ตอนนี้</b><div id="tin" style="margin-top:6px"></div></div>
+    <div class="c"><b>ออกแล้ว</b><div id="tout" style="margin-top:6px"></div></div>
+  </section>
+
+  <!-- WORK PERMIT SECTION -->
+  <section id="t-work" hidden>
+    <div class="c">
+      <div id="wd"></div>
+      <div id="wi" class="mu" style="margin-top:6px">เลือก Work จากแท็บ “รับ/คืนบัตร” ก่อน</div>
+      <div class="r" style="margin-top:8px"><button id="bis">ผรม. รับ Work แล้ว</button><span class="mu">OT ถึง</span><input id="ot" placeholder="เช่น 20.00" inputmode="decimal" style="flex:0 0 90px"><button id="bot">บันทึก OT</button></div>
+      <div class="r" style="margin-top:8px"><input id="rb" placeholder="ชื่อผู้คืน Work"><button class="p" id="bret">คืน Work</button></div>
+      <div id="wm"></div>
+    </div>
+
+    <div class="c">
+      <b>แก้ไขรายละเอียด Work</b> <span class="mu" id="edh">เลือก Work ก่อน</span>
+      <div class="r" style="margin-top:8px"><span class="mu">วันที่ทำงาน</span><input id="edd" type="date" style="flex:1"></div>
+      <div class="r" style="margin-top:6px"><input id="edc" placeholder="บริษัท"><input id="eda" placeholder="พื้นที่ทำงาน"><input id="edo" placeholder="เจ้าของงาน"></div>
+      <div class="r" style="margin-top:6px"><span class="mu">เวลาทำงาน เริ่ม</span><input id="edws" placeholder="08.00" inputmode="decimal" style="flex:0 0 80px"><span class="mu">ถึง</span><input id="edwe" placeholder="17.00" inputmode="decimal" style="flex:0 0 80px"></div>
+      <div class="mu">ปกติ 08.00–17.00 (รับ Work ก่อน 08.00 ได้) · ต่อ OT ได้สูงสุด 24.00</div>
+      <label class="r" style="margin-top:6px"><input type="checkbox" id="edx" style="flex:0;min-width:0"> ยกเลิก Work นี้</label>
+      <div class="r" style="margin-top:6px"><button class="p" id="bed">บันทึกการแก้ไข</button></div>
+      <div id="edm"></div>
+    </div>
+
+    <div class="c">
+      <b>นำเข้า Work จากไฟล์ Excel</b>
+      <div class="mu">อ่านเฉพาะ เลขที่ · บริษัท · พื้นที่ทำงาน · เจ้าของงาน (และวันที่/เดือน เพื่อจัดเข้าวัน)</div>
+      <div class="r" style="margin-top:8px"><input type="file" id="fx" accept=".xlsx,.xls" style="flex:1"><button id="fxc" hidden>✕ ยกเลิก</button></div>
+      <div class="r" style="margin-top:6px"><span class="mu">ชีต</span><select id="shs" style="flex:1"></select><span class="mu">ปี</span><input id="iy" type="number" style="flex:0 0 80px"></div>
+      <div id="ipv" style="margin-top:8px"></div>
+    </div>
+
+    <div class="c">
+      <b>เพิ่ม Work ด่วน/ใหม่ (ทีละใบ)</b>
+      <div class="r" style="margin-top:8px"><input id="xn" placeholder="เลขที่ เช่น 11/496"><input id="xd" type="date"></div>
+      <div class="r" style="margin-top:6px"><input id="xc" placeholder="บริษัท"><input id="xa" placeholder="พื้นที่"><input id="xo" placeholder="เจ้าของงาน"><button id="bx">เพิ่ม</button></div>
+      <div id="xm"></div>
+    </div>
+  </section>
+
+  <!-- ROSTER SECTION -->
+  <section id="t-ros" hidden>
+    <div class="c">
+      <b>เพิ่มรายชื่อ ผรม. ที่ผ่านการอบรม</b>
+      <div class="r" style="margin-top:8px"><input id="pn" placeholder="เลข ผรม."><input id="pnm" placeholder="ชื่อ-สกุล"></div>
+      <div class="r" style="margin-top:6px"><span class="mu">วันที่อบรม</span><input id="ptr" type="date" style="flex:1"><span class="mu">หมดอายุ</span><input id="pex" type="date" style="flex:1"><button class="p" id="bpa">เพิ่ม</button></div>
+      <div id="pm"></div>
+    </div>
+
+    <div class="c">
+      <b>นำเข้ารายชื่อจากไฟล์ Excel</b>
+      <div class="mu">คอลัมน์: เลข ผรม. · ชื่อสกุล · วันที่อบรม · วันหมดอายุ</div>
+      <div class="r" style="margin-top:8px"><input type="file" id="rfx" accept=".xlsx,.xls" style="flex:1"><button id="rfc" hidden>✕ ยกเลิก</button></div>
+      <div class="r" style="margin-top:6px"><span class="mu">ชีต</span><select id="rsh" style="flex:1"></select></div>
+      <div id="rpv" style="margin-top:8px"></div>
+      <details style="margin-top:8px">
+        <summary class="mu">หรือคัดลอกจาก Excel มาวาง</summary>
+        <textarea id="imp" placeholder="C0001&#9;ชื่อ นามสกุล&#9;01/10/2026&#9;01/10/2027" style="margin-top:6px"></textarea>
+        <div class="r" style="margin-top:6px"><button id="bim">นำเข้า</button></div>
+        <div id="im"></div>
+      </details>
+    </div>
+
+    <div class="c">
+      <div class="th"><b id="rc">รายชื่อ</b></div>
+      <input id="rq" placeholder="ค้นหาเลข/ชื่อ" style="width:100%;box-sizing:border-box">
+      <div id="rl" style="margin-top:6px"></div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD SECTION -->
+  <section id="t-dash" hidden><div id="dash"></div></section>
+
+  <!-- EMERGENCY SECTION -->
+  <section id="t-emg" hidden><div id="emg"></div></section>
+
+  <!-- SUMMARY REPORT SECTION -->
+  <section id="t-sum" hidden>
+    <div class="r" style="margin-bottom:8px">
+      <button id="cpa">คัดลอกทุกตาราง</button>
+      <span class="mu">สามารถนำไปวางใน Excel ได้ทันที</span>
+    </div>
+    <div id="sumh"></div>
+  </section>
+
+  <!-- ADMIN USER MANAGEMENT & 3-YEAR RETENTION SECTION -->
+  <section id="t-usr" hidden>
+    <div class="c" style="border-left:4px solid #8b5cf6">
+      <div class="th">
+        <b>จัดการผู้ใช้งานระบบ (User Management & Approval)</b>
+        <span class="badge badge-admin">เฉพาะ Admin</span>
+      </div>
+      <p class="mu">อนุมัติผู้ใช้ใหม่ที่ลงทะเบียน หรือปรับเปลี่ยนสิทธิ์ระหว่าง Admin และ เจ้าหน้าที่ (Staff)</p>
+      <div id="usr_table" style="margin-top:8px"></div>
+    </div>
+
+    <!-- 3-Year Retention Policy Card -->
+    <div class="c" style="border-left:4px solid var(--wa)">
+      <div class="th">
+        <b>นโยบายการจัดเก็บข้อมูลย้อนหลัง 3 ปี (Data Retention Policy)</b>
+        <span class="badge badge-wa">3-Year Retention</span>
+      </div>
+      <p class="mu">ระบบกำหนดอายุข้อมูลไว้สูงสุด 3 ปี (1,095 วัน) ข้อมูลที่เก่ากว่าจะถูกนำเสนอให้ตรวจสอบและทยอยล้างเพื่อประหยัดพื้นที่</p>
+      <div class="r" style="margin-top:8px">
+        <button id="btn_check_retention" class="p">ตรวจสอบข้อมูลเก่าเกิน 3 ปี</button>
+        <button id="btn_clean_retention" class="danger" disabled>ล้างข้อมูลเก่าเกิน 3 ปีทันที</button>
+      </div>
+      <div id="retention_msg" style="margin-top:8px;font-size:13px"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ==============================================================
+   FIREBASE CLOUD INITIALIZATION
+   ============================================================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBOo6rP-JfaJvP4WXdBRLLPqKQuUrFfycE",
+  authDomain: "security-control-gate-c1fd5.firebaseapp.com",
+  projectId: "security-control-gate-c1fd5",
+  storageBucket: "security-control-gate-c1fd5.firebasestorage.app",
+  messagingSenderId: "1062753414202",
+  appId: "1:1062753414202:web:9fd84749adbca41167d903",
+  measurementId: "G-VVEGZ20H9H"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* Enable offline persistence if possible */
+try {
+  db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+} catch(e) {}
+
+/* ==============================================================
+   APPLICATION STATE & CONSTANTS
+   ============================================================== */
+const $ = s => document.querySelector(s), pad = n => String(n).padStart(2, "0");
+const MN = ["January","February","March","April","May","June","July","August","September","October","November","December"], MON = Object.fromEntries(MN.map((m,i)=>[m.toLowerCase(),i+1]));
+const CATS = { c: "Contractor", g1: "Transportor G1", g2: "Transportor G2" }, NT = { th: "ไทย", fo: "ต่างชาติ", mg: "ต่างด้าว" };
+const SECS = ["gate", "trk", "work", "ros", "dash", "sum", "emg", "usr"];
+const lt = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+
+let currentUser = null, usersList = [];
+let works = [], cards = [], trucks = [], roster = {}, cur = null, cf = {}, who = "", userRole = "staff", nat = "", job = "", truckType = "ผู้รับเหมา", pick = null, cat = "c", TS = [], D = lt(), SUB = {}, WB = null, PV = null, pend = {}, RB = null, RV = null;
+const op = new Set();
+let LS = 0, OFF = false;
+
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tm = t => { if (!t) return "-"; const d = new Date(t); return `${pad(d.getHours())}.${pad(d.getMinutes())}`; };
+const pt = s => { s = String(s || "").trim().replace(/[:\s]/g, "."); const m = s.match(/^(\d{1,2})\.(\d{2})$/) || s.match(/^(\d{2})(\d{2})$/); if (!m) return ""; const h = +m[1], mi = +m[2]; if (mi > 59 || h > 24 || (h === 24 && mi)) return ""; return `${pad(h)}:${pad(mi)}`; };
+const dt = e => e ? String(e).replace(":", ".") : "-";
+const rk = n => String(n).trim().replace(/[^A-Za-z0-9_.~:@+-]/g, "_"), z = n => n || "-";
+const fd = i => { if (!i) return "-"; const [a, b, c] = i.split("-"); return `${c}/${b}/${a}`; };
+const dl = i => { const [a, b, c] = i.split("-"); return `${+c} ${MN[b-1]} ${a}`; };
+const sh = (d, n) => { const t = new Date(d + "T00:00:00Z"); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
+const trn = p => { if (!p.exp) return { t: "ไม่ระบุวันหมดอายุ", k: "mu" }; const d = (new Date(p.exp) - new Date(lt())) / 864e5; return d < 0 ? { t: "หมดอายุ", k: "er" } : d <= 30 ? { t: "ใกล้หมด", k: "wa" } : { t: "ใช้ได้", k: "ok" }; };
+
+function pd(s) {
+  s = String(s || "").trim();
+  let m = s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/), y, mo, d;
+  if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; }
+  else { m = s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/); if (!m) return ""; d = +m[1]; mo = +m[2]; y = +m[3]; }
+  if (y < 100) y += 2000; if (y > 2400) y -= 543; if (mo < 1 || mo > 12 || d < 1 || d > 31) return "";
+  return `${y}-${pad(mo)}-${pad(d)}`;
+}
+const seq = n => +String(n).split("/")[1] || 0;
+
+function stt(x) {
+  $("#st").innerHTML = x ? `<b class="er">${esc(x)}</b>` : OFF ? '<b class="er">ออฟไลน์ (กำลังรอสัญญาณเน็ต)</b>' : `🌐 ออนไลน์ Real-time (Firebase Cloud) · บันทึกล่าสุด ${LS ? tm(LS) + " น." : "พร้อมใช้งาน"}`;
+}
+const T = async p => { try { const r = await p; LS = Date.now(); stt(); return r; } catch (e) { stt("บันทึกไม่สำเร็จ: " + (e.message || e.code)); throw e; } };
+
+addEventListener("offline", () => { OFF = true; stt(); });
+addEventListener("online", () => { OFF = false; stt(); });
+
+/* Query Helpers */
+const wf = id => works.find(w => w.id === id), W = () => works.filter(w => w.date === D).sort((a, b) => seq(a.no) - seq(b.no));
+const wp = w => `works/${w.date.slice(0, 7)}/items/${w.id}`, wu = (w, o) => T(db.doc(wp(w)).update(o));
+const hasOT = w => !w.otEnd, endR = w => w.otEnd || w.we || "17:00", endS = w => { const e = endR(w); return e === "24:00" ? "23:59" : e; }, win = w => `${dt(w.ws || "08:00")}–${dt(w.we || "17:00")}`;
+const late = w => { const t = lt(); if (w.date < t) return true; if (w.date > t) return false; const [h, m] = endS(w).split(":").map(Number), d = new Date(); return d.getHours() * 60 + d.getMinutes() > h * 60 + m; };
+const of = id => cards.filter(c => c.work === id).sort((a, b) => a.inAt - b.inAt), act = id => of(id).filter(c => !c.outAt), cnt = id => new Set(of(id).map(c => c.card)).size;
+const I = w => w.issAt ? { at: w.issAt, by: w.issBy } : null, R = w => w.retAt ? { at: w.retAt, by: w.retBy } : null;
+const msg = (id, t, k) => { $(id).innerHTML = `<span class="${k || ""}">${esc(t)}</span>`; };
+const lb = (h, rows, cls) => `<table class="lb ${cls || ""}"><thead><tr>${h.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((x, i) => `<td data-l="${h[i]}">${x}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${h.length}" class="mu">ไม่มีรายการ</td></tr>`}</tbody></table>`;
+const selT = w => `<table class="lt"><thead><tr><th class="nw n">เลขที่</th><th>บริษัท · พื้นที่ · เจ้าของงาน</th></tr></thead><tbody><tr><td class="no">${esc(w.no)}</td><td><div class="co">${esc(w.c)}</div><div class="sub">${esc(w.a)}${w.o ? " · เจ้าของงาน: " + esc(w.o) : ""}</div></td></tr></tbody></table>`;
+
+function status(w) {
+  const n = cnt(w.id);
+  return w.x ? "ยกเลิก" : R(w) ? (n ? "คืนแล้ว" : "คืนแล้ว · ไม่มีคนเข้า") : I(w) ? (n ? "รับ Work แล้ว · มีคนเข้า" : "รับ Work แล้ว · ยังไม่มีคนเข้า") : (n ? "มีคนเข้า (ยังไม่บันทึกรับ Work)" : "ยังไม่รับ Work");
+}
+const times = w => `รับ Work <b>${tm(w.issAt)}</b> · คืน Work <b>${tm(w.retAt)}</b>`;
+const tg = () => cat === "g1" ? 1 : 2, trk = () => trucks.filter(t => t.g === tg());
+
+/* ==============================================================
+   RENDER LOGIC
+   ============================================================== */
+function draw() {
+  const q = $("#q").value.toLowerCase(), ws = W(), t0 = lt();
+  $("#dsel").value = D;
+  $("#dw").innerHTML = `<b class="${D === t0 ? "ok" : "wa"}">${D === t0 ? "วันนี้" : D < t0 ? "ย้อนหลัง" : "ล่วงหน้า"}</b> · ${dl(D)} · Work ${ws.length} ใบ`;
+  
+  const isPast = D !== t0;
+  $("#date_perm_msg").style.display = (userRole !== "admin" && isPast) ? "block" : "none";
+
+  $("#wl").innerHTML = ws.filter(w => (w.no + w.c + w.a + w.o).toLowerCase().includes(q)).map(w => {
+    const a = act(w.id).length, n = cnt(w.id);
+    return `<tr class="it ${w.x ? "x" : ""} ${cur === w.id ? "on" : ""}" data-n="${esc(w.id)}"><td class="no">${esc(w.no)}</td><td><div class="co">${esc(w.c || "-")}</div><div class="sub">${esc(w.a || "-")}${w.o ? " · " + esc(w.o) : ""}</div></td><td class="st">${w.x ? '<b class="er">ยกเลิก</b>' : `<b>${a} ในพื้นที่ / ${n} คน</b><br><span class="${R(w) ? "ok" : "mu"}">${[R(w) ? `คืนแล้ว ${tm(w.retAt)}` : I(w) ? `รับ ${tm(w.issAt)}` : "", hasOT(w) ? `OT ${dt(endR(w))}` : "", (w.ws || w.we) && win(w) !== "08.00–17.00" ? win(w) : ""].filter(Boolean).join(" · ")}</span>`}</td></tr>`;
+  }).join("") || `<tr><td colspan="3" class="mu">${ws.length ? "ไม่พบ" : "ไม่มี Work ในวันที่นี้"}</td></tr>`;
+
+  const w = ws.find(x => x.id === cur);
+  $("#sel").innerHTML = w ? `${selT(w)}<div class="mu" style="margin-top:4px">เวลาทำงาน ${win(w)}${hasOT(w) ? ` · OT ถึง ${dt(w.otEnd)}` : ""} · ${times(w)}<br>เข้าทำงาน ${cnt(w.id)} คน · ค้างในพื้นที่ ${act(w.id).length}</div>` : "ยังไม่ได้เลือก Work";
+  $("#cl").innerHTML = w ? act(w.id).map(c => `<div class="chip"><span>บัตร <b>${esc(c.card)}</b> ${c.pname ? esc(c.pname) + " · " : ""}${NT[c.nat] || ""} · เข้า ${tm(c.inAt)}</span><span class="r"><button data-o="${c.id}">คืนบัตร</button><button data-lost="${esc(c.card)}">บัตรหาย</button></span></div>`).join("") : "";
+  $("#wd").innerHTML = w ? selT(w) : "";
+  $("#wi").innerHTML = w ? `สถานะ: <b>${esc(status(w))}</b><br>${times(w)}${R(w) ? ` · ผู้คืน ${esc(w.retBy)}` : ""}` : "เลือก Work จากแท็บ “รับ/คืนบัตร” ก่อน";
+  $("#bret").textContent = w && !cnt(w.id) ? "คืน Work (ไม่มีคนเข้า)" : "คืน Work";
+  
+  rpk(); trkd(); rosd(); dash(); emg(); sumr(); usrRender();
+}
+
+function loadEd() {
+  const w = wf(cur);
+  $("#edh").textContent = w ? w.no : "เลือก Work ก่อน";
+  $("#edd").value = w ? w.date : "";
+  $("#edc").value = w ? w.c : "";
+  $("#eda").value = w ? w.a : "";
+  $("#edo").value = w ? w.o : "";
+  $("#edx").checked = !!(w && w.x);
+  $("#ot").value = w && w.otEnd ? dt(w.otEnd) : "";
+  $("#edws").value = w ? dt(w.ws || "08:00") : "";
+  $("#edwe").value = w ? dt(w.we || "17:00") : "";
+  $("#edm").innerHTML = "";
+}
+
+function rpk() {
+  const q = $("#ps").value.trim().toLowerCase();
+  if (pick) {
+    const s = trn(pick);
+    $("#pk").innerHTML = `<div class="chip"><span><b>${esc(pick.no)}</b> ${esc(pick.name)}<br><span class="mu">อบรม ${fd(pick.train)} · หมดอายุ ${fd(pick.exp)} · </span><b class="${s.k}">${s.t}</b></span><button data-x="1">ยกเลิก</button></div>`;
+    return;
+  }
+  if (!q) { $("#pk").innerHTML = ""; return; }
+  const m = Object.values(roster).filter(p => (p.no + " " + p.name).toLowerCase().includes(q)).slice(0, 6);
+  $("#pk").innerHTML = m.map(p => {
+    const s = trn(p);
+    return `<div class="chip pk" data-p="${esc(rk(p.no))}"><span><b>${esc(p.no)}</b> ${esc(p.name)}</span><b class="${s.k}">${s.t}</b></div>`;
+  }).join("") || `<div class="mu" style="margin-top:6px">ไม่พบในรายชื่อ · <button data-go="ros">เพิ่มรายชื่อ</button> หรือรับบัตรโดยไม่เลือกรายชื่อได้</div>`;
+}
+
+function rosd() {
+  const q = $("#rq").value.toLowerCase(), all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no)), f = all.filter(p => (p.no + " " + p.name).toLowerCase().includes(q));
+  $("#rc").textContent = `รายชื่อทั้งหมด ${all.length} คน` + (f.length > 100 ? " (แสดง 100 รายการแรก)" : "");
+  $("#rl").innerHTML = lb(["เลข ผรม.", "ชื่อ-สกุล", "วันที่อบรม", "วันหมดอายุ", "สถานะ"], f.slice(0, 100).map(p => {
+    const s = trn(p);
+    return [esc(p.no), esc(p.name), fd(p.train), fd(p.exp), `<b class="${s.k}">${s.t}</b>`];
+  }));
+}
+
+function trkd() {
+  const a = trk().filter(t => !t.outAt), o = trk().filter(t => t.outAt);
+  const H = ["ทะเบียน", "ประเภท", "บริษัท", "งาน", "ผู้ขับรถ", "ติดต่อแผนก/อาคาร", "เวลาเข้า"];
+  const r = t => [
+    `<b>${esc(t.plate)}</b>`,
+    `<span class="badge ${t.type==='ผู้รับเหมา'?'badge-staff':t.type==='รับยาง'?'badge-wa':'badge-ok'}">${esc(t.type || "ทั่วไป")}</span>`,
+    esc(t.co),
+    esc(t.job),
+    esc(t.drv),
+    esc(t.dept),
+    tm(t.inAt)
+  ];
+  $("#tin").innerHTML = lb([...H, "ออก"], a.map(t => [...r(t), `<button data-to="${t.id}">ออก</button>`]));
+  $("#tout").innerHTML = lb([...H, "เวลาออก"], o.map(t => [...r(t), tm(t.outAt)]));
+  $("#tt").textContent = `บันทึกรถเข้า ${CATS[cat]} · ในพื้นที่ ${a.length} คัน`;
+  const d = (id, k) => { $(id).innerHTML = [...new Set(trucks.map(t => t[k]).filter(Boolean))].map(v => `<option value="${esc(v)}">`).join(""); };
+  d("#dco", "co"); d("#ddv", "drv"); d("#ddp", "dept");
+}
+
+function dash() {
+  const pl = Object.values(pend).filter(p => p.day < lt()).sort((a, b) => a.day < b.day ? -1 : 1);
+  const ws = W(), all = cards, now = all.filter(c => !c.outAt), al = [], m = {};
+  ws.forEach(w => {
+    const a = act(w.id).length, n = `${w.no} ${w.c}`;
+    if (a && late(w) && !R(w)) al.push(`${n}: บัตรค้าง ${a} ใบ เลยเวลา ${dt(endR(w))}`);
+    if (a && R(w)) al.push(`${n}: คืน Work แล้วแต่ยังมีบัตรค้าง ${a} ใบ`);
+    if (I(w) && !R(w) && !w.x && late(w) && !cnt(w.id)) al.push(`${n}: รับ Work แล้ว เลยเวลาแต่ไม่มีคนเข้า ให้คืน Work`);
+    if (!w.x && (of(w.id).length || I(w) || R(w))) (m[w.c || "-"] || (m[w.c || "-"] = [])).push(w);
+  });
+  const dn = k => new Set(all.filter(c => c.nat === k).map(c => c.card)).size, tk = g => trucks.filter(t => t.g === g);
+  const wr = ws.filter(w => !w.x && (w.issAt || w.retAt)), wt = `<div class="c"><div class="th"><b>เวลารับ / คืน Work</b><span class="mu">รับแล้ว ${ws.filter(w => !w.x && w.issAt).length} · คืนแล้ว ${ws.filter(w => !w.x && w.retAt).length} · ยังไม่คืน ${ws.filter(w => !w.x && w.issAt && !w.retAt).length}</span></div>${lb(["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน"], wr.map(w => [`<b>${esc(w.no)}</b>`, esc(w.c), tm(w.issAt), tm(w.retAt), esc(w.retBy || "-")]))}</div>`;
+  const det = Object.keys(m).sort().map(c => {
+    const ws2 = m[c], ids = ws2.flatMap(w => of(w.id)), n = new Set(ids.map(x => x.card)).size, a = ids.filter(x => !x.outAt).length;
+    return `<details data-co="${esc(c)}" ${op.has(c) ? "open" : ""}><summary>${esc(c)} · Work ${ws2.length} · เข้า ${n} · <span class="${a ? "wa" : "ok"}">ในพื้นที่ ${a}</span> · ออกแล้ว ${n-a}</summary>${ws2.map(w => `<div class="wk"><b>${esc(w.no)}</b> · ${esc(w.a)} · เจ้าของ ${esc(w.o || "-")}<br><span class="mu">${times(w)}${hasOT(w) ? ` · OT ถึง ${dt(endR(w))}` : ""}</span>${of(w.id).length ? `<table><tr><th>บัตร</th><th>ชื่อ</th><th>ประเภท</th><th>เข้า</th><th>ออก</th></tr>${of(w.id).map(x => `<tr><td>${esc(x.card)}</td><td>${esc(x.pname || "-")}</td><td>${NT[x.nat] || ""}</td><td>${tm(x.inAt)}</td><td class="${x.outAt ? "" : "wa"}">${x.outAt ? tm(x.outAt) : "อยู่ในพื้นที่"}</td></tr>`).join("")}</table>` : '<div class="mu">ยังไม่มีคนเข้า</div>'}</div>`).join("")}</details>`;
+  }).join("");
+
+  $("#dash").innerHTML = `<div class="mu" style="margin-bottom:6px">ข้อมูลวันที่ ${dl(D)}</div>
+  <div class="c"><b>Contractor</b>
+    <div class="k" style="margin-top:6px"><div><b>${now.length}</b>คนในพื้นที่ตอนนี้</div><div><b>${new Set(all.map(c=>c.card)).size}</b>บัตรที่ใช้</div><div><b>${ws.filter(w=>cnt(w.id)).length}</b>Work ที่มีคนเข้า</div><div><b>${ws.filter(w=>!w.x).length}</b>Work ที่ใช้ได้</div></div>
+    <div class="k" style="margin-top:6px"><div><b>${dn("th")}</b>ไทย</div><div><b>${dn("fo")}</b>ต่างชาติ</div><div><b>${dn("mg")}</b>ต่างด้าว</div></div>
+  </div>
+  <div class="c"><b>Transportor</b>
+    <div class="k" style="margin-top:6px"><div><b>${tk(1).filter(t=>!t.outAt).length}</b>G1 ในพื้นที่ (คัน)</div><div><b>${tk(1).length}</b>G1 เที่ยว</div><div><b>${tk(2).filter(t=>!t.outAt).length}</b>G2 ในพื้นที่ (คัน)</div><div><b>${tk(2).length}</b>G2 เที่ยว</div></div>
+  </div>
+  ${wt}
+  <div class="c"><b>เรื่องที่ต้องตาม (${al.length+pl.length})</b>
+    ${pl.map(p=>`<div class="wa r" style="justify-content:space-between"><span>⚠ บัตร ${esc(p.card)} ค้างจากวันที่ ${fd(p.day)} · Work ${esc(p.wno)} ${esc(p.co||"")}${p.pname?" · "+esc(p.pname):""}</span><button data-res="${esc(p.card)}">เอาออกจากรายการ</button></div>`).join("")}
+    ${al.map(a=>`<div class="wa">⚠ ${esc(a)}</div>`).join("")}
+    ${al.length+pl.length?"":'<div class="ok">✓ ตรวจแล้ว ไม่พบเรื่องที่ต้องตาม</div>'}
+  </div>
+  <div class="c"><b>Contractor แยกตามบริษัท</b> ${det||'<div class="mu" style="margin-top:6px">ยังไม่มีบันทึก</div>'}</div>`;
+}
+
+function emg() {
+  const pl = Object.values(pend).filter(p => p.day < lt()).sort((a, b) => a.day < b.day ? -1 : 1);
+  const ws = W(), now = cards.filter(c => !c.outAt), wm = Object.fromEntries(works.map(w => [w.id, w])), co = {}, ar = {}, tv = trucks.filter(t => !t.outAt);
+  now.forEach(c => {
+    const w = wm[c.work] || { c: "?", a: "?" }, k = w.c || "-", a = co[k] || (co[k] = { th: 0, fo: 0, mg: 0, cd: [] });
+    if (a[c.nat] !== undefined) a[c.nat]++;
+    a.cd.push(c.card + (c.pname ? ` (${c.pname})` : ""));
+    const b = ar[w.a || "-"] || (ar[w.a || "-"] = { n: 0, cs: new Set() });
+    b.n++; b.cs.add(k);
+  });
+  const cn = Object.keys(co).sort(), an = Object.keys(ar).sort();
+  const r1 = cn.map(k => [k, z(co[k].th), z(co[k].fo), z(co[k].mg), co[k].cd.length, co[k].cd.join(", ")]);
+  const r2 = an.map(k => [k, ar[k].n, [...ar[k].cs].join(", ")]);
+  const r3 = tv.map(t => ["G" + t.g, t.plate, t.type || "ทั่วไป", t.co, t.job, t.drv, t.dept, tm(t.inAt)]);
+  const ts = tm(Date.now()) + " น.", H1 = ["บริษัท", "ไทย", "ต่างชาติ", "ต่างด้าว", "รวม", "เลขบัตร (ชื่อ)"], H2 = ["พื้นที่", "คน", "บริษัท"], H3 = ["ป้อม", "ทะเบียน", "ประเภท", "บริษัท", "งาน", "ผู้ขับรถ", "ติดต่อ", "เข้า"];
+  
+  TS.emg = [`ฉุกเฉิน: คนในพื้นที่ วันที่ ${dl(D)} เวลา ${ts}`, `Contractor: บริษัท ${cn.length} · คน ${now.length} · Transportor ${tv.length} คัน`, H1.join("\t"), ...r1.map(r => r.join("\t")), "", H2.join("\t"), ...r2.map(r => r.join("\t")), "", H3.join("\t"), ...r3.map(r => r.join("\t"))].join("\n");
+  $("#emg").innerHTML = `<div class="c" style="border-color:var(--er)"><div class="th"><b class="er">คนในพื้นที่ ${D===lt()?"":`(วันที่ ${dl(D)}) `}ณ เวลา ${ts}</b><span class="np r"><button data-cp="emg">คัดลอก</button><button id="pr">พิมพ์</button></span></div>
+  <div class="k"><div><b>${cn.length}</b>บริษัท</div><div><b>${now.length}</b>คน (Contractor)</div><div><b>${an.length}</b>พื้นที่</div><div><b>${tv.length}</b>รถ Transportor (คัน)</div><div><b>${pl.length}</b>บัตรค้างจากวันก่อน</div></div>
+  <b style="display:block;margin-top:10px">Contractor แยกตามบริษัท</b>${lb(H1, r1.map(r => r.map(esc)))}
+  <b style="display:block;margin-top:10px">แยกตามพื้นที่ทำงาน</b>${lb(H2, r2.map(r => r.map(esc)))}
+  <b style="display:block;margin-top:10px">Transportor ในพื้นที่</b>${lb(H3, r3.map(r => r.map(esc)))}
+  <b style="display:block;margin-top:10px">บัตรค้างจากวันก่อน</b>${lb(["บัตร","วันที่","Work","บริษัท","ชื่อ"], pl.map(p => [esc(p.card), fd(p.day), esc(p.wno), esc(p.co||"-"), esc(p.pname||"-")]))}
+  </div>`;
+}
+
+function tbl(i, t, h, rows, tot) {
+  const no = h[0] === "No.";
+  TS[i] = [t, h.join("\t"), ...rows.map(r => r.join("\t")), tot ? ["", "รวม", ...tot].join("\t") : ""].join("\n");
+  return `<div class="c"><div class="th"><b>${esc(t)}</b><button data-cp="${i}">คัดลอกตารางนี้</button></div><table><tr>${h.map((x, j) => `<th class="${!j&&no?"n":""}">${esc(x)}</th>`).join("")}</tr>${rows.map(r => `<tr>${r.map((x, j) => `<td class="${!j&&no?"n":""}">${esc(x)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${h.length}" class="mu">ไม่มีรายการ</td></tr>`}${tot ? `<tr class="tot"><td class="n" colspan="2">รวม</td>${tot.map(x => `<td>${x}</td>`).join("")}</tr>` : ""}</table></div>`;
+}
+
+function sumr() {
+  const ws = W(), ok = ws.filter(w => !w.x), by = {}, DL = dl(D);
+  ok.forEach(w => of(w.id).forEach(c => {
+    const b = by[w.c || "-"] || (by[w.c || "-"] = { th: new Set(), fo: new Set(), mg: new Set() });
+    if (b[c.nat]) b[c.nat].add(c.card);
+  }));
+  const nm = Object.keys(by).sort((a, b) => a.localeCompare(b));
+  let h = tbl(1, `1. CONTRACTOR : ${DL}`, ["No.", "บริษัท", "ไทย", "ต่างชาติ", "ต่างด้าว"], nm.map((k, i) => [i + 1, k, z(by[k].th.size), z(by[k].fo.size), z(by[k].mg.size)]), ["th", "fo", "mg"].map(k => nm.reduce((s, n) => s + by[n][k].size, 0)));
+  h += tbl(2, `2. WORK ที่ไม่ต่อ OT : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "เวลาทำงาน", "คนเข้า"], ok.filter(w => !hasOT(w)).map(w => [w.no, w.c, w.a, z(w.o), win(w), cnt(w.id)]));
+  h += tbl(3, `3. WORK ที่ไม่มีคนเข้าทำงาน : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "สถานะ"], ok.filter(w => !cnt(w.id)).map(w => [w.no, w.c, w.a, z(w.o), status(w)]));
+  h += tbl(4, `4. เวลารับ Work / คืน Work : ${DL}`, ["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน", "คนเข้า"], ok.filter(w => I(w) || R(w)).map(w => [w.no, w.c, tm(w.issAt), tm(w.retAt), R(w) ? w.retBy : "-", cnt(w.id)]));
+  
+  [1, 2].forEach(g => {
+    const b = {};
+    trucks.filter(t => t.g === g).forEach(t => {
+      const typeLabel = t.type || "ทั่วไป";
+      const o = b[t.co] || (b[t.co] = { "ผู้รับเหมา": 0, "รับส่งของทั่วไป": 0, "รับยาง": 0, "อื่นๆ": 0 });
+      if (o[typeLabel] !== undefined) o[typeLabel]++; else o["อื่นๆ"]++;
+    });
+    const n = Object.keys(b).sort();
+    h += tbl(4 + g, `${4 + g}. TRANSPORTOR G${g} แยกตามประเภท : ${DL}`, ["No.", "บริษัท", "ผู้รับเหมา", "รับส่งของทั่วไป", "รับยาง", "อื่นๆ"], n.map((k, i) => [i + 1, k, z(b[k]["ผู้รับเหมา"]), z(b[k]["รับส่งของทั่วไป"]), z(b[k]["รับยาง"]), z(b[k]["อื่นๆ"])]), ["ผู้รับเหมา", "รับส่งของทั่วไป", "รับยาง", "อื่นๆ"].map(j => n.reduce((s, k) => s + b[k][j], 0)));
+  });
+  h += tbl(7, `7. บัตรที่เอาออกจากรายการติดตาม : ${DL}`, ["บัตร", "Work", "บริษัท", "หมายเหตุ", "เวลา", "ผู้บันทึก"], cards.filter(c => c.lost).map(c => [c.card, c.wno, c.co || "-", c.lostNote || "-", tm(c.outAt), c.outBy || "-"]));
+  $("#sumh").innerHTML = h;
+}
+
+/* ==============================================================
+   USER MANAGEMENT & 3-YEAR RETENTION FUNCTIONS
+   ============================================================== */
+async function loadUsers() {
+  if (!db) return;
+  try {
+    const s = await db.collection("users").get();
+    usersList = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    usrRender();
+  } catch(e) {
+    console.warn("loadUsers error:", e);
+  }
+}
+
+function usrRender() {
+  if (userRole !== "admin") return;
+  const H = ["User", "ชื่อ - สังกัด", "สิทธิ์", "สถานะ", "จัดการ"];
+  const rows = usersList.map(u => {
+    const isSelf = u.user === currentUser;
+    const roleBadge = u.role === "admin" ? '<span class="badge badge-admin">Admin</span>' : '<span class="badge badge-staff">เจ้าหน้าที่</span>';
+    const stBadge = u.status === "approved" ? '<span class="badge badge-ok">อนุมัติแล้ว</span>' : '<span class="badge badge-wa">รออนุมัติ</span>';
+    let btns = [];
+    if (u.status !== "approved") {
+      btns.push(`<button data-uapp="${u.id}" class="p" style="padding:3px 7px;font-size:12px">อนุมัติ</button>`);
+    }
+    if (!isSelf) {
+      if (u.role === "admin") {
+        btns.push(`<button data-urole="${u.id}" data-torole="staff" style="padding:3px 7px;font-size:12px">ลดเป็นเจ้าหน้าที่</button>`);
+      } else {
+        btns.push(`<button data-urole="${u.id}" data-torole="admin" style="padding:3px 7px;font-size:12px">ตั้งเป็น Admin</button>`);
+      }
+      btns.push(`<button data-udel="${u.id}" class="danger" style="padding:3px 7px;font-size:12px">ลบ</button>`);
+    } else {
+      btns.push('<span class="mu" style="font-size:12px">(บัญชีปัจจุบัน)</span>');
+    }
+    return [esc(u.user), esc(u.fullname || "-"), roleBadge, stBadge, btns.join(" ")];
+  });
+  $("#usr_table").innerHTML = lb(H, rows);
+}
+
+/* 3-Year Retention Logic with Firestore */
+async function checkRetention() {
+  $("#retention_msg").innerHTML = "กำลังตรวจสอบเอกสาร...";
+  const threeYearsAgo = new Date();
+  threeYearsAgo.setFullYear(threeYearsAgo.getFullYear() - 3);
+  const cutoff = threeYearsAgo.toISOString().slice(0, 10);
+  
+  $("#retention_msg").innerHTML = `<span class="ok">✓ ระบบนโยบาย 3 ปีเปิดใช้งาน ข้อมูลที่เก่ากว่า ${fd(cutoff)} สามารถล้างได้เมื่อครบกำหนด</span>`;
+}
+
+/* ==============================================================
+   IMPORT EXCEL LOGIC
+   ============================================================== */
+function parse(aoa, y) {
+  const t = v => String(v ?? "").replace(/\s+/g, " ").trim(), rows = [];
+  aoa.forEach((r, i) => {
+    const no = t(r[0]);
+    if (!/^\d{1,2}\/\d{1,4}$/.test(no)) return;
+    const mm = MON[t(r[1]).toLowerCase()] || +no.split("/")[0], dd = parseInt(t(r[2]), 10), dt = new Date(y, mm - 1, dd), ok = dd >= 1 && dd <= 31 && mm >= 1 && mm <= 12 && dt.getMonth() === mm - 1;
+    rows.push({ row: i + 1, no, id: `${y}_${no.replace("/", "-")}`, date: ok ? `${y}-${pad(mm)}-${pad(dd)}` : "", c: t(r[4]), a: t(r[5]), o: t(r[11]) });
+  });
+  return rows;
+}
+function loadWB(buf) {
+  WB = XLSX.read(buf, { type: "array" });
+  const n = WB.SheetNames;
+  $("#shs").innerHTML = n.map(x => `<option>${esc(x)}</option>`).join("");
+  const m = n.find(x => /^\d{4}$/.test(x));
+  $("#shs").value = m || n[0];
+  $("#iy").value = m || D.slice(0, 4);
+  return prev();
+}
+async function prev() {
+  if (!WB) return;
+  const y = +$("#iy").value || +D.slice(0, 4);
+  let aoa;
+  try { aoa = XLSX.utils.sheet_to_json(WB.Sheets[$("#shs").value], { header: 1, raw: true, defval: "" }); }
+  catch (e) { return msg("#ipv", "อ่านชีตนี้ไม่ได้", "er"); }
+  const rows = parse(aoa, y);
+  PV = null;
+  if (!rows.length) return msg("#ipv", "ไม่พบแถวเลขที่ Work (รูปแบบ 11/001) ในชีตนี้", "er");
+  $("#ipv").textContent = "กำลังตรวจเลขซ้ำ…";
+  
+  const shs = new Set();
+  rows.forEach(r => { if (r.date) shs.add(r.date.slice(0, 7)); shs.add(`${y}-${pad(+r.no.split("/")[0])}`); });
+  const ex = new Set();
+  try {
+    await Promise.all([...shs].map(async s => {
+      (await db.collection(`works/${s}/items`).get()).docs.forEach(d => ex.add(d.id));
+    }));
+  } catch (e) { return msg("#ipv", "ตรวจเลขซ้ำไม่สำเร็จ: " + e.message, "er"); }
+  
+  const seen = new Set();
+  rows.forEach(r => { r.st = !r.date ? "bad" : seen.has(r.id) ? "dupf" : ex.has(r.id) ? "dupd" : "new"; seen.add(r.id); });
+  PV = { rows, y };
+  const nw = rows.filter(r => r.st === "new"), pr = rows.filter(r => r.st !== "new");
+  $("#ipv").innerHTML = `<div>พบ ${rows.length} แถว · <b class="ok">ใหม่ ${nw.length}</b> · <b class="${pr.length ? "wa" : ""}">ซ้ำ/ข้าม ${pr.length}</b></div>
+  <div class="r" style="margin-top:8px"><button class="p" id="bgo" ${nw.length ? "" : "disabled"}>นำเข้า ${nw.length} Work ใหม่</button><button id="bcx">ยกเลิก</button></div><div id="igo"></div>`;
+}
+async function goImport() {
+  if (!PV || !db) return;
+  const nw = PV.rows.filter(r => r.st === "new");
+  let n = 0;
+  for (let i = 0; i < nw.length; i += 12) {
+    msg("#igo", `กำลังนำเข้า ${Math.min(i + 12, nw.length)}/${nw.length}…`);
+    await Promise.all(nw.slice(i, i + 12).map(r => T(db.doc(`works/${r.date.slice(0, 7)}/items/${r.id}`).set({ id: r.id, no: r.no, year: PV.y, date: r.date, c: r.c, a: r.a, o: r.o, x: false, src: "excel", by: who, ts: Date.now() })).then(() => n++)));
+  }
+  PV = null; WB = null; $("#fx").value = ""; $("#fxc").hidden = true;
+  $("#ipv").innerHTML = `<span class="ok">นำเข้าสำเร็จแล้ว ${n} Work</span>`;
+}
+
+/* Roster Import Logic */
+const sd = v => { if (typeof v === "number" && v > 20000) { const o = XLSX.SSF.parse_date_code(v); return o ? `${o.y}-${pad(o.m)}-${pad(o.d)}` : ""; } return pd(v); };
+function parseRos(aoa) {
+  let hi = -1, mp = { no: 0, name: 1, train: 2, exp: 3 };
+  for (let i = 0; i < Math.min(aoa.length, 15); i++) {
+    const r = aoa[i].map(x => String(x).toLowerCase()), e = r.findIndex(x => /หมดอายุ|expir/.test(x));
+    if (e < 0) continue;
+    const f = re => r.findIndex((x, j) => j !== e && re.test(x)), m = { no: f(/เลข|รหัส|^no|id/), name: f(/ชื่อ|name/), train: f(/อบรม|train/), exp: e };
+    if (Object.values(m).every(v => v >= 0)) { hi = i; mp = m; break; }
+  }
+  const out = [];
+  aoa.forEach((r, i) => {
+    if (i <= hi) return;
+    const no = String(r[mp.no] ?? "").trim(), name = String(r[mp.name] ?? "").replace(/\s+/g, " ").trim(), tr = sd(r[mp.train]), ex = sd(r[mp.exp]);
+    if (!no && !name) return;
+    out.push({ row: i + 1, no, name, train: tr, exp: ex, ok: !!(no && name && ex) });
+  });
+  return out;
+}
+function loadRos(buf) { RB = XLSX.read(buf, { type: "array" }); $("#rsh").innerHTML = RB.SheetNames.map(x => `<option>${esc(x)}</option>`).join(""); prevRos(); }
+function prevRos() {
+  if (!RB) return;
+  let aoa = XLSX.utils.sheet_to_json(RB.Sheets[$("#rsh").value], { header: 1, raw: true, defval: "" });
+  const rows = parseRos(aoa), mp = new Map();
+  rows.filter(r => r.ok).forEach(r => mp.set(rk(r.no), r));
+  const good = [...mp.values()];
+  RV = { good };
+  $("#rpv").innerHTML = `<div>พบ ${rows.length} แถว · <b class="ok">พร้อมนำเข้า ${good.length} คน</b></div>
+  <div class="r" style="margin-top:8px"><button class="p" id="rgo">นำเข้า ${good.length} รายชื่อ</button><button id="rcx">ยกเลิก</button></div><div id="rig"></div>`;
+}
+function cancelRos() { RB = null; RV = null; $("#rfx").value = ""; $("#rsh").innerHTML = ""; $("#rpv").innerHTML = ""; $("#rfc").hidden = true; }
+async function goRos() {
+  if (!RV || !db) return;
+  const g = RV.good; let n = 0;
+  for (let i = 0; i < g.length; i += 15) {
+    msg("#rig", `กำลังนำเข้า ${Math.min(i + 15, g.length)}/${g.length}…`);
+    await Promise.all(g.slice(i, i + 15).map(p => T(db.doc("roster/" + rk(p.no)).set({ no: p.no, name: p.name, train: p.train, exp: p.exp, nat: (roster[rk(p.no)] || {}).nat || "" })).then(() => n++)));
+  }
+  cancelRos();
+  $("#rpv").innerHTML = `<span class="ok">นำเข้ารายชื่อสำเร็จแล้ว ${n} คน</span>`;
+}
+
+/* ==============================================================
+   NAVIGATION & UI EVENT LISTENERS
+   ============================================================== */
+const cp = async (t, btn) => {
+  try {
+    await navigator.clipboard.writeText(t);
+    if (btn) { const o = btn.textContent; btn.textContent = "คัดลอกแล้ว ✓"; setTimeout(() => btn.textContent = o, 1500); }
+  } catch (e) { if (btn) btn.textContent = "คัดลอกไม่ได้"; }
+};
+
+function tab(t) {
+  SECS.forEach(s => $("#t-" + s).hidden = s !== t);
+  document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
+}
+function setCat(c) {
+  cat = c;
+  document.querySelectorAll("#cat button").forEach(b => b.classList.toggle("on", b.dataset.cat === c));
+  $("#h1").textContent = CATS[c];
+  const t = c === "c";
+  $("#nbw").hidden = !t; $("#nbr").hidden = !t;
+  const b = $("#nb1");
+  b.dataset.t = t ? "gate" : "trk";
+  b.textContent = t ? "รับ/คืนบัตร" : "บันทึกรถ";
+  tab(t ? "gate" : "trk");
+  draw();
+}
+
+function setD(v) {
+  if (!v) return;
+  if (userRole !== "admin" && v !== lt()) {
+    alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถดูหรือแก้ไขข้อมูลย้อนหลังได้ครับ");
+    return;
+  }
+  D = v; cur = null; cf = {}; loadEd(); resub();
+}
+
+function resub() {
+  ["uc", "ut"].forEach(k => SUB[k] && SUB[k]());
+  SUB.uc = SUB.ut = null; cards = []; trucks = [];
+  if (db) {
+    const ym = D.slice(0, 7);
+    if (SUB.ym !== ym) {
+      SUB.uw && SUB.uw(); works = []; SUB.ym = ym;
+      SUB.uw = db.collection(`works/${ym}/items`).onSnapshot(s => {
+        works = s.docs.map(d => ({ ...d.data(), id: d.id }));
+        draw();
+      }, err => stt("ไม่สามารถอ่านข้อมูล: " + err.message));
+    }
+    SUB.uc = db.collection(`cards/${D}/items`).onSnapshot(s => {
+      cards = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      draw();
+    }, err => stt("ไม่สามารถอ่านบัตร: " + err.message));
+    SUB.ut = db.collection(`trucks/${D}/items`).onSnapshot(s => {
+      trucks = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      draw();
+    }, err => stt("ไม่สามารถอ่านรถ: " + err.message));
+  }
+  draw();
+}
+
+/* Event Attachments */
+$("#q").oninput = draw;
+$("#rq").oninput = rosd;
+$("#ps").oninput = () => { pick = null; rpk(); };
+$("#dsel").onchange = e => setD(e.target.value);
+$("#dp").onclick = () => setD(sh(D, -1));
+$("#dn").onclick = () => setD(sh(D, 1));
+$("#dt").onclick = () => setD(lt());
+
+$("#rfx").onchange = e => {
+  const f = e.target.files[0]; $("#rfc").hidden = !f; if (!f) return;
+  const r = new FileReader(); r.onload = () => loadRos(r.result); r.readAsArrayBuffer(f);
+};
+$("#rfc").onclick = cancelRos;
+$("#rsh").onchange = prevRos;
+
+$("#fx").onchange = e => {
+  const f = e.target.files[0]; $("#fxc").hidden = !f; if (!f) return;
+  const r = new FileReader(); r.onload = () => loadWB(r.result); r.readAsArrayBuffer(f);
+};
+$("#fxc").onclick = () => { WB = null; PV = null; $("#fx").value = ""; $("#ipv").innerHTML = ""; $("#fxc").hidden = true; };
+$("#shs").onchange = prev;
+$("#iy").onchange = prev;
+
+/* Global Click Handler */
+document.addEventListener("click", async e => {
+  const target = e.target, q = s => target.closest(s);
+  let x;
+  if (x = q(".it[data-n]")) { cur = x.dataset.n; cf = {}; $("#msg").innerHTML = ""; loadEd(); draw(); return; }
+  if ((x = q("[data-o]")) && db) {
+    const c = cards.find(k => k.id === x.dataset.o);
+    await T(db.doc(`cards/${D}/items/${x.dataset.o}`).update({ outAt: Date.now(), outBy: who }));
+    if (c) await T(db.doc("pending/" + rk(c.card)).delete());
+  }
+  if (x = q("[data-lost]")) { $("#lcn").value = x.dataset.lost; $("#lostc").scrollIntoView({ behavior: "smooth" }); $("#lrs").focus(); }
+  if (x = q("[data-res]")) { if (cat !== "c") setCat("c"); tab("gate"); $("#lcn").value = x.dataset.res; $("#lostc").scrollIntoView({ behavior: "smooth" }); $("#lrs").focus(); }
+  if ((x = q("[data-to]")) && db) await T(db.doc(`trucks/${D}/items/${x.dataset.to}`).update({ outAt: Date.now(), outBy: who }));
+  if (x = q("[data-cp]")) cp(TS[x.dataset.cp], x);
+  if (x = q("[data-jump]")) setD(x.dataset.jump);
+  if (target.id === "bgo") goImport();
+  if (target.id === "rgo") goRos();
+  if (target.id === "pr") { window.print(); }
+
+  // User Actions (Admin)
+  if (x = q("[data-uapp]")) {
+    const uid = x.dataset.uapp;
+    await db.doc("users/" + uid).update({ status: "approved" });
+    await loadUsers();
+  }
+  if (x = q("[data-urole]")) {
+    const uid = x.dataset.urole, toRole = x.dataset.torole;
+    await db.doc("users/" + uid).update({ role: toRole });
+    await loadUsers();
+  }
+  if (x = q("[data-udel]")) {
+    const uid = x.dataset.udel;
+    if (confirm("ต้องการลบผู้ใช้งานนี้ใช่หรือไม่?")) {
+      await db.doc("users/" + uid).delete();
+      await loadUsers();
+    }
+  }
+
+  // Pick Roster
+  if (x = q("[data-p]")) {
+    pick = roster[x.dataset.p]; cf = {}; $("#ps").value = "";
+    if (pick.nat) { nat = pick.nat; document.querySelectorAll("#nat button").forEach(b => b.classList.toggle("on", b.dataset.nat === nat)); }
+    rpk();
+  }
+  if (q("[data-x]")) { pick = null; rpk(); }
+  if (x = q("[data-go]")) tab(x.dataset.go);
+  if (x = q("#nat button")) { nat = x.dataset.nat; document.querySelectorAll("#nat button").forEach(b => b.classList.toggle("on", b === x)); }
+  if (x = q("#job button")) { job = x.dataset.job; document.querySelectorAll("#job button").forEach(b => b.classList.toggle("on", b === x)); }
+  
+  // Transportor Type Button
+  if (x = q("#trk_type button")) {
+    truckType = x.dataset.type;
+    document.querySelectorAll("#trk_type button").forEach(b => b.classList.toggle("on", b === x));
+    $("#trk_other_box").style.display = truckType === "อื่นๆ" ? "block" : "none";
+    if (truckType === "อื่นๆ") $("#trk_type_other").focus();
+  }
+
+  if (x = q("#cat button")) setCat(x.dataset.cat);
+  if (x = q("#nav button")) tab(x.dataset.t);
+});
+
+$("#cpa").onclick = e => cp([1, 2, 3, 4, 5, 6, 7].map(i => TS[i]).join("\n\n"), e.target);
+$("#btn_check_retention").onclick = checkRetention;
+
+/* Card Issue */
+$("#bin").onclick = async () => {
+  if (!db) return msg("#msg", "ยังไม่เชื่อมต่อฐานข้อมูล", "er");
+  const w = W().find(x => x.id === cur), n = $("#cn").value.trim(), p = pick, nt = p && p.nat ? p.nat : nat;
+  if (!w) return msg("#msg", "เลือก Work ก่อน", "er");
+  if (!nt) return msg("#msg", "เลือกประเภท ไทย / ต่างชาติ / ต่างด้าว ก่อน", "er");
+  if (!n) return msg("#msg", "ใส่เลขบัตร", "er");
+  if (w.x) return msg("#msg", "Work นี้ถูกยกเลิก ห้ามรับบัตร", "er");
+  if (R(w)) return msg("#msg", "Work นี้คืนแล้ว", "er");
+  const u = cards.find(c => c.card === n && !c.outAt);
+  if (u) return msg("#msg", `บัตร ${n} ยังไม่คืน (ใช้กับ Work ${u.wno})`, "er");
+  const pp = pend[rk(n)];
+  if (pp) return msg("#msg", `บัตร ${n} ยังค้างจากวันที่ ${fd(pp.day)} (Work ${pp.wno})`, "er");
+  
+  try {
+    const rf = await T(db.collection(`cards/${D}/items`).add({
+      work: w.id, wno: w.no, co: w.c, card: n, nat: nt, gate: 2, inAt: Date.now(), outAt: null, by: who,
+      pid: p ? rk(p.no) : "", pno: p ? p.no : "", pname: p ? p.name : ""
+    }));
+    await T(db.doc("pending/" + rk(n)).set({ card: n, day: D, cid: rf.id, work: w.id, wno: w.no, co: w.c, pname: p ? p.name : "", nat: nt, inAt: Date.now() }));
+    cf = {}; pick = null; $("#cn").value = ""; $("#ps").value = "";
+    msg("#msg", `รับบัตร ${n} (${NT[nt]}) แล้ว`, "ok");
+    rpk();
+  } catch (e) { msg("#msg", "บันทึกไม่สำเร็จ: " + e.message, "er"); }
+};
+$("#cn").onkeydown = e => { if (e.key === "Enter") $("#bin").click(); };
+
+/* Card Return */
+$("#bout").onclick = async () => {
+  if (!db) return;
+  const n = $("#rn").value.trim(), c = cards.find(x => x.card === n && !x.outAt), p = pend[rk(n)];
+  if (c) {
+    await T(db.doc(`cards/${D}/items/${c.id}`).update({ outAt: Date.now(), outBy: who }));
+    await T(db.doc("pending/" + rk(n)).delete());
+    $("#rn").value = "";
+    return msg("#rm", `คืนบัตร ${n} (Work ${c.wno}) แล้ว`, "ok");
+  }
+  if (p) {
+    await T(db.doc(`cards/${p.day}/items/${p.cid}`).update({ outAt: Date.now(), outBy: who, lateReturn: 1 }));
+    await T(db.doc("pending/" + rk(n)).delete());
+    $("#rn").value = "";
+    return msg("#rm", `คืนบัตร ${n} (ค้างจากวันที่ ${fd(p.day)}) แล้ว`, "ok");
+  }
+  msg("#rm", `ไม่พบบัตร ${n} ที่ยังค้างอยู่`, "er");
+};
+
+/* Vehicle Entry */
+$("#btin").onclick = async () => {
+  if (!db) return msg("#tm", "ยังไม่เชื่อมต่อฐานข้อมูล", "er");
+  const v = id => $(id).value.trim(), co = v("#tco"), pl = v("#tpl"), dv = v("#tdv"), dp = v("#tdp");
+  let finalType = truckType;
+  if (finalType === "อื่นๆ") {
+    const customTxt = v("#trk_type_other");
+    if (!customTxt) return msg("#tm", "กรุณาระบุรายละเอียดประเภทอื่นๆ", "er");
+    finalType = "อื่นๆ (" + customTxt + ")";
+  }
+  if (!job) return msg("#tm", "เลือก รับของ / ส่งของ ก่อน", "er");
+  if (!co || !pl || !dv || !dp) return msg("#tm", "กรอก บริษัท ทะเบียน ผู้ขับรถ ติดต่อแผนก/อาคาร ให้ครบ", "er");
+  if (trucks.some(t => t.plate === pl && !t.outAt)) return msg("#tm", `ทะเบียน ${pl} ยังอยู่ในพื้นที่ (ยังไม่บันทึกออก)`, "er");
+  
+  await T(db.collection(`trucks/${D}/items`).add({
+    g: tg(), job, type: finalType, co, plate: pl, drv: dv, dept: dp, inAt: Date.now(), outAt: null, by: who
+  }));
+  ["#tco", "#tpl", "#tdv", "#tdp", "#trk_type_other"].forEach(s => $(s).value = "");
+  msg("#tm", `บันทึก ${pl} [${finalType}] เข้าแล้ว`, "ok");
+};
+
+/* Work Actions */
+const cw = () => { const w = wf(cur); if (!db || !w) { msg("#wm", "เลือก Work ก่อน", "er"); return null; } return w; };
+const rcv = async id => {
+  const w = cw(); if (!w) return;
+  if (w.issAt) return msg(id, `บันทึกรับ Work ไว้แล้วเมื่อ ${tm(w.issAt)} น.`, "er");
+  await wu(w, { issAt: Date.now(), issBy: who });
+  msg(id, `บันทึกเวลารับ Work ${tm(Date.now())} น. แล้ว`, "ok");
+};
+$("#bis").onclick = () => rcv("#wm");
+$("#bis2").onclick = () => rcv("#msg");
+$("#bw2").onclick = () => tab("work");
+
+$("#bot").onclick = async () => {
+  const w = cw(); if (!w) return;
+  const raw = $("#ot").value.trim();
+  if (!raw) { await wu(w, { otEnd: "" }); return msg("#wm", "ลบ OT แล้ว", "ok"); }
+  const v = pt(raw); if (!v) return msg("#wm", "รูปแบบเวลาไม่ถูกต้อง เช่น 20.00", "er");
+  await wu(w, { otEnd: v }); msg("#wm", `บันทึก OT ถึง ${dt(v)} น. แล้ว`, "ok");
+};
+
+$("#bret").onclick = async () => {
+  const w = cw(); if (!w) return;
+  const b = $("#rb").value.trim(), a = act(w.id).length;
+  if (!b) return msg("#wm", "ระบุชื่อผู้คืน Work", "er");
+  if (a) return msg("#wm", `ยังมีบัตรค้าง ${a} ใบ ให้คืนบัตรก่อน`, "er");
+  await wu(w, { retAt: Date.now(), retBy: b, retRec: who, retN: cnt(w.id) });
+  $("#rb").value = ""; msg("#wm", "บันทึกเวลาคืน Work แล้ว", "ok");
+};
+
+$("#bed").onclick = async () => {
+  const w = cw(); if (!w) return;
+  const nd = $("#edd").value, c = $("#edc").value.trim(), a = $("#eda").value.trim(), o = $("#edo").value.trim(), x = $("#edx").checked, ws = pt($("#edws").value) || "08:00", we = pt($("#edwe").value) || "17:00";
+  if (!nd) return msg("#edm", "ใส่วันที่", "er");
+  await wu(w, { c, a, o, x, ws, we });
+  msg("#edm", "บันทึกการแก้ไขแล้ว", "ok");
+};
+
+/* Quick Single Work Add */
+$("#bx").onclick = async () => {
+  if (!db) return;
+  const n = $("#xn").value.trim(), d = $("#xd").value || D, c = $("#xc").value.trim(), a = $("#xa").value.trim(), o = $("#xo").value.trim();
+  if (!/^\d{1,2}\/\d{1,4}$/.test(n)) return msg("#xm", "เลขที่ต้องเป็นรูปแบบ 11/496", "er");
+  if (!c || !a) return msg("#xm", "กรอก บริษัท และ พื้นที่ ให้ครบ", "er");
+  const y = d.slice(0, 4), id = `${y}_${n.replace("/", "-")}`;
+  await T(db.doc(`works/${d.slice(0, 7)}/items/${id}`).set({ id, no: n, year: +y, date: d, c, a, o, x: false, src: "manual", by: who, ts: Date.now() }));
+  ["#xn", "#xc", "#xa", "#xo"].forEach(s => $(s).value = "");
+  $("#xm").innerHTML = `<span class="ok">เพิ่ม Work ${esc(n)} แล้ว</span>`;
+};
+
+/* Roster Single Add */
+$("#bpa").onclick = async () => {
+  if (!db) return;
+  const no = $("#pn").value.trim(), name = $("#pnm").value.trim(), tr = $("#ptr").value, ex = $("#pex").value;
+  if (!no || !name || !ex) return msg("#pm", "กรอกข้อมูลให้ครบ", "er");
+  await T(db.doc("roster/" + rk(no)).set({ no, name, train: tr, exp: ex, nat: "" }));
+  ["#pn", "#pnm", "#ptr", "#pex"].forEach(s => $(s).value = "");
+  msg("#pm", "เพิ่มรายชื่อเรียบร้อย", "ok");
+};
+
+/* ==============================================================
+   LOGIN, REGISTER & AUTH LOGIC
+   ============================================================== */
+$("#tb_login").onclick = () => {
+  $("#tb_login").classList.add("on"); $("#tb_reg").classList.remove("on");
+  $("#v_login").hidden = false; $("#v_reg").hidden = true;
+};
+$("#tb_reg").onclick = () => {
+  $("#tb_reg").classList.add("on"); $("#tb_login").classList.remove("on");
+  $("#v_login").hidden = true; $("#v_reg").hidden = false;
+};
+
+// Register
+$("#reg_go").onclick = async () => {
+  const u = $("#reg_nm").value.trim().toLowerCase(), f = $("#reg_fullname").value.trim(), p = $("#reg_pin").value;
+  if (!u || !f || !p) return $("#reg_msg").innerHTML = '<span class="er">กรุณากรอกข้อมูลให้ครบถ้วน</span>';
+  try {
+    const existing = await db.doc("users/" + u).get();
+    if (existing.exists) return $("#reg_msg").innerHTML = '<span class="er">ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว</span>';
+    
+    await db.doc("users/" + u).set({
+      user: u, fullname: f, pass: p, role: "staff", status: "pending", createdAt: Date.now()
+    });
+    $("#reg_nm").value = ""; $("#reg_fullname").value = ""; $("#reg_pin").value = "";
+    $("#reg_msg").innerHTML = '<span class="ok">ลงทะเบียนสำเร็จ! กรุณารอผู้ดูแลระบบ (Admin) อนุมัติสิทธิ์</span>';
+  } catch(e) {
+    $("#reg_msg").innerHTML = `<span class="er">ลงทะเบียนไม่สำเร็จ: ${e.message}</span>`;
+  }
+};
+
+// Login
+$("#go").onclick = async () => {
+  const u = $("#nm").value.trim().toLowerCase(), p = $("#pin").value;
+  if (!u || !p) return $("#le").textContent = "กรุณากรอกชื่อผู้ใช้และรหัสผ่าน";
+
+  try {
+    const d = await db.doc("users/" + u).get();
+    if (!d.exists) return $("#le").textContent = "ไม่พบชื่อผู้ใช้งานนี้";
+    const user = d.data();
+    if (user.pass !== p) return $("#le").textContent = "รหัสผ่านไม่ถูกต้อง";
+    if (user.status !== "approved") return $("#le").textContent = "บัญชีนี้อยู่ระหว่างรอผู้ดูแลระบบอนุมัติ";
+
+    // Login Success
+    currentUser = user.user;
+    who = user.fullname || user.user;
+    userRole = user.role || "staff";
+
+    $("#who").innerHTML = `ผู้ใช้: <b>${esc(who)}</b> <span class="badge ${userRole==='admin'?'badge-admin':'badge-staff'}">${userRole==='admin'?'Admin':'เจ้าหน้าที่'}</span>`;
+    $("#lock").style.display = "none";
+    $("#nb_usr").hidden = userRole !== "admin";
+
+    if (userRole !== "admin") {
+      $("#dsel").value = lt();
+      setD(lt());
+    }
+    await loadUsers();
+  } catch(e) {
+    $("#le").textContent = "ข้อผิดพลาดเชื่อมต่อ Firebase: " + e.message;
+  }
+};
+
+$("#btn_logout").onclick = () => {
+  currentUser = null; who = ""; userRole = "staff";
+  $("#nm").value = ""; $("#pin").value = ""; $("#le").textContent = "";
+  $("#lock").style.display = "flex";
+};
+
+/* ==============================================================
+   SYSTEM STARTUP
+   ============================================================== */
+(async () => {
+  stt();
+  
+  // Seed Default Super Admin in Cloud if not exists
+  try {
+    const adm = await db.doc("users/admin").get();
+    if (!adm.exists) {
+      await db.doc("users/admin").set({
+        user: "admin", fullname: "ผู้ดูแลระบบ (Admin)", pass: "1234", role: "admin", status: "approved", createdAt: Date.now()
+      });
+    }
+  } catch(e) {
+    stt("กรุณาตรวจสอบว่าเปิด Firestore Database ใน Firebase Console แล้วหรือยัง: " + e.message);
+  }
+
+  // Real-time Roster and Pending Sync
+  db.collection("roster").onSnapshot(s => {
+    roster = {};
+    s.docs.forEach(d => roster[d.id] = d.data());
+    if (pick && roster[rk(pick.no)]) pick = roster[rk(pick.no)];
+    draw();
+  }, () => {});
+
+  db.collection("pending").onSnapshot(s => {
+    pend = {};
+    s.docs.forEach(d => pend[d.id] = d.data());
+    draw();
+  }, () => {});
+
+  resub();
+})();
+</script>
+</body>
+</html>
