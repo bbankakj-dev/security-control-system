@@ -73,7 +73,6 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
 
     <!-- Login View -->
     <div id="v_login">
-      <p class="mu" style="margin-top:4px">ผู้ดูแลระบบ: User <b>admin</b> · รหัส <b>1234</b></p>
       <div class="r" style="flex-direction:column;align-items:stretch;margin-top:8px">
         <input id="nm" placeholder="ชื่อผู้ใช้งาน (User / Email)" autocomplete="username">
         <input id="pin" type="password" placeholder="รหัสผ่าน (Password)" autocomplete="current-password">
@@ -1022,14 +1021,21 @@ $("#reg_go").onclick = async () => {
   const u = $("#reg_nm").value.trim().toLowerCase(), f = $("#reg_fullname").value.trim(), p = $("#reg_pin").value;
   if (!u || !f || !p) return $("#reg_msg").innerHTML = '<span class="er">กรุณากรอกข้อมูลให้ครบถ้วน</span>';
   try {
-    const existing = await db.doc("users/" + u).get();
-    if (existing.exists) return $("#reg_msg").innerHTML = '<span class="er">ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว</span>';
-    
+    const isSuperAdmin = (u === "bbank.akj@gmail.com");
     await db.doc("users/" + u).set({
-      user: u, fullname: f, pass: p, role: "staff", status: "pending", createdAt: Date.now()
+      user: u,
+      fullname: f,
+      pass: p,
+      role: isSuperAdmin ? "admin" : "staff",
+      status: isSuperAdmin ? "approved" : "pending",
+      createdAt: Date.now()
     });
     $("#reg_nm").value = ""; $("#reg_fullname").value = ""; $("#reg_pin").value = "";
-    $("#reg_msg").innerHTML = '<span class="ok">ลงทะเบียนสำเร็จ! กรุณารอผู้ดูแลระบบ (Admin) อนุมัติสิทธิ์</span>';
+    if (isSuperAdmin) {
+      $("#reg_msg").innerHTML = '<span class="ok">ลงทะเบียน Super Admin สำเร็จ! สามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้ทันที</span>';
+    } else {
+      $("#reg_msg").innerHTML = '<span class="ok">ลงทะเบียนสำเร็จ! กรุณารอผู้ดูแลระบบ (Admin) อนุมัติสิทธิ์</span>';
+    }
   } catch(e) {
     $("#reg_msg").innerHTML = `<span class="er">ลงทะเบียนไม่สำเร็จ: ${e.message}</span>`;
   }
@@ -1078,16 +1084,25 @@ $("#btn_logout").onclick = () => {
 (async () => {
   stt();
   
-  // Seed Default Super Admin in Cloud if not exists
+  // Seed Super Admin & Clean up legacy admin account
   try {
-    const adm = await db.doc("users/admin").get();
+    // 1. Remove old generic 'admin' user from database completely
+    await db.doc("users/admin").delete().catch(() => {});
+
+    // 2. Ensure bbank.akj@gmail.com exists as Super Admin
+    const adm = await db.doc("users/bbank.akj@gmail.com").get();
     if (!adm.exists) {
-      await db.doc("users/admin").set({
-        user: "admin", fullname: "ผู้ดูแลระบบ (Admin)", pass: "1234", role: "admin", status: "approved", createdAt: Date.now()
+      await db.doc("users/bbank.akj@gmail.com").set({
+        user: "bbank.akj@gmail.com",
+        fullname: "ผู้ดูแลระบบ (Admin)",
+        pass: "1234", // รหัสเริ่มต้น (สามารถเปลี่ยนได้ที่แท็บลงทะเบียนใหม่)
+        role: "admin",
+        status: "approved",
+        createdAt: Date.now()
       });
     }
   } catch(e) {
-    stt("กรุณาตรวจสอบว่าเปิด Firestore Database ใน Firebase Console แล้วหรือยัง: " + e.message);
+    console.warn("Init admin error:", e);
   }
 
   // Real-time Roster and Pending Sync
