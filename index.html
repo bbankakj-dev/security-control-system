@@ -13,26 +13,32 @@ body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 "Sarabun","Noto
 .w{max-width:1020px;margin:0 auto;padding:10px}
 h1{font-size:18px;margin:0}.mu{color:var(--mu);font-size:12.5px}
 .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:8px}
-.seg,.nav{display:flex;gap:4px;margin-bottom:8px}.seg button,.nav button{flex:1;padding:8px 2px;font-size:13.5px}
+.seg,.nav{display:flex;gap:5px;margin-bottom:8px}.seg button,.nav button{flex:1;padding:8px 2px;font-size:13.5px;font-weight:500;transition:all .15s ease}
 .nav button.em{border-color:var(--er);color:var(--er)}.nav button.em.on{background:var(--er);color:#fff;border-color:var(--er)}
 .nav button.ad{border-color:#8b5cf6;color:#8b5cf6}.nav button.ad.on{background:#8b5cf6;color:#fff;border-color:#8b5cf6}
 .seg.m button{margin:0}
 button,input,select{font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:9px 10px}
-button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+button{cursor:pointer}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+button.success{background:#059669;border-color:#059669;color:#fff}
+button.warning{background:#d97706;border-color:#d97706;color:#fff}
 button.danger{background:var(--er);border-color:var(--er);color:#fff}
 button:disabled{opacity:.4;cursor:not-allowed}
-.seg button.on,.nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-.c{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px;margin-bottom:8px}
+.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.c{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
 .r{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.r>input{flex:1;min-width:110px}
 table{border-collapse:collapse;width:100%}
-th,td{border:1px solid var(--bd);padding:5px 7px;text-align:left;vertical-align:top;overflow-wrap:anywhere;font-size:14px;line-height:1.35}
+th,td{border:1px solid var(--bd);padding:6px 8px;text-align:left;vertical-align:top;overflow-wrap:anywhere;font-size:14px;line-height:1.35}
 th{background:var(--hd);font-size:12.5px;color:var(--mu);font-weight:600}
 td.n,th.n{text-align:center}.nw{white-space:nowrap;width:1%}
 .sc{max-height:42vh;overflow-y:auto;margin-top:6px}.sc thead th{position:sticky;top:0;z-index:1;box-shadow:0 1px 0 var(--bd)}
 .it{cursor:pointer}.it.on td{background:color-mix(in srgb,var(--ac) 14%,transparent)}.it.x td{opacity:.45}
 .lt td{vertical-align:middle;padding:6px 8px}.lt .no{font-size:15px;font-weight:700;white-space:nowrap;width:1%;text-align:center}.lt .st{white-space:nowrap;width:1%;text-align:right;font-size:12.5px;line-height:1.4}.lt .co{font-size:15px;font-weight:700;line-height:1.3}.lt .sub{font-size:13px;color:var(--mu);line-height:1.3}
 .b{font-size:12.5px}.ok{color:var(--ok)}.wa{color:var(--wa)}.er{color:var(--er)}
-.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px}.k div{text-align:center;font-size:13px}.k b{display:block;font-size:24px}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:6px}
+.k div{text-align:center;font-size:12.5px;background:var(--hd);border:1px solid var(--bd);border-radius:10px;padding:8px 6px;transition:transform .12s ease}
+.k div:hover{transform:translateY(-1px)}
+.k b{display:block;font-size:24px;font-weight:800;line-height:1.2;margin-bottom:2px}
 tr.tot td{font-weight:700;background:var(--hd)}
 details{border:1px solid var(--bd);border-radius:8px;margin-top:6px;padding:6px 8px}summary{cursor:pointer;font-weight:600}
 .wk{margin-top:8px;padding-top:6px;border-top:1px dashed var(--bd)}.wk table{margin-top:4px}
@@ -40,11 +46,42 @@ details{border:1px solid var(--bd);border-radius:8px;margin-top:6px;padding:6px 
 .chip{display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:8px;padding:6px 8px;margin-top:4px}.pk{cursor:pointer}
 textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size:13px;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px}
 #lock{position:fixed;inset:0;background:rgba(15,23,42,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:99}
-.badge{padding:2px 8px;border-radius:99px;font-size:11.5px;font-weight:600;display:inline-block}
-.badge-admin{background:#ede9fe;color:#6d28d9}
-.badge-staff{background:#e0f2fe;color:#0369a1}
-.badge-wa{background:#fef3c7;color:#b45309}
-.badge-ok{background:#dcfce7;color:#15803d}
+
+/* Distinct Badges */
+.badge{padding:3px 8px;border-radius:99px;font-size:11.5px;font-weight:600;display:inline-block}
+.badge-admin{background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe}
+.badge-staff{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd}
+.badge-wa{background:#fef3c7;color:#b45309;border:1px solid #fde68a}
+.badge-ok{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.badge-contractor{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
+.badge-general{background:#d1fae5;color:#065f46;border:1px solid #a7f3d0}
+.badge-rubber{background:#ffedd5;color:#9a3412;border:1px solid #fed7aa}
+.badge-other{background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff}
+
+/* Navigation Colors */
+.nav button[data-t="gate"].on{background:#1d5fd1;border-color:#1d5fd1;color:#fff}
+.nav button[data-t="trk"].on{background:#059669;border-color:#059669;color:#fff}
+.nav button[data-t="work"].on{background:#d97706;border-color:#d97706;color:#fff}
+.nav button[data-t="ros"].on{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.nav button[data-t="dash"].on{background:#4f46e5;border-color:#4f46e5;color:#fff}
+.nav button[data-t="sum"].on{background:#0284c7;border-color:#0284c7;color:#fff}
+.nav button[data-t="emg"].on{background:#dc2626;border-color:#dc2626;color:#fff}
+.nav button[data-t="usr"].on{background:#9333ea;border-color:#9333ea;color:#fff}
+
+/* Category Switcher Colors */
+#cat button[data-cat="c"].on{background:#1d5fd1;border-color:#1d5fd1;color:#fff}
+#cat button[data-cat="g1"].on{background:#059669;border-color:#059669;color:#fff}
+#cat button[data-cat="g2"].on{background:#0d9488;border-color:#0d9488;color:#fff}
+
+/* Section Header Card Accents */
+#t-gate>.c:first-child{border-top:3px solid #1d5fd1}
+#t-trk>.c:first-child{border-top:3px solid #059669}
+#t-work>.c:first-child{border-top:3px solid #d97706}
+#t-ros>.c:first-child{border-top:3px solid #7c3aed}
+#t-dash>.c:first-child{border-top:3px solid #4f46e5}
+#t-sum>.c:first-child{border-top:3px solid #0284c7}
+#t-emg>.c:first-child{border-top:3px solid #dc2626}
+#t-usr>.c:first-child{border-top:3px solid #9333ea}
 @media (max-width:640px){
  body{font-size:14px}.w{padding:8px}h1{font-size:16px}
  .nav button,.seg button{font-size:12px;padding:8px 1px}
@@ -210,7 +247,25 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
     <div class="c">
       <div id="wd"></div>
       <div id="wi" class="mu" style="margin-top:6px">เลือก Work จากแท็บ “รับ/คืนบัตร” ก่อน</div>
-      <div class="r" style="margin-top:8px"><button id="bis">ผรม. รับ Work แล้ว</button><span class="mu">OT ถึง</span><input id="ot" placeholder="เช่น 20.00" inputmode="decimal" style="flex:0 0 90px"><button id="bot">บันทึก OT</button></div>
+      <div class="r" style="margin-top:8px;align-items:center">
+        <button id="bis">ผรม. รับ Work แล้ว</button>
+        <span class="mu">OT ถึง</span>
+        <div style="display:inline-flex;align-items:center;gap:4px">
+          <input id="ot" placeholder="เช่น 20.00" inputmode="decimal" style="width:75px">
+          <input type="time" id="ot_picker" style="padding:6px;width:44px;cursor:pointer" title="กดเลือกเวลาจากนาฬิกา">
+        </div>
+        <button id="bot" class="p">บันทึก OT</button>
+        <button id="bot_del" class="danger" style="display:none;padding:8px 10px">ลบ OT</button>
+      </div>
+      <div class="r" style="margin-top:4px;gap:4px">
+        <span class="mu" style="font-size:12px">ปุ่มลัด:</span>
+        <button type="button" class="ot-quick" data-ot="18.00" style="padding:3px 7px;font-size:11.5px">18.00</button>
+        <button type="button" class="ot-quick" data-ot="19.00" style="padding:3px 7px;font-size:11.5px">19.00</button>
+        <button type="button" class="ot-quick" data-ot="20.00" style="padding:3px 7px;font-size:11.5px">20.00</button>
+        <button type="button" class="ot-quick" data-ot="21.00" style="padding:3px 7px;font-size:11.5px">21.00</button>
+        <button type="button" class="ot-quick" data-ot="22.00" style="padding:3px 7px;font-size:11.5px">22.00</button>
+        <button type="button" class="ot-quick" data-ot="24.00" style="padding:3px 7px;font-size:11.5px">24.00</button>
+      </div>
       <div class="r" style="margin-top:8px"><input id="rb" placeholder="ชื่อผู้คืน Work"><button class="p" id="bret">คืน Work</button></div>
       <div id="wm"></div>
     </div>
@@ -408,7 +463,8 @@ const tg = () => cat === "g1" ? 1 : 2, trk = () => trucks.filter(t => t.g === tg
 function draw() {
   const q = $("#q").value.toLowerCase(), ws = W(), t0 = lt();
   $("#dsel").value = D;
-  $("#dw").innerHTML = `<b class="${D === t0 ? "ok" : "wa"}">${D === t0 ? "วันนี้" : D < t0 ? "ย้อนหลัง" : "ล่วงหน้า"}</b> · ${dl(D)} · Work ${ws.length} ใบ`;
+  const dateBadge = D === t0 ? '<span class="badge badge-ok">วันนี้</span>' : D < t0 ? '<span class="badge badge-wa">ย้อนหลัง</span>' : '<span class="badge badge-staff">ล่วงหน้า</span>';
+  $("#dw").innerHTML = `${dateBadge} <b>${dl(D)}</b> · Work ทั้งหมด <b>${ws.length}</b> ใบ`;
   
   const isPast = D !== t0;
   $("#date_perm_msg").style.display = (userRole !== "admin" && isPast) ? "block" : "none";
@@ -436,7 +492,19 @@ function loadEd() {
   $("#eda").value = w ? w.a : "";
   $("#edo").value = w ? w.o : "";
   $("#edx").checked = !!(w && w.x);
-  $("#ot").value = w && w.otEnd ? dt(w.otEnd) : "";
+  
+  // จัดการ OT และตัวเลือกเวลา
+  const otVal = w && w.otEnd ? dt(w.otEnd) : "";
+  $("#ot").value = otVal;
+  if ($("#ot_picker")) $("#ot_picker").value = w && w.otEnd && w.otEnd !== "24:00" ? w.otEnd : "";
+  if (w && w.otEnd) {
+    $("#bot").textContent = "แก้ไข/ต่อเวลา OT";
+    if ($("#bot_del")) $("#bot_del").style.display = "inline-block";
+  } else {
+    $("#bot").textContent = "บันทึก OT";
+    if ($("#bot_del")) $("#bot_del").style.display = "none";
+  }
+
   $("#edws").value = w ? dt(w.ws || "08:00") : "";
   $("#edwe").value = w ? dt(w.we || "17:00") : "";
   $("#edm").innerHTML = "";
@@ -469,16 +537,22 @@ function rosd() {
 function trkd() {
   const a = trk().filter(t => !t.outAt), o = trk().filter(t => t.outAt);
   const H = ["ทะเบียน", "ประเภท", "บริษัท", "งาน", "ผู้ขับรถ", "ติดต่อแผนก/อาคาร", "เวลาเข้า"];
-  const r = t => [
-    `<b>${esc(t.plate)}</b>`,
-    `<span class="badge ${t.type==='ผู้รับเหมา'?'badge-staff':t.type==='รับยาง'?'badge-wa':'badge-ok'}">${esc(t.type || "ทั่วไป")}</span>`,
-    esc(t.co),
-    esc(t.job),
-    esc(t.drv),
-    esc(t.dept),
-    tm(t.inAt)
-  ];
-  $("#tin").innerHTML = lb([...H, "ออก"], a.map(t => [...r(t), `<button data-to="${t.id}">ออก</button>`]));
+  const r = t => {
+    const tp = t.type || "ทั่วไป";
+    const bgCls = tp === 'ผู้รับเหมา' ? 'badge-contractor' :
+                  tp === 'รับยาง' ? 'badge-rubber' :
+                  tp === 'รับส่งของทั่วไป' ? 'badge-general' : 'badge-other';
+    return [
+      `<b>${esc(t.plate)}</b>`,
+      `<span class="badge ${bgCls}">${esc(tp)}</span>`,
+      esc(t.co),
+      esc(t.job),
+      esc(t.drv),
+      esc(t.dept),
+      tm(t.inAt)
+    ];
+  };
+  $("#tin").innerHTML = lb([...H, "ออก"], a.map(t => [...r(t), `<button data-to="${t.id}" class="warning" style="padding:4px 8px;font-size:12.5px">ออก</button>`]));
   $("#tout").innerHTML = lb([...H, "เวลาออก"], o.map(t => [...r(t), tm(t.outAt)]));
   $("#tt").textContent = `บันทึกรถเข้า ${CATS[cat]} · ในพื้นที่ ${a.length} คัน`;
   const d = (id, k) => { $(id).innerHTML = [...new Set(trucks.map(t => t[k]).filter(Boolean))].map(v => `<option value="${esc(v)}">`).join(""); };
@@ -503,12 +577,26 @@ function dash() {
   }).join("");
 
   $("#dash").innerHTML = `<div class="mu" style="margin-bottom:6px">ข้อมูลวันที่ ${dl(D)}</div>
-  <div class="c"><b>Contractor</b>
-    <div class="k" style="margin-top:6px"><div><b>${now.length}</b>คนในพื้นที่ตอนนี้</div><div><b>${new Set(all.map(c=>c.card)).size}</b>บัตรที่ใช้</div><div><b>${ws.filter(w=>cnt(w.id)).length}</b>Work ที่มีคนเข้า</div><div><b>${ws.filter(w=>!w.x).length}</b>Work ที่ใช้ได้</div></div>
-    <div class="k" style="margin-top:6px"><div><b>${dn("th")}</b>ไทย</div><div><b>${dn("fo")}</b>ต่างชาติ</div><div><b>${dn("mg")}</b>ต่างด้าว</div></div>
+  <div class="c" style="border-top:3px solid #4f46e5"><b>Contractor</b>
+    <div class="k" style="margin-top:6px">
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af"><b>${now.length}</b>คนในพื้นที่ตอนนี้</div>
+      <div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46"><b>${new Set(all.map(c=>c.card)).size}</b>บัตรที่ใช้</div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e"><b>${ws.filter(w=>cnt(w.id)||I(w)).length}</b>Work รับ/เข้าทำงาน</div>
+      <div style="background:#f1f5f9;border:1px solid #cbd5e1;color:#475569"><b>${ws.filter(w=>!I(w)&&!cnt(w.id)&&!w.x).length}</b>Work ที่ไม่ได้รับ</div>
+    </div>
+    <div class="k" style="margin-top:6px">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;color:#334155"><b>${dn("th")}</b>ไทย</div>
+      <div style="background:#f5f3ff;border:1px solid #ddd6fe;color:#6d28d9"><b>${dn("fo")}</b>ต่างชาติ</div>
+      <div style="background:#f0fdfa;border:1px solid #99f6e4;color:#0f766e"><b>${dn("mg")}</b>ต่างด้าว</div>
+    </div>
   </div>
-  <div class="c"><b>Transportor</b>
-    <div class="k" style="margin-top:6px"><div><b>${tk(1).filter(t=>!t.outAt).length}</b>G1 ในพื้นที่ (คัน)</div><div><b>${tk(1).length}</b>G1 เที่ยว</div><div><b>${tk(2).filter(t=>!t.outAt).length}</b>G2 ในพื้นที่ (คัน)</div><div><b>${tk(2).length}</b>G2 เที่ยว</div></div>
+  <div class="c" style="border-top:3px solid #059669"><b>Transportor</b>
+    <div class="k" style="margin-top:6px">
+      <div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46"><b>${tk(1).filter(t=>!t.outAt).length}</b>G1 ในพื้นที่ (คัน)</div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d"><b>${tk(1).length}</b>G1 เที่ยว</div>
+      <div style="background:#f0fdfa;border:1px solid #99f6e4;color:#0f766e"><b>${tk(2).filter(t=>!t.outAt).length}</b>G2 ในพื้นที่ (คัน)</div>
+      <div style="background:#ccfbf1;border:1px solid #5eead4;color:#115e59"><b>${tk(2).length}</b>G2 เที่ยว</div>
+    </div>
   </div>
   ${wt}
   <div class="c"><b>เรื่องที่ต้องตาม (${al.length+pl.length})</b>
@@ -537,7 +625,13 @@ function emg() {
   
   TS.emg = [`ฉุกเฉิน: คนในพื้นที่ วันที่ ${dl(D)} เวลา ${ts}`, `Contractor: บริษัท ${cn.length} · คน ${now.length} · Transportor ${tv.length} คัน`, H1.join("\t"), ...r1.map(r => r.join("\t")), "", H2.join("\t"), ...r2.map(r => r.join("\t")), "", H3.join("\t"), ...r3.map(r => r.join("\t"))].join("\n");
   $("#emg").innerHTML = `<div class="c" style="border-color:var(--er)"><div class="th"><b class="er">คนในพื้นที่ ${D===lt()?"":`(วันที่ ${dl(D)}) `}ณ เวลา ${ts}</b><span class="np r"><button data-cp="emg">คัดลอก</button><button id="pr">พิมพ์</button></span></div>
-  <div class="k"><div><b>${cn.length}</b>บริษัท</div><div><b>${now.length}</b>คน (Contractor)</div><div><b>${an.length}</b>พื้นที่</div><div><b>${tv.length}</b>รถ Transportor (คัน)</div><div><b>${pl.length}</b>บัตรค้างจากวันก่อน</div></div>
+  <div class="k" style="margin-top:6px">
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af"><b>${cn.length}</b>บริษัท</div>
+    <div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b"><b>${now.length}</b>คน (Contractor)</div>
+    <div style="background:#fffbeb;border:1px solid #fde68a;color:#92400e"><b>${an.length}</b>พื้นที่</div>
+    <div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46"><b>${tv.length}</b>รถ Transportor</div>
+    <div style="background:#fef3c7;border:1px solid #fde68a;color:#b45309"><b>${pl.length}</b>บัตรค้างวันก่อน</div>
+  </div>
   <b style="display:block;margin-top:10px">Contractor แยกตามบริษัท</b>${lb(H1, r1.map(r => r.map(esc)))}
   <b style="display:block;margin-top:10px">แยกตามพื้นที่ทำงาน</b>${lb(H2, r2.map(r => r.map(esc)))}
   <b style="display:block;margin-top:10px">Transportor ในพื้นที่</b>${lb(H3, r3.map(r => r.map(esc)))}
@@ -559,9 +653,20 @@ function sumr() {
   }));
   const nm = Object.keys(by).sort((a, b) => a.localeCompare(b));
   let h = tbl(1, `1. CONTRACTOR : ${DL}`, ["No.", "บริษัท", "ไทย", "ต่างชาติ", "ต่างด้าว"], nm.map((k, i) => [i + 1, k, z(by[k].th.size), z(by[k].fo.size), z(by[k].mg.size)]), ["th", "fo", "mg"].map(k => nm.reduce((s, n) => s + by[n][k].size, 0)));
+  // 2. WORK ที่ไม่ต่อ OT
   h += tbl(2, `2. WORK ที่ไม่ต่อ OT : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "เวลาทำงาน", "คนเข้า"], ok.filter(w => !hasOT(w)).map(w => [w.no, w.c, w.a, z(w.o), win(w), cnt(w.id)]));
-  h += tbl(3, `3. WORK ที่ไม่มีคนเข้าทำงาน : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "สถานะ"], ok.filter(w => !cnt(w.id)).map(w => [w.no, w.c, w.a, z(w.o), status(w)]));
-  h += tbl(4, `4. เวลารับ Work / คืน Work : ${DL}`, ["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน", "คนเข้า"], ok.filter(w => I(w) || R(w)).map(w => [w.no, w.c, tm(w.issAt), tm(w.retAt), R(w) ? w.retBy : "-", cnt(w.id)]));
+  
+  // 3. WORK ที่ไม่ได้รับ (ไม่มีคนเข้าทำงาน) - ตัด Work ที่รับแล้วออกไป
+  const unissuedNoEntry = ok.filter(w => !I(w) && !cnt(w.id));
+  h += tbl(3, `3. WORK ที่ไม่ได้รับ (ไม่มีคนเข้าทำงาน · รอ Safety ยืนยันยกเลิก) : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "สถานะ"], unissuedNoEntry.map(w => [w.no, w.c, w.a, z(w.o), "ยังไม่ได้รับ Work (0 คน)"]));
+  
+  // 4. WORK ที่มีการรับ / เข้าทำงาน (รวม Work ที่รับแล้วแม้ไม่มีคนเข้า)
+  const receivedOrEntered = ok.filter(w => I(w) || R(w) || cnt(w.id));
+  h += tbl(4, `4. WORK ที่มีการรับ / เข้าทำงาน : ${DL}`, ["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน", "คนเข้า", "สถานะ"], receivedOrEntered.map(w => {
+    const n = cnt(w.id);
+    const stLabel = !n && I(w) ? "รับ Work แล้ว (ไม่มีคนเข้า)" : n > 0 ? `เข้าทำงาน ${n} คน` : status(w);
+    return [w.no, w.c, tm(w.issAt), tm(w.retAt), R(w) ? w.retBy : "-", n, stLabel];
+  }));
   
   [1, 2].forEach(g => {
     const b = {};
@@ -660,32 +765,64 @@ async function prev() {
   if (!rows.length) return msg("#ipv", "ไม่พบแถวเลขที่ Work (รูปแบบ 11/001) ในชีตนี้", "er");
   $("#ipv").textContent = "กำลังตรวจเลขซ้ำ…";
   
-  const shs = new Set();
-  rows.forEach(r => { if (r.date) shs.add(r.date.slice(0, 7)); shs.add(`${y}-${pad(+r.no.split("/")[0])}`); });
+  const allMonths = Array.from({length: 12}, (_, i) => `${y}-${pad(i+1)}`);
   const ex = new Set();
   try {
-    await Promise.all([...shs].map(async s => {
+    await Promise.all(allMonths.map(async s => {
       (await db.collection(`works/${s}/items`).get()).docs.forEach(d => ex.add(d.id));
     }));
   } catch (e) { return msg("#ipv", "ตรวจเลขซ้ำไม่สำเร็จ: " + e.message, "er"); }
   
   const seen = new Set();
   rows.forEach(r => { r.st = !r.date ? "bad" : seen.has(r.id) ? "dupf" : ex.has(r.id) ? "dupd" : "new"; seen.add(r.id); });
-  PV = { rows, y };
   const nw = rows.filter(r => r.st === "new"), pr = rows.filter(r => r.st !== "new");
-  $("#ipv").innerHTML = `<div>พบ ${rows.length} แถว · <b class="ok">ใหม่ ${nw.length}</b> · <b class="${pr.length ? "wa" : ""}">ซ้ำ/ข้าม ${pr.length}</b></div>
-  <div class="r" style="margin-top:8px"><button class="p" id="bgo" ${nw.length ? "" : "disabled"}>นำเข้า ${nw.length} Work ใหม่</button><button id="bcx">ยกเลิก</button></div><div id="igo"></div>`;
+  PV = { rows, y, pr, nw };
+  const dupList = pr.filter(r => r.st === "dupd" || r.st === "dupf");
+  const dupNums = [...new Set(dupList.map(r => r.no))];
+  
+  let dupAlertHtml = "";
+  if (dupList.length > 0) {
+    dupAlertHtml = `
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:12px;border-radius:8px;margin-top:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <b style="color:#92400e;font-size:14px">⚠ ตรวจพบเลข Work ซ้ำในปี ${y} (ทั้งหมด ${dupNums.length} เลขที่ / ${dupList.length} แถว):</b>
+        <button type="button" id="btn_cp_dups" style="padding:4px 10px;font-size:12px;background:#fff;border:1px solid #d97706;color:#92400e;border-radius:6px;font-weight:600">📋 คัดลอกเลขที่ซ้ำทั้งหมด</button>
+      </div>
+      <div class="mu" style="font-size:12.5px;margin-top:4px;color:#78350f">
+        รายการเหล่านี้จะไม่ถูกนำเข้า เพื่อป้องกันการบันทึกทับ คุณสามารถดูเลขที่ซ้ำเพื่อนำไปแก้ไขใน Excel หรือนำไปเพิ่มแยกทีละใบด้วยเลขใหม่:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:140px;overflow-y:auto;background:#fff;padding:8px;border-radius:6px;border:1px solid #fed7aa">
+        ${dupList.map(r => `<span style="background:#fee2e2;color:#991b1b;border:1px solid #fecaca;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">
+          <b>${esc(r.no)}</b>
+          <span style="font-size:11px;font-weight:400;color:#7f1d1d">(${esc(r.c || "ไม่ระบุบริษัท")} · ${r.st === 'dupd' ? `มีในระบบปี ${y}` : 'ซ้ำในไฟล์'})</span>
+        </span>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  $("#ipv").innerHTML = `
+    <div style="margin-top:4px">พบทั้งหมด ${rows.length} แถว · <b class="ok">ใหม่พร้อมนำเข้า ${nw.length} ใบ</b> · <b class="${pr.length ? "er" : ""}">${pr.length ? `ซ้ำ/ข้าม ${pr.length} ใบ` : "ไม่มีเลขซ้ำ"}</b></div>
+    ${dupAlertHtml}
+    <div class="r" style="margin-top:10px">
+      <button class="p" id="bgo" ${nw.length ? "" : "disabled"}>นำเข้า ${nw.length} Work ใหม่</button>
+      <button id="bcx">ยกเลิก</button>
+    </div>
+    <div id="igo" style="margin-top:6px"></div>
+  `;
 }
 async function goImport() {
   if (!PV || !db) return;
   const nw = PV.rows.filter(r => r.st === "new");
+  const pr = PV.pr || [];
   let n = 0;
   for (let i = 0; i < nw.length; i += 12) {
     msg("#igo", `กำลังนำเข้า ${Math.min(i + 12, nw.length)}/${nw.length}…`);
     await Promise.all(nw.slice(i, i + 12).map(r => T(db.doc(`works/${r.date.slice(0, 7)}/items/${r.id}`).set({ id: r.id, no: r.no, year: PV.y, date: r.date, c: r.c, a: r.a, o: r.o, x: false, src: "excel", by: who, ts: Date.now() })).then(() => n++)));
   }
+  const skippedCount = pr.length;
+  const dupNotice = skippedCount ? ` · <span class="wa">ข้าม ${skippedCount} ใบที่มีเลขซ้ำ (ดูรายชื่อเลขซ้ำด้านบนเพื่อแก้ไข)</span>` : "";
   PV = null; WB = null; $("#fx").value = ""; $("#fxc").hidden = true;
-  $("#ipv").innerHTML = `<span class="ok">นำเข้าสำเร็จแล้ว ${n} Work</span>`;
+  $("#ipv").innerHTML = `<span class="ok">นำเข้าสำเร็จแล้ว ${n} Work ใหม่</span>${dupNotice}`;
 }
 
 /* Roster Import Logic */
@@ -832,6 +969,12 @@ document.addEventListener("click", async e => {
   if (target.id === "bgo") goImport();
   if (target.id === "rgo") goRos();
   if (target.id === "pr") { window.print(); }
+  if (x = q("#btn_cp_dups")) {
+    if (PV && PV.pr) {
+      const dupNums = [...new Set(PV.pr.map(r => r.no))].join(", ");
+      cp(dupNums, x);
+    }
+  }
 
   // User Actions (Admin)
   if (x = q("[data-uapp]")) {
@@ -869,6 +1012,15 @@ document.addEventListener("click", async e => {
     document.querySelectorAll("#trk_type button").forEach(b => b.classList.toggle("on", b === x));
     $("#trk_other_box").style.display = truckType === "อื่นๆ" ? "block" : "none";
     if (truckType === "อื่นๆ") $("#trk_type_other").focus();
+  }
+
+  // OT Quick Selection Buttons
+  if (x = q(".ot-quick")) {
+    const val = x.dataset.ot;
+    $("#ot").value = val;
+    if ($("#ot_picker") && val !== "24.00") {
+      $("#ot_picker").value = val.replace(".", ":");
+    }
   }
 
   if (x = q("#cat button")) setCat(x.dataset.cat);
@@ -960,10 +1112,44 @@ $("#bw2").onclick = () => tab("work");
 $("#bot").onclick = async () => {
   const w = cw(); if (!w) return;
   const raw = $("#ot").value.trim();
-  if (!raw) { await wu(w, { otEnd: "" }); return msg("#wm", "ลบ OT แล้ว", "ok"); }
-  const v = pt(raw); if (!v) return msg("#wm", "รูปแบบเวลาไม่ถูกต้อง เช่น 20.00", "er");
-  await wu(w, { otEnd: v }); msg("#wm", `บันทึก OT ถึง ${dt(v)} น. แล้ว`, "ok");
+  if (!raw) {
+    await wu(w, { otEnd: "" });
+    $("#bot").textContent = "บันทึก OT";
+    if ($("#bot_del")) $("#bot_del").style.display = "none";
+    return msg("#wm", "ลบเวลา OT แล้ว", "ok");
+  }
+  const v = pt(raw), we = w.we || "17:00";
+  if (!v) return msg("#wm", "รูปแบบเวลาไม่ถูกต้อง เช่น 20.00", "er");
+  if (v <= we) return msg("#wm", `OT ต้องเลยเวลาสิ้นสุดปกติ (${dt(we)})`, "er");
+  if (w.ws === "00:01" && v > "08:00") return msg("#wm", "Work เที่ยงคืน (00.01) ต่อ OT ไม่เกิน 08.00 น.", "er");
+  
+  const isUpdate = !!w.otEnd;
+  await wu(w, { otEnd: v });
+  $("#bot").textContent = "แก้ไข/ต่อเวลา OT";
+  if ($("#bot_del")) $("#bot_del").style.display = "inline-block";
+  msg("#wm", `${isUpdate ? "แก้ไขและขยายเวลา OT เป็น" : "บันทึก OT ถึง"} ${dt(v)} น. แล้ว`, "ok");
 };
+
+if ($("#bot_del")) {
+  $("#bot_del").onclick = async () => {
+    const w = cw(); if (!w) return;
+    if (!confirm("ต้องการยกเลิกเวลา OT ของ Work นี้ใช่หรือไม่?")) return;
+    await wu(w, { otEnd: "" });
+    $("#ot").value = "";
+    if ($("#ot_picker")) $("#ot_picker").value = "";
+    $("#bot").textContent = "บันทึก OT";
+    $("#bot_del").style.display = "none";
+    msg("#wm", "ยกเลิกเวลา OT เรียบร้อยแล้ว", "ok");
+  };
+}
+
+if ($("#ot_picker")) {
+  $("#ot_picker").onchange = e => {
+    if (e.target.value) {
+      $("#ot").value = e.target.value.replace(":", ".");
+    }
+  };
+}
 
 $("#bret").onclick = async () => {
   const w = cw(); if (!w) return;
@@ -989,9 +1175,26 @@ $("#bx").onclick = async () => {
   if (!/^\d{1,2}\/\d{1,4}$/.test(n)) return msg("#xm", "เลขที่ต้องเป็นรูปแบบ 11/496", "er");
   if (!c || !a) return msg("#xm", "กรอก บริษัท และ พื้นที่ ให้ครบ", "er");
   const y = d.slice(0, 4), id = `${y}_${n.replace("/", "-")}`;
+
+  msg("#xm", `กำลังตรวจสอบเลขที่ Work ในปี ${y}…`, "mu");
+  const allMonths = Array.from({length: 12}, (_, i) => `${y}-${pad(i+1)}`);
+  let dupDoc = null;
+  await Promise.all(allMonths.map(async ym => {
+    try {
+      const g = await db.doc(`works/${ym}/items/${id}`).get();
+      if (g.exists) {
+        dupDoc = g.data();
+      }
+    } catch(e) {}
+  }));
+
+  if (dupDoc) {
+    return msg("#xm", `เลขที่ Work ${n} มีอยู่แล้วในปี ${y} (วันที่ ${fd(dupDoc.date)}) ไม่สามารถเพิ่มซ้ำได้ กรุณาเปลี่ยนเลขที่ Work ใหม่`, "er");
+  }
+
   await T(db.doc(`works/${d.slice(0, 7)}/items/${id}`).set({ id, no: n, year: +y, date: d, c, a, o, x: false, src: "manual", by: who, ts: Date.now() }));
   ["#xn", "#xc", "#xa", "#xo"].forEach(s => $(s).value = "");
-  $("#xm").innerHTML = `<span class="ok">เพิ่ม Work ${esc(n)} แล้ว</span>`;
+  $("#xm").innerHTML = `<span class="ok">เพิ่ม Work ${esc(n)} ปี ${y} เรียบร้อยแล้ว</span>${d!==D?` <button data-jump="${d}">ไปดูวันที่ ${fd(d)}</button>`:""}`;
 };
 
 /* Roster Single Add */
