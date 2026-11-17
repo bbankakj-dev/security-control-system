@@ -44,8 +44,7 @@ details{border:1px solid var(--bd);border-radius:8px;margin-top:6px;padding:6px 
 .wk{margin-top:8px;padding-top:6px;border-top:1px dashed var(--bd)}.wk table{margin-top:4px}
 .th{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px}.th button{padding:5px 8px;font-size:12.5px}
 .chip{display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:8px;padding:6px 8px;margin-top:4px}.pk{cursor:pointer}
-textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size:13px;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px}
-#lock{position:fixed;inset:0;background:rgba(15,23,42,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:99}
+textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size:13px;color:var(--tx);background:#ffffff;border:1px solid var(--bd);border-radius:8px;padding:8px}
 
 /* Distinct Badges */
 .badge{padding:3px 8px;border-radius:99px;font-size:11.5px;font-weight:600;display:inline-block}
@@ -73,6 +72,11 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
 #cat button[data-cat="g1"].on{background:#059669;border-color:#059669;color:#fff}
 #cat button[data-cat="g2"].on{background:#0d9488;border-color:#0d9488;color:#fff}
 
+/* Date Bar & Card Inputs */
+.date-bar{background:#f8fafc;border:1px solid #cbd5e1}
+.c input, .c select, textarea{background:#ffffff;border:1px solid #cbd5e1;color:var(--tx)}
+.c input:focus, .c select:focus, textarea:focus{border-color:#2563eb;outline:2px solid #bfdbfe;background:#ffffff}
+
 /* Section Header Card Accents */
 #t-gate>.c:first-child{border-top:3px solid #1d5fd1}
 #t-trk>.c:first-child{border-top:3px solid #059669}
@@ -82,6 +86,70 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
 #t-sum>.c:first-child{border-top:3px solid #0284c7}
 #t-emg>.c:first-child{border-top:3px solid #dc2626}
 #t-usr>.c:first-child{border-top:3px solid #9333ea}
+
+/* Distinct Soft Background Colors for Every Column / Card */
+/* 1. GATE (Blue Theme): 1=ค้นหา Work (Sky), 2=รับบัตร/จัดการ (Ice Blue/Slate), 3=คืนบัตรด่วน (Mint), 4=บัตรค้าง (Warm Amber) */
+#t-gate .c:nth-child(1){background:#eff6ff;border:1px solid #bfdbfe;border-top:3px solid #1d5fd1}
+#t-gate .c:nth-child(2){background:#f8fafc;border:1px solid #cbd5e1;border-top:3px solid #3b82f6}
+#t-gate .c:nth-child(3){background:#f0fdf4;border:1px solid #bbf7d0;border-top:3px solid #16a34a}
+#t-gate .c:nth-child(4){background:#fffbeb;border:1px solid #fde68a;border-top:3px solid #d97706}
+
+/* 2. TRK (Green / Teal Theme): 1=บันทึกรถเข้า (Emerald), 2=รถในพื้นที่ (Teal), 3=ออกแล้ว (Cool Slate) */
+#t-trk .c:nth-child(1){background:#f0fdf4;border:1px solid #a7f3d0;border-top:3px solid #059669}
+#t-trk .c:nth-child(2){background:#f0fdfa;border:1px solid #99f6e4;border-top:3px solid #0d9488}
+#t-trk .c:nth-child(3){background:#f8fafc;border:1px solid #cbd5e1;border-top:3px solid #64748b}
+
+/* 3. WORK (Amber Honey Theme): 1=จัดการ Work/OT (Golden Honey), 2=แก้ไข (Warm Sand), 3=นำเข้า Excel (Warm Peach), 4=เพิ่มด่วน (Canary) */
+#t-work .c:nth-child(1){background:#fffbeb;border:1px solid #fde68a;border-top:3px solid #d97706}
+#t-work .c:nth-child(2){background:#fffdf5;border:1px solid #fed7aa;border-top:3px solid #ea580c}
+#t-work .c:nth-child(3){background:#fff7ed;border:1px solid #fdba74;border-top:3px solid #f59e0b}
+#t-work .c:nth-child(4){background:#fefce8;border:1px solid #fef08a;border-top:3px solid #eab308}
+
+/* 4. ROSTER (Purple Theme): 1=เพิ่มรายชื่อ (Lavender), 2=นำเข้า Excel (Periwinkle), 3=ตารางรายชื่อ (Lilac Slate) */
+#t-ros .c:nth-child(1){background:#faf5ff;border:1px solid #e9d5ff;border-top:3px solid #7c3aed}
+#t-ros .c:nth-child(2){background:#f5f3ff;border:1px solid #ddd6fe;border-top:3px solid #8b5cf6}
+#t-ros .c:nth-child(3){background:#faf8ff;border:1px solid #cbd5e1;border-top:3px solid #6d28d9}
+
+/* 5. DASHBOARD: 1=Contractor, 2=Transportor, 3=เวลารับคืน, 4=เรื่องต้องตาม, 5=แยกตามบริษัท */
+#t-dash .c:nth-of-type(1){background:#f0f4ff;border:1px solid #c7d2fe;border-top:3px solid #4f46e5}
+#t-dash .c:nth-of-type(2){background:#f0fdf4;border:1px solid #bbf7d0;border-top:3px solid #059669}
+#t-dash .c:nth-of-type(3){background:#f8fafc;border:1px solid #cbd5e1;border-top:3px solid #3b82f6}
+#t-dash .c:nth-of-type(4){background:#fffbeb;border:1px solid #fde68a;border-top:3px solid #d97706}
+#t-dash .c:nth-of-type(5){background:#fafafa;border:1px solid #e2e8f0;border-top:3px solid #6366f1}
+
+/* 6. SUMMARY: Distinct Soft Column Color for Each Report Table */
+#t-sum .c:nth-of-type(1){background:#eff6ff;border:1px solid #bfdbfe;border-top:3px solid #0284c7}
+#t-sum .c:nth-of-type(2){background:#fffdf5;border:1px solid #fed7aa;border-top:3px solid #f59e0b}
+#t-sum .c:nth-of-type(3){background:#f8fafc;border:1px solid #cbd5e1;border-top:3px solid #64748b}
+#t-sum .c:nth-of-type(4){background:#f0fdf4;border:1px solid #bbf7d0;border-top:3px solid #10b981}
+#t-sum .c:nth-of-type(5){background:#f0fdf4;border:1px solid #a7f3d0;border-top:3px solid #059669}
+#t-sum .c:nth-of-type(6){background:#f0fdfa;border:1px solid #99f6e4;border-top:3px solid #0d9488}
+#t-sum .c:nth-of-type(7){background:#fffbeb;border:1px solid #fde68a;border-top:3px solid #d97706}
+
+/* 7. EMERGENCY */
+#t-emg .c{background:#fff5f5;border:1px solid #fecaca;border-top:4px solid #dc2626}
+
+/* 8. USER MANAGEMENT & RETENTION */
+#t-usr .c:nth-child(1){background:#faf5ff;border:1px solid #e9d5ff;border-left:4px solid #8b5cf6}
+#t-usr .c:nth-child(2){background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706}
+
+/* Table Enhancements */
+table{background:#ffffff;border-collapse:collapse;width:100%;border-radius:6px}
+tbody tr:nth-child(even){background:#f8fafc}
+tbody tr:hover td{background:rgba(29,95,209,0.06)}
+th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(--bd)}
+
+/* Login Portal Styling */
+#lock{position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99;padding:15px}
+.lock-box{width:100%;max-width:370px;background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 25px 45px -10px rgba(15,23,42,0.45),0 10px 15px -5px rgba(15,23,42,0.2);border:1px solid #94a3b8}
+.lock-head{background:linear-gradient(135deg,#1e3a8a 0%,#0f172a 100%);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;color:#fff;border-bottom:2px solid #3b82f6}
+.lock-body{padding:20px;background:#f1f5f9}
+.lock-body label{color:#475569;font-weight:600;font-size:12.5px}
+.lock-body input{background:#ffffff;border:1.5px solid #cbd5e1;color:#0f172a;border-radius:8px;padding:10px 12px;font-size:14px}
+.lock-body input:focus{border-color:#2563eb;outline:3px solid rgba(37,99,235,0.2);background:#fff}
+#auth_tab{background:#e2e8f0;padding:3px;border-radius:10px;border:1px solid #cbd5e1;gap:4px;margin-bottom:12px}
+#auth_tab button{border-radius:7px;border:none;background:transparent;color:#475569;font-weight:600;padding:8px 0;transition:all .15s ease}
+#auth_tab button.on{background:#1d5fd1;color:#ffffff;box-shadow:0 2px 4px rgba(0,0,0,0.12)}
 @media (max-width:640px){
  body{font-size:14px}.w{padding:8px}h1{font-size:16px}
  .nav button,.seg button{font-size:12px;padding:8px 1px}
@@ -98,35 +166,48 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
 
 <!-- Login & Register Modal -->
 <div id="lock">
-  <div class="c" style="width:340px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.25)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <h1>Security Control</h1>
-      <span class="badge badge-admin">Cloud v2.0</span>
-    </div>
-    <div class="seg" id="auth_tab">
-      <button id="tb_login" class="on">เข้าสู่ระบบ</button>
-      <button id="tb_reg">ลงทะเบียนใหม่</button>
-    </div>
-
-    <!-- Login View -->
-    <div id="v_login">
-      <div class="r" style="flex-direction:column;align-items:stretch;margin-top:8px">
-        <input id="nm" placeholder="ชื่อผู้ใช้งาน (User / Email)" autocomplete="username">
-        <input id="pin" type="password" placeholder="รหัสผ่าน (Password)" autocomplete="current-password">
-        <button class="p" id="go" style="margin-top:4px">เข้าสู่ระบบ</button>
-        <div id="le" class="er" style="font-size:13px;margin-top:4px"></div>
+  <div class="lock-box">
+    <div class="lock-head">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:24px">🛡️</span>
+        <div>
+          <h1 style="color:#fff;font-size:17.5px;font-weight:700;line-height:1.2;margin:0">Security Control</h1>
+          <div style="font-size:11px;color:#93c5fd;font-weight:500">ระบบควบคุมความปลอดภัย ป้อม รปภ.</div>
+        </div>
       </div>
+      <span class="badge" style="background:rgba(255,255,255,0.18);color:#fff;border:1px solid rgba(255,255,255,0.3)">Cloud v2.0</span>
     </div>
 
-    <!-- Register View -->
-    <div id="v_reg" hidden>
-      <p class="mu" style="margin-top:4px">สมัครใช้งานใหม่ (รอผู้ดูแลระบบอนุมัติ)</p>
-      <div class="r" style="flex-direction:column;align-items:stretch;margin-top:8px">
-        <input id="reg_nm" placeholder="ชื่อผู้ใช้งาน (User)" autocomplete="off">
-        <input id="reg_fullname" placeholder="ชื่อ - นามสกุลจริง (และสังกัด เช่น ป้อม 1)">
-        <input id="reg_pin" type="password" placeholder="ตั้งรหัสผ่าน">
-        <button class="p" id="reg_go" style="margin-top:4px">ส่งคำขอลงทะเบียน</button>
-        <div id="reg_msg" style="font-size:13px;margin-top:4px"></div>
+    <div class="lock-body">
+      <div class="seg" id="auth_tab">
+        <button id="tb_login" class="on">เข้าสู่ระบบ</button>
+        <button id="tb_reg">ลงทะเบียนใหม่</button>
+      </div>
+
+      <!-- Login View -->
+      <div id="v_login">
+        <div class="r" style="flex-direction:column;align-items:stretch;margin-top:10px">
+          <label style="font-size:12.5px;color:var(--mu);margin-bottom:-2px">ชื่อผู้ใช้งาน หรือ อีเมล:</label>
+          <input id="nm" placeholder="User / Email" autocomplete="username">
+          <label style="font-size:12.5px;color:var(--mu);margin-bottom:-2px;margin-top:4px">รหัสผ่าน:</label>
+          <input id="pin" type="password" placeholder="Password" autocomplete="current-password">
+          <button class="p" id="go" style="margin-top:10px;padding:11px;font-size:14.5px;font-weight:600;background:linear-gradient(135deg,#1d5fd1,#1e40af)">เข้าสู่ระบบ ➔</button>
+          <div id="le" class="er" style="font-size:13px;margin-top:6px;text-align:center"></div>
+        </div>
+      </div>
+
+      <!-- Register View -->
+      <div id="v_reg" hidden>
+        <div style="font-size:12px;color:var(--mu);margin-top:4px;padding:6px 8px;background:var(--hd);border-radius:6px;line-height:1.4">
+          ℹ️ สำหรับเจ้าหน้าที่ใหม่ หลังลงทะเบียนกรุณารอผู้ดูแลระบบ (Admin) อนุมัติสิทธิ์ก่อนเข้าใช้งาน
+        </div>
+        <div class="r" style="flex-direction:column;align-items:stretch;margin-top:8px">
+          <input id="reg_nm" placeholder="ตั้งชื่อผู้ใช้งาน (User / Email)" autocomplete="off">
+          <input id="reg_fullname" placeholder="ชื่อ - นามสกุลจริง (และสังกัด เช่น ป้อม 1)">
+          <input id="reg_pin" type="password" placeholder="ตั้งรหัสผ่าน">
+          <button class="p" id="reg_go" style="margin-top:6px;padding:10px;font-size:14px;font-weight:600">ส่งคำขอลงทะเบียน</button>
+          <div id="reg_msg" style="font-size:13px;margin-top:6px;text-align:center"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -145,7 +226,7 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
   </div>
 
   <!-- Date Navigation Bar -->
-  <div class="c">
+  <div class="c date-bar">
     <div class="r">
       <button id="dp">‹</button>
       <input type="date" id="dsel" style="flex:1">
@@ -315,7 +396,7 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
       <details style="margin-top:8px">
         <summary class="mu">หรือคัดลอกจาก Excel มาวาง</summary>
         <textarea id="imp" placeholder="C0001&#9;ชื่อ นามสกุล&#9;01/10/2026&#9;01/10/2027" style="margin-top:6px"></textarea>
-        <div class="r" style="margin-top:6px"><button id="bim">นำเข้า</button></div>
+        <div class="r" style="margin-top:6px"><button class="p" id="bim">ตรวจสอบข้อมูลที่วาง</button></div>
         <div id="im"></div>
       </details>
     </div>
@@ -442,7 +523,7 @@ addEventListener("online", () => { OFF = false; stt(); });
 /* Query Helpers */
 const wf = id => works.find(w => w.id === id), W = () => works.filter(w => w.date === D).sort((a, b) => seq(a.no) - seq(b.no));
 const wp = w => `works/${w.date.slice(0, 7)}/items/${w.id}`, wu = (w, o) => T(db.doc(wp(w)).update(o));
-const hasOT = w => !w.otEnd, endR = w => w.otEnd || w.we || "17:00", endS = w => { const e = endR(w); return e === "24:00" ? "23:59" : e; }, win = w => `${dt(w.ws || "08:00")}–${dt(w.we || "17:00")}`;
+const hasOT = w => !!w.otEnd, endR = w => w.otEnd || w.we || "17:00", endS = w => { const e = endR(w); return e === "24:00" ? "23:59" : e; }, win = w => `${dt(w.ws || "08:00")}–${dt(w.we || "17:00")}`;
 const late = w => { const t = lt(); if (w.date < t) return true; if (w.date > t) return false; const [h, m] = endS(w).split(":").map(Number), d = new Date(); return d.getHours() * 60 + d.getMinutes() > h * 60 + m; };
 const of = id => cards.filter(c => c.work === id).sort((a, b) => a.inAt - b.inAt), act = id => of(id).filter(c => !c.outAt), cnt = id => new Set(of(id).map(c => c.card)).size;
 const I = w => w.issAt ? { at: w.issAt, by: w.issBy } : null, R = w => w.retAt ? { at: w.retAt, by: w.retBy } : null;
@@ -825,46 +906,312 @@ async function goImport() {
   $("#ipv").innerHTML = `<span class="ok">นำเข้าสำเร็จแล้ว ${n} Work ใหม่</span>${dupNotice}`;
 }
 
-/* Roster Import Logic */
-const sd = v => { if (typeof v === "number" && v > 20000) { const o = XLSX.SSF.parse_date_code(v); return o ? `${o.y}-${pad(o.m)}-${pad(o.d)}` : ""; } return pd(v); };
+/* ==============================================================
+   ROSTER IMPORT & EXCEL LOGIC
+   ============================================================== */
+const sd = v => {
+  if (typeof v === "number" && v > 20000) {
+    const o = XLSX.SSF.parse_date_code(v);
+    return o ? `${o.y}-${pad(o.m)}-${pad(o.d)}` : "";
+  }
+  return pd(v);
+};
+
 function parseRos(aoa) {
   let hi = -1, mp = { no: 0, name: 1, train: 2, exp: 3 };
   for (let i = 0; i < Math.min(aoa.length, 15); i++) {
-    const r = aoa[i].map(x => String(x).toLowerCase()), e = r.findIndex(x => /หมดอายุ|expir/.test(x));
+    const r = (aoa[i] || []).map(x => String(x).toLowerCase());
+    const e = r.findIndex(x => /หมดอายุ|expir/.test(x));
     if (e < 0) continue;
-    const f = re => r.findIndex((x, j) => j !== e && re.test(x)), m = { no: f(/เลข|รหัส|^no|id/), name: f(/ชื่อ|name/), train: f(/อบรม|train/), exp: e };
-    if (Object.values(m).every(v => v >= 0)) { hi = i; mp = m; break; }
+    const f = re => r.findIndex((x, j) => j !== e && re.test(x));
+    const mNo = f(/เลข|รหัส|^no\b|id/);
+    const mName = f(/ชื่อ|name/);
+    const mTrain = f(/อบรม|train/);
+    if (mNo >= 0 && mName >= 0) {
+      hi = i;
+      mp = { no: mNo, name: mName, train: mTrain >= 0 ? mTrain : -1, exp: e };
+      break;
+    }
   }
   const out = [];
   aoa.forEach((r, i) => {
     if (i <= hi) return;
-    const no = String(r[mp.no] ?? "").trim(), name = String(r[mp.name] ?? "").replace(/\s+/g, " ").trim(), tr = sd(r[mp.train]), ex = sd(r[mp.exp]);
+    const no = String(r[mp.no] ?? "").trim();
+    const name = String(r[mp.name] ?? "").replace(/\s+/g, " ").trim();
+    const tr = mp.train >= 0 ? sd(r[mp.train]) : "";
+    const ex = sd(r[mp.exp]);
     if (!no && !name) return;
     out.push({ row: i + 1, no, name, train: tr, exp: ex, ok: !!(no && name && ex) });
   });
   return out;
 }
-function loadRos(buf) { RB = XLSX.read(buf, { type: "array" }); $("#rsh").innerHTML = RB.SheetNames.map(x => `<option>${esc(x)}</option>`).join(""); prevRos(); }
+
+function parsePasteRoster(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const rows = [];
+  lines.forEach((line, i) => {
+    const cols = line.split("\t").map(c => c.trim());
+    const parts = cols.length === 1 && cols[0].includes(",") ? cols[0].split(",").map(c => c.trim()) : cols;
+    if (i === 0 && parts.some(p => /เลข|รหัส|ชื่อ|หมดอายุ|อบรม/i.test(p))) return;
+    let no = "", name = "", train = "", exp = "";
+    if (parts.length >= 4) {
+      no = parts[0]; name = parts[1]; train = sd(parts[2]); exp = sd(parts[3]);
+    } else if (parts.length === 3) {
+      no = parts[0]; name = parts[1]; exp = sd(parts[2]);
+    } else if (parts.length === 2) {
+      no = parts[0]; name = parts[1];
+    }
+    if (!no && !name) return;
+    rows.push({ row: i + 1, no, name, train, exp, ok: !!(no && name && exp) });
+  });
+  return rows;
+}
+
+function analyzeRosterRows(rows) {
+  const today = lt();
+  const seen = new Map();
+  const invalidSkipped = [];
+  const expiredSkipped = [];
+  const toNew = [];
+  const toUpdate = [];
+  const same = [];
+
+  rows.forEach(r => {
+    if (!r.no || !r.name || !r.exp) {
+      invalidSkipped.push({ ...r, reason: !r.no ? "ไม่มีเลข ผรม." : !r.name ? "ไม่มีชื่อ-สกุล" : "ไม่มีวันหมดอายุ หรือวันที่ไม่ถูกต้อง" });
+      return;
+    }
+    // Expiration check: r.exp < today
+    if (r.exp < today) {
+      expiredSkipped.push({ ...r, reason: `วันอบรมหมดอายุแล้ว (${r.exp})` });
+      return;
+    }
+    const k = rk(r.no);
+    if (seen.has(k)) {
+      const prev = seen.get(k);
+      if (r.exp > prev.exp) seen.set(k, r);
+      return;
+    }
+    seen.set(k, r);
+  });
+
+  seen.forEach(r => {
+    const k = rk(r.no);
+    const ex = roster[k];
+    if (ex) {
+      const expChanged = ex.exp !== r.exp;
+      const nameChanged = r.name && ex.name !== r.name;
+      const trainChanged = r.train && ex.train !== r.train;
+      if (expChanged || nameChanged || trainChanged) {
+        toUpdate.push({
+          ...r,
+          oldExp: ex.exp || "",
+          oldName: ex.name || "",
+          oldTrain: ex.train || "",
+          expChanged,
+          status: "update"
+        });
+      } else {
+        same.push({ ...r, status: "same" });
+      }
+    } else {
+      toNew.push({ ...r, status: "new" });
+    }
+  });
+
+  // Prepare clipboard strings
+  const cpUpd = [
+    ["เลข ผรม.", "ชื่อ-สกุล", "วันหมดอายุเดิม", "วันหมดอายุใหม่"].join("\t"),
+    ...toUpdate.map(p => [p.no, p.name, p.oldExp || "-", p.exp].join("\t"))
+  ].join("\n");
+
+  const cpExp = [
+    ["เลข ผรม.", "ชื่อ-สกุล", "วันหมดอายุ", "สถานะ"].join("\t"),
+    ...expiredSkipped.map(p => [p.no, p.name, p.exp, "วันอบรมหมดอายุแล้ว (ไม่นำเข้า)"].join("\t"))
+  ].join("\n");
+
+  const cpInv = [
+    ["แถว", "เลข ผรม.", "ชื่อ-สกุล", "สาเหตุ"].join("\t"),
+    ...invalidSkipped.map(p => [p.row || "-", p.no || "-", p.name || "-", p.reason].join("\t"))
+  ].join("\n");
+
+  return {
+    rows,
+    invalidSkipped,
+    expiredSkipped,
+    toNew,
+    toUpdate,
+    same,
+    cpUpd,
+    cpExp,
+    cpInv
+  };
+}
+
+function renderRosterAlertHtml(an) {
+  let html = "";
+
+  // 1. Auto-update Existing Roster Box (Blue Alert)
+  if (an.toUpdate.length > 0) {
+    html += `
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #2563eb;padding:12px;border-radius:8px;margin-top:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <b style="color:#1e40af;font-size:13.5px">🔄 ตรวจพบรายชื่อเดิมในระบบ (${an.toUpdate.length} คน) — จะอัปเดตวันหมดอายุให้อัตโนมัติ:</b>
+        <button type="button" id="btn_cp_ros_upd" style="padding:4px 10px;font-size:12px;background:#fff;border:1px solid #2563eb;color:#1e40af;border-radius:6px;font-weight:600">📋 คัดลอกรายชื่อที่อัปเดต</button>
+      </div>
+      <div class="mu" style="font-size:12px;margin-top:4px;color:#1e3a8a">
+        รายชื่อเหล่านี้มีในระบบแล้ว และวันอบรมยังไม่หมดอายุ ระบบจะบันทึกอัปเดตวันหมดอายุใหม่ให้ทันทีเมื่อกดยืนยัน:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:130px;overflow-y:auto;background:#fff;padding:8px;border-radius:6px;border:1px solid #bfdbfe">
+        ${an.toUpdate.map(p => `<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">
+          <b>${esc(p.no)}</b> ${esc(p.name)}
+          <span style="font-size:11px;font-weight:400;color:#15803d">(เดิม: ${esc(p.oldExp || "-")} ➔ <b>ใหม่: ${esc(p.exp)}</b>)</span>
+        </span>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  // 2. Expired Training Skipped Box (Amber/Orange Warning Alert)
+  if (an.expiredSkipped.length > 0) {
+    html += `
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:12px;border-radius:8px;margin-top:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <b style="color:#92400e;font-size:13.5px">⚠ ตรวจพบรายชื่อที่ "วันอบรมหมดอายุแล้ว" (${an.expiredSkipped.length} คน) — ข้าม ไม่นำเข้า:</b>
+        <button type="button" id="btn_cp_ros_exp" style="padding:4px 10px;font-size:12px;background:#fff;border:1px solid #d97706;color:#92400e;border-radius:6px;font-weight:600">📋 คัดลอกรายชื่อที่หมดอายุ</button>
+      </div>
+      <div class="mu" style="font-size:12px;margin-top:4px;color:#78350f">
+        รายชื่อต่อไปนี้วันอบรมหมดอายุแล้ว (น้อยกว่าวันที่ปัจจุบัน ${dl(lt())}) จึงถูกยกเว้นไม่นำเข้าตามเกณฑ์ความปลอดภัย:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:130px;overflow-y:auto;background:#fff;padding:8px;border-radius:6px;border:1px solid #fed7aa">
+        ${an.expiredSkipped.map(p => `<span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">
+          <b>${esc(p.no)}</b> ${esc(p.name)}
+          <span style="font-size:11px;font-weight:400;color:#7f1d1d">(หมดอายุ: <b>${esc(p.exp)}</b>)</span>
+        </span>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  // 3. Invalid Data Rows Box (Crimson Error Alert)
+  if (an.invalidSkipped.length > 0) {
+    html += `
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;padding:12px;border-radius:8px;margin-top:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <b style="color:#991b1b;font-size:13.5px">✕ ข้อมูลไม่สมบูรณ์ / รูปแบบไม่ถูกต้อง (${an.invalidSkipped.length} แถว):</b>
+        <button type="button" id="btn_cp_ros_inv" style="padding:4px 10px;font-size:12px;background:#fff;border:1px solid #dc2626;color:#991b1b;border-radius:6px;font-weight:600">📋 คัดลอกรายการที่ไม่สมบูรณ์</button>
+      </div>
+      <div class="mu" style="font-size:12px;margin-top:4px;color:#7f1d1d">
+        แถวต่อไปนี้ขาดข้อมูลสำคัญ (เลข ผรม., ชื่อ, หรือวันหมดอายุ) จึงไม่สามารถนำเข้าได้:
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:110px;overflow-y:auto;background:#fff;padding:8px;border-radius:6px;border:1px solid #fca5a5">
+        ${an.invalidSkipped.map(p => `<span style="background:#fff1f2;color:#9f1239;border:1px solid #fecdd3;padding:3px 8px;border-radius:4px;font-size:11.5px">
+          แถว ${p.row || "-"}: <b>${esc(p.no || "ไม่ระบุเลข")}</b> · ${esc(p.name || "ไม่ระบุชื่อ")} (${p.reason})
+        </span>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  return html;
+}
+
+let RV_PASTE = null;
+
+function loadRos(buf) {
+  RB = XLSX.read(buf, { type: "array" });
+  $("#rsh").innerHTML = RB.SheetNames.map(x => `<option>${esc(x)}</option>`).join("");
+  prevRos();
+}
+
 function prevRos() {
   if (!RB) return;
   let aoa = XLSX.utils.sheet_to_json(RB.Sheets[$("#rsh").value], { header: 1, raw: true, defval: "" });
-  const rows = parseRos(aoa), mp = new Map();
-  rows.filter(r => r.ok).forEach(r => mp.set(rk(r.no), r));
-  const good = [...mp.values()];
-  RV = { good };
-  $("#rpv").innerHTML = `<div>พบ ${rows.length} แถว · <b class="ok">พร้อมนำเข้า ${good.length} คน</b></div>
-  <div class="r" style="margin-top:8px"><button class="p" id="rgo">นำเข้า ${good.length} รายชื่อ</button><button id="rcx">ยกเลิก</button></div><div id="rig"></div>`;
+  const rawRows = parseRos(aoa);
+  const an = analyzeRosterRows(rawRows);
+  RV = an;
+  const totalValid = an.toNew.length + an.toUpdate.length;
+  const alertsHtml = renderRosterAlertHtml(an);
+
+  $("#rpv").innerHTML = `
+    <div style="margin-top:4px">
+      พบทั้งหมด ${rawRows.length} แถว · 
+      <b class="ok">คนใหม่ ${an.toNew.length} คน</b> · 
+      <b style="color:#2563eb">อัปเดตวันหมดอายุ ${an.toUpdate.length} คน</b>
+      ${an.same.length ? ` · <span class="mu">ข้อมูลเดิม ${an.same.length} คน</span>` : ""}
+      ${an.expiredSkipped.length ? ` · <b class="wa">ข้ามหมดอายุ ${an.expiredSkipped.length} คน</b>` : ""}
+      ${an.invalidSkipped.length ? ` · <b class="er">ข้อมูลไม่ครบ ${an.invalidSkipped.length} แถว</b>` : ""}
+    </div>
+    ${alertsHtml}
+    <div class="r" style="margin-top:10px">
+      <button class="p" id="rgo" ${totalValid ? "" : "disabled"}>นำเข้า / อัปเดต ${totalValid} รายชื่อ</button>
+      <button id="rcx">ยกเลิก</button>
+    </div>
+    <div id="rig" style="margin-top:6px"></div>
+  `;
 }
-function cancelRos() { RB = null; RV = null; $("#rfx").value = ""; $("#rsh").innerHTML = ""; $("#rpv").innerHTML = ""; $("#rfc").hidden = true; }
+
+function cancelRos() {
+  RB = null;
+  RV = null;
+  $("#rfx").value = "";
+  $("#rsh").innerHTML = "";
+  $("#rpv").innerHTML = "";
+  $("#rfc").hidden = true;
+}
+
 async function goRos() {
   if (!RV || !db) return;
-  const g = RV.good; let n = 0;
-  for (let i = 0; i < g.length; i += 15) {
-    msg("#rig", `กำลังนำเข้า ${Math.min(i + 15, g.length)}/${g.length}…`);
-    await Promise.all(g.slice(i, i + 15).map(p => T(db.doc("roster/" + rk(p.no)).set({ no: p.no, name: p.name, train: p.train, exp: p.exp, nat: (roster[rk(p.no)] || {}).nat || "" })).then(() => n++)));
+  const allToSave = [...RV.toNew, ...RV.toUpdate];
+  let n = 0;
+  for (let i = 0; i < allToSave.length; i += 15) {
+    msg("#rig", `กำลังนำเข้า/อัปเดต ${Math.min(i + 15, allToSave.length)}/${allToSave.length}…`);
+    await Promise.all(allToSave.slice(i, i + 15).map(p =>
+      T(db.doc("roster/" + rk(p.no)).set({
+        no: p.no,
+        name: p.name,
+        train: p.train || "",
+        exp: p.exp,
+        nat: (roster[rk(p.no)] || {}).nat || ""
+      })).then(() => n++)
+    ));
   }
+  const newCount = RV.toNew.length;
+  const updCount = RV.toUpdate.length;
+  const expCount = RV.expiredSkipped.length;
+  const invCount = RV.invalidSkipped.length;
   cancelRos();
-  $("#rpv").innerHTML = `<span class="ok">นำเข้ารายชื่อสำเร็จแล้ว ${n} คน</span>`;
+  $("#rpv").innerHTML = `
+    <span class="ok">นำเข้าและอัปเดตรายชื่อสำเร็จแล้ว ${n} คน (คนใหม่ ${newCount} · อัปเดตวันหมดอายุ ${updCount})</span>
+    ${expCount ? ` · <span class="wa">ข้ามคนที่หมดอายุแล้ว ${expCount} คน</span>` : ""}
+    ${invCount ? ` · <span class="er">ข้ามข้อมูลไม่ครบ ${invCount} แถว</span>` : ""}
+  `;
+}
+
+async function goPasteRos() {
+  if (!RV_PASTE || !db) return;
+  const allToSave = [...RV_PASTE.toNew, ...RV_PASTE.toUpdate];
+  let n = 0;
+  for (let i = 0; i < allToSave.length; i += 15) {
+    msg("#bim_msg", `กำลังนำเข้า/อัปเดต ${Math.min(i + 15, allToSave.length)}/${allToSave.length}…`);
+    await Promise.all(allToSave.slice(i, i + 15).map(p =>
+      T(db.doc("roster/" + rk(p.no)).set({
+        no: p.no,
+        name: p.name,
+        train: p.train || "",
+        exp: p.exp,
+        nat: (roster[rk(p.no)] || {}).nat || ""
+      })).then(() => n++)
+    ));
+  }
+  const newCount = RV_PASTE.toNew.length;
+  const updCount = RV_PASTE.toUpdate.length;
+  const expCount = RV_PASTE.expiredSkipped.length;
+  const invCount = RV_PASTE.invalidSkipped.length;
+  RV_PASTE = null;
+  $("#imp").value = "";
+  $("#im").innerHTML = `
+    <span class="ok">นำเข้าและอัปเดตรายชื่อสำเร็จแล้ว ${n} คน (คนใหม่ ${newCount} · อัปเดตวันหมดอายุ ${updCount})</span>
+    ${expCount ? ` · <span class="wa">ข้ามคนที่หมดอายุแล้ว ${expCount} คน</span>` : ""}
+    ${invCount ? ` · <span class="er">ข้ามข้อมูลไม่ครบ ${invCount} แถว</span>` : ""}
+  `;
 }
 
 /* ==============================================================
@@ -943,6 +1290,34 @@ $("#rfx").onchange = e => {
 $("#rfc").onclick = cancelRos;
 $("#rsh").onchange = prevRos;
 
+$("#bim").onclick = () => {
+  const val = $("#imp").value.trim();
+  if (!val) return msg("#im", "กรุณาวางข้อมูลจาก Excel ก่อน", "er");
+  const rows = parsePasteRoster(val);
+  if (!rows.length) return msg("#im", "ไม่พบข้อมูลที่ถูกต้องในข้อความที่วาง", "er");
+  const an = analyzeRosterRows(rows);
+  RV_PASTE = an;
+  const totalValid = an.toNew.length + an.toUpdate.length;
+  const alertsHtml = renderRosterAlertHtml(an);
+
+  $("#im").innerHTML = `
+    <div style="margin-top:6px">
+      พบทั้งหมด ${rows.length} แถว · 
+      <b class="ok">คนใหม่ ${an.toNew.length} คน</b> · 
+      <b style="color:#2563eb">อัปเดตวันหมดอายุ ${an.toUpdate.length} คน</b>
+      ${an.same.length ? ` · <span class="mu">ข้อมูลเดิม ${an.same.length} คน</span>` : ""}
+      ${an.expiredSkipped.length ? ` · <b class="wa">ข้ามหมดอายุ ${an.expiredSkipped.length} คน</b>` : ""}
+      ${an.invalidSkipped.length ? ` · <b class="er">ข้อมูลไม่ครบ ${an.invalidSkipped.length} แถว</b>` : ""}
+    </div>
+    ${alertsHtml}
+    <div class="r" style="margin-top:10px">
+      <button class="p" id="bim_go" ${totalValid ? "" : "disabled"}>ยืนยันนำเข้า / อัปเดต ${totalValid} คน</button>
+      <button id="bim_cx">ยกเลิก</button>
+    </div>
+    <div id="bim_msg" style="margin-top:6px"></div>
+  `;
+};
+
 $("#fx").onchange = e => {
   const f = e.target.files[0]; $("#fxc").hidden = !f; if (!f) return;
   const r = new FileReader(); r.onload = () => loadWB(r.result); r.readAsArrayBuffer(f);
@@ -968,12 +1343,28 @@ document.addEventListener("click", async e => {
   if (x = q("[data-jump]")) setD(x.dataset.jump);
   if (target.id === "bgo") goImport();
   if (target.id === "rgo") goRos();
+  if (target.id === "rcx") cancelRos();
+  if (target.id === "bcx") { WB = null; PV = null; $("#fx").value = ""; $("#ipv").innerHTML = ""; $("#fxc").hidden = true; }
+  if (target.id === "bim_go") goPasteRos();
+  if (target.id === "bim_cx") { RV_PASTE = null; $("#imp").value = ""; $("#im").innerHTML = ""; }
   if (target.id === "pr") { window.print(); }
   if (x = q("#btn_cp_dups")) {
     if (PV && PV.pr) {
       const dupNums = [...new Set(PV.pr.map(r => r.no))].join(", ");
       cp(dupNums, x);
     }
+  }
+  if (x = q("#btn_cp_ros_upd")) {
+    const t = (RV && RV.cpUpd) || (RV_PASTE && RV_PASTE.cpUpd);
+    if (t) cp(t, x);
+  }
+  if (x = q("#btn_cp_ros_exp")) {
+    const t = (RV && RV.cpExp) || (RV_PASTE && RV_PASTE.cpExp);
+    if (t) cp(t, x);
+  }
+  if (x = q("#btn_cp_ros_inv")) {
+    const t = (RV && RV.cpInv) || (RV_PASTE && RV_PASTE.cpInv);
+    if (t) cp(t, x);
   }
 
   // User Actions (Admin)
@@ -1202,9 +1593,13 @@ $("#bpa").onclick = async () => {
   if (!db) return;
   const no = $("#pn").value.trim(), name = $("#pnm").value.trim(), tr = $("#ptr").value, ex = $("#pex").value;
   if (!no || !name || !ex) return msg("#pm", "กรอกข้อมูลให้ครบ", "er");
-  await T(db.doc("roster/" + rk(no)).set({ no, name, train: tr, exp: ex, nat: "" }));
+  if (ex < lt()) {
+    if (!confirm(`คำเตือน: วันหมดอายุ (${fd(ex)}) ผ่านมาแล้ว (หมดอายุแล้ว) ต้องการบันทึกหรือไม่?`)) return;
+  }
+  const isExisting = !!roster[rk(no)];
+  await T(db.doc("roster/" + rk(no)).set({ no, name, train: tr, exp: ex, nat: (roster[rk(no)] || {}).nat || "" }));
   ["#pn", "#pnm", "#ptr", "#pex"].forEach(s => $(s).value = "");
-  msg("#pm", "เพิ่มรายชื่อเรียบร้อย", "ok");
+  msg("#pm", isExisting ? `อัปเดตข้อมูลและวันหมดอายุของ ${esc(name)} เรียบร้อยแล้ว` : "เพิ่มรายชื่อเรียบร้อย", "ok");
 };
 
 /* ==============================================================
