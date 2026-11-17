@@ -108,9 +108,14 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
 #t-work .c:nth-child(4){background:#fefce8;border:1px solid #fef08a;border-top:3px solid #eab308}
 
 /* 4. ROSTER (Purple Theme): 1=เพิ่มรายชื่อ (Lavender), 2=นำเข้า Excel (Periwinkle), 3=ตารางรายชื่อ (Lilac Slate) */
-#t-ros .c:nth-child(1){background:#faf5ff;border:1px solid #e9d5ff;border-top:3px solid #7c3aed}
-#t-ros .c:nth-child(2){background:#f5f3ff;border:1px solid #ddd6fe;border-top:3px solid #8b5cf6}
-#t-ros .c:nth-child(3){background:#faf8ff;border:1px solid #cbd5e1;border-top:3px solid #6d28d9}
+#t-ros .c:nth-child(1), #ros_add_card{background:#faf5ff;border:1px solid #e9d5ff;border-top:3px solid #7c3aed}
+#t-ros .c:nth-child(2), #ros_imp_card{background:#f5f3ff;border:1px solid #ddd6fe;border-top:3px solid #8b5cf6}
+#t-ros .c:nth-child(3), #ros_list_card{background:#faf8ff;border:1px solid #cbd5e1;border-top:3px solid #6d28d9}
+.ros-table th:first-child, .ros-table td:first-child{text-align:center;width:34px}
+.ros-table td:last-child{white-space:nowrap;width:1%}
+@media (max-width:640px){
+  .ros-table td[data-l="จัดการ"]{grid-column:1 / -1}
+}
 
 /* 5. DASHBOARD: 1=Contractor, 2=Transportor, 3=เวลารับคืน, 4=เรื่องต้องตาม, 5=แยกตามบริษัท */
 #t-dash .c:nth-of-type(1){background:#f0f4ff;border:1px solid #c7d2fe;border-top:3px solid #4f46e5}
@@ -162,6 +167,14 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
  .sel td{font-size:15px}td,th{font-size:12.5px;padding:4px}.k b{font-size:20px}
 }
 @media print{.bar,.nav,#cat,#t-gate,#t-trk,#t-work,#t-ros,#t-dash,#t-sum,#t-usr,.np{display:none!important}#t-emg{display:block!important}body{background:#fff;color:#000}}
+/* Modal Dialogs */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:95;padding:14px}
+.modal-card{width:100%;max-width:500px;background:#ffffff;border-radius:14px;box-shadow:0 20px 40px -10px rgba(15,23,42,0.4);border:1px solid #cbd5e1;overflow:hidden;animation:modalFade .15s ease}
+@keyframes modalFade{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+.modal-head{padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{margin:0;font-size:16px;font-weight:700}
+.modal-body{padding:16px 18px;background:#f8fafc}
+.modal-foot{padding:12px 18px;background:#f1f5f9;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;gap:8px}
 </style>
 </head>
 <body>
@@ -211,6 +224,77 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
           <div id="reg_msg" style="font-size:13px;margin-top:6px;text-align:center"></div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Edit Single Contractor -->
+<div id="modal_ros_ed" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <div class="modal-head" style="background:#f5f3ff;border-bottom:1px solid #ddd6fe">
+      <h3 style="color:#6d28d9;display:flex;align-items:center;gap:6px">✏️ แก้ไขข้อมูล ผรม.</h3>
+      <button type="button" id="btn_ros_ed_close" style="background:none;border:none;font-size:18px;cursor:pointer;color:#64748b">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ed_ros_old_rk">
+      <div style="margin-bottom:10px">
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:4px;color:#475569">เลข ผรม. (Contractor No.)</label>
+        <input id="ed_ros_no" placeholder="เช่น C0001" style="width:100%;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:4px;color:#475569">ชื่อ - สกุล</label>
+        <input id="ed_ros_name" placeholder="ชื่อ-สกุล ผรม." style="width:100%;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:4px;color:#475569">บริษัท</label>
+        <input id="ed_ros_co" placeholder="ชื่อบริษัทต้นสังกัด" style="width:100%;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:4px;color:#475569">วันหมดอายุการอบรม</label>
+        <input id="ed_ros_exp" type="date" style="width:100%;box-sizing:border-box">
+      </div>
+      <div id="ed_ros_msg" style="margin-top:6px;font-size:13px"></div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" id="btn_ros_ed_cancel">ยกเลิก</button>
+      <button type="button" id="btn_ros_ed_save" class="p" style="background:#7c3aed;border-color:#7c3aed">บันทึกการแก้ไข</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Bulk Edit Contractors -->
+<div id="modal_ros_bulk" class="modal-overlay" style="display:none">
+  <div class="modal-card">
+    <div class="modal-head" style="background:#faf5ff;border-bottom:1px solid #e9d5ff">
+      <h3 style="color:#6d28d9;display:flex;align-items:center;gap:6px">✏️ แก้ไขข้อมูล ผรม. ที่เลือก</h3>
+      <button type="button" id="btn_ros_bulk_close" style="background:none;border:none;font-size:18px;cursor:pointer;color:#64748b">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="bulk_ros_summary" style="margin-bottom:12px;font-size:13px;color:#6b21a8;font-weight:600;background:#f3e8ff;padding:8px 12px;border-radius:8px"></div>
+      <p class="mu" style="margin-top:0;margin-bottom:12px">ติ๊กเลือกหัวข้อที่ต้องการแก้ไขให้เหมือนกันทั้งหมด (ช่องที่ไม่ได้ติ๊กจะคงข้อมูลเดิมของแต่ละคนไว้):</p>
+      
+      <div style="margin-bottom:12px;padding:10px;border:1px solid #e2e8f0;border-radius:8px;background:#ffffff">
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer;user-select:none">
+          <input type="checkbox" id="chk_bulk_co"> เปลี่ยนชื่อบริษัทให้เหมือนกันทั้งหมด
+        </label>
+        <div style="margin-top:6px">
+          <input id="bulk_ros_co" placeholder="ระบุชื่อบริษัทใหม่" style="width:100%;box-sizing:border-box" disabled>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px;padding:10px;border:1px solid #e2e8f0;border-radius:8px;background:#ffffff">
+        <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer;user-select:none">
+          <input type="checkbox" id="chk_bulk_exp"> เปลี่ยน/ต่อวันหมดอายุการอบรมให้เหมือนกันทั้งหมด
+        </label>
+        <div style="margin-top:6px">
+          <input id="bulk_ros_exp" type="date" style="width:100%;box-sizing:border-box" disabled>
+        </div>
+      </div>
+      <div id="bulk_ros_msg" style="margin-top:6px;font-size:13px"></div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" id="btn_ros_bulk_cancel">ยกเลิก</button>
+      <button type="button" id="btn_ros_bulk_save" class="p" style="background:#7c3aed;border-color:#7c3aed">บันทึกการแก้ไขทั้งหมด</button>
     </div>
   </div>
 </div>
@@ -382,7 +466,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
 
   <!-- ROSTER SECTION -->
   <section id="t-ros" hidden>
-    <div class="c">
+    <div class="c" id="ros_add_card">
       <b>เพิ่มรายชื่อ ผรม. ที่ผ่านการอบรม</b>
       <div class="r" style="margin-top:8px"><input id="pn" placeholder="เลข ผรม."><input id="pnm" placeholder="ชื่อ-สกุล"></div>
       <div class="r" style="margin-top:6px"><input id="pco" placeholder="บริษัท"></div>
@@ -390,7 +474,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
       <div id="pm"></div>
     </div>
 
-    <div class="c">
+    <div class="c" id="ros_imp_card">
       <b>นำเข้ารายชื่อจากไฟล์ Excel</b>
       <div class="mu">คอลัมน์: เลข ผรม. · ชื่อสกุล · บริษัท · วันหมดอายุ (อ่านจากหัวตาราง ไม่ต้องเรียงลำดับ · คอลัมน์วันที่อบรม ถ้ามีจะไม่ถูกนำมาใช้)</div>
       <div class="r" style="margin-top:8px"><input type="file" id="rfx" accept=".xlsx,.xls" style="flex:1"><button id="rfc" hidden>✕ ยกเลิก</button></div>
@@ -404,10 +488,42 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
       </details>
     </div>
 
-    <div class="c">
-      <div class="th"><b id="rc">รายชื่อ</b></div>
-      <input id="rq" placeholder="ค้นหาเลข/ชื่อ" style="width:100%;box-sizing:border-box">
-      <div id="rl" style="margin-top:6px"></div>
+    <div class="c" id="ros_list_card">
+      <div class="th" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <b id="rc">รายชื่อ</b>
+        <span id="ros_role_badge"></span>
+      </div>
+
+      <!-- Staff Read-Only Notice -->
+      <div id="ros_staff_info" style="display:none;margin-top:8px">
+        <div style="background:#e0e7ff;color:#3730a3;padding:8px 12px;border-radius:8px;font-size:13px;border:1px solid #c7d2fe">
+          ℹ️ <b>สิทธิ์เจ้าหน้าที่ (Staff):</b> สามารถดูรายชื่อและตรวจสอบสถานะการอบรมได้เท่านั้น (การแก้ไข ลบ หรือเพิ่มรายชื่อ สามารถทำได้โดย Admin เท่านั้น)
+        </div>
+      </div>
+
+      <!-- Admin Batch Actions Toolbar -->
+      <div id="ros_admin_bar" style="display:none;margin-top:10px;padding:10px;background:#f3e8ff;border:1px solid #d8b4fe;border-radius:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;user-select:none">
+              <input type="checkbox" id="ros_chk_all">
+              <b>เลือกทั้งหมด</b>
+            </label>
+            <span id="ros_sel_cnt" style="font-size:12.5px;color:#6b21a8;font-weight:600">เลือกแล้ว 0 คน</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button id="btn_ros_bulk_ed" class="warning" style="font-size:12.5px;padding:5px 10px" disabled>✏️ แก้ไขรายการที่เลือก</button>
+            <button id="btn_ros_bulk_del" class="danger" style="font-size:12.5px;padding:5px 10px" disabled>🗑️ ลบรายการที่เลือก</button>
+            <button id="btn_ros_del_all" class="danger" style="font-size:12.5px;padding:5px 10px;background:#991b1b;border-color:#7f1d1d">⚠️ ลบรายชื่อทั้งหมด</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input id="rq" placeholder="ค้นหาเลข / ชื่อ / บริษัท" style="flex:1">
+        <button id="btn_ros_show_toggle" style="font-size:12px;padding:0 12px;white-space:nowrap;display:none">แสดงทั้งหมด</button>
+      </div>
+      <div id="rl" style="margin-top:8px"></div>
     </div>
   </section>
 
@@ -492,6 +608,7 @@ const lt = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getM
 
 let currentUser = null, usersList = [];
 let works = [], cards = [], trucks = [], roster = {}, cur = null, cf = {}, who = "", userRole = "staff", nat = "", job = "", truckType = "ผู้รับเหมา", pick = null, cat = "c", TS = [], D = lt(), SUB = {}, WB = null, PV = null, pend = {}, RB = null, RV = null;
+let rosSel = new Set(), rosShowAll = false;
 const op = new Set();
 let LS = 0, OFF = false;
 
@@ -531,7 +648,8 @@ const late = w => { const t = lt(); if (w.date < t) return true; if (w.date > t)
 const of = id => cards.filter(c => c.work === id).sort((a, b) => a.inAt - b.inAt), act = id => of(id).filter(c => !c.outAt), cnt = id => new Set(of(id).map(c => c.card)).size;
 const I = w => w.issAt ? { at: w.issAt, by: w.issBy } : null, R = w => w.retAt ? { at: w.retAt, by: w.retBy } : null;
 const msg = (id, t, k) => { $(id).innerHTML = `<span class="${k || ""}">${esc(t)}</span>`; };
-const lb = (h, rows, cls) => `<table class="lb ${cls || ""}"><thead><tr>${h.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((x, i) => `<td data-l="${h[i]}">${x}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${h.length}" class="mu">ไม่มีรายการ</td></tr>`}</tbody></table>`;
+const strip = s => String(s || "").replace(/<[^>]*>/g, "").trim();
+const lb = (h, rows, cls) => `<table class="lb ${cls || ""}"><thead><tr>${h.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((x, i) => `<td data-l="${strip(h[i])}">${x}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${h.length}" class="mu">ไม่มีรายการ</td></tr>`}</tbody></table>`;
 const selT = w => `<table class="lt"><thead><tr><th class="nw n">เลขที่</th><th>บริษัท · พื้นที่ · เจ้าของงาน</th></tr></thead><tbody><tr><td class="no">${esc(w.no)}</td><td><div class="co">${esc(w.c)}</div><div class="sub">${esc(w.a)}${w.o ? " · เจ้าของงาน: " + esc(w.o) : ""}</div></td></tr></tbody></table>`;
 
 function status(w) {
@@ -609,13 +727,106 @@ function rpk() {
   }).join("") || `<div class="mu" style="margin-top:6px">ไม่พบในรายชื่อ · <button data-go="ros">เพิ่มรายชื่อ</button> หรือรับบัตรโดยไม่เลือกรายชื่อได้</div>`;
 }
 
+function updateRosAdminBar() {
+  const isAdmin = (userRole === "admin");
+  const bar = $("#ros_admin_bar");
+  if (!bar) return;
+  bar.style.display = isAdmin ? "block" : "none";
+  if (!isAdmin) return;
+
+  const count = rosSel.size;
+  $("#ros_sel_cnt").textContent = count > 0 ? `เลือกแล้ว ${count} คน` : "ยังไม่ได้เลือก";
+  $("#btn_ros_bulk_ed").disabled = count === 0;
+  $("#btn_ros_bulk_del").disabled = count === 0;
+  $("#btn_ros_bulk_ed").textContent = count > 0 ? `✏️ แก้ไขที่เลือก (${count})` : "✏️ แก้ไขรายการที่เลือก";
+  $("#btn_ros_bulk_del").textContent = count > 0 ? `🗑️ ลบที่เลือก (${count})` : "🗑️ ลบรายการที่เลือก";
+
+  const allCount = Object.keys(roster).length;
+  $("#btn_ros_del_all").textContent = `⚠️ ลบทั้งหมด (${allCount} คน)`;
+  $("#btn_ros_del_all").disabled = allCount === 0;
+}
+
 function rosd() {
-  const q = $("#rq").value.toLowerCase(), all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no)), f = all.filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(q));
-  $("#rc").textContent = `รายชื่อทั้งหมด ${all.length} คน` + (f.length > 100 ? " (แสดง 100 รายการแรก)" : "");
-  $("#rl").innerHTML = lb(["เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "วันหมดอายุ", "สถานะ"], f.slice(0, 100).map(p => {
-    const s = trn(p);
-    return [esc(p.no), esc(p.name), esc(p.co || "-"), fd(p.exp), `<b class="${s.k}">${s.t}</b>`];
-  }));
+  const isAdmin = (userRole === "admin");
+
+  if ($("#ros_add_card")) $("#ros_add_card").style.display = isAdmin ? "" : "none";
+  if ($("#ros_imp_card")) $("#ros_imp_card").style.display = isAdmin ? "" : "none";
+  if ($("#ros_staff_info")) $("#ros_staff_info").style.display = isAdmin ? "none" : "block";
+  if ($("#ros_role_badge")) {
+    $("#ros_role_badge").innerHTML = isAdmin 
+      ? '<span class="badge badge-admin">Admin: จัดการได้เต็มสิทธิ์</span>' 
+      : '<span class="badge badge-staff">Staff: ดูรายชื่อได้อย่างเดียว</span>';
+  }
+
+  const q = $("#rq").value.toLowerCase().trim();
+  const all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no));
+  const f = all.filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(q));
+
+  const toggleBtn = $("#btn_ros_show_toggle");
+  if (toggleBtn) {
+    if (f.length > 100) {
+      toggleBtn.style.display = "inline-block";
+      toggleBtn.textContent = rosShowAll ? "แสดง 100 รายการแรก" : `แสดงทั้งหมด (${f.length} คน)`;
+    } else {
+      toggleBtn.style.display = "none";
+    }
+  }
+
+  const displayList = rosShowAll ? f : f.slice(0, 100);
+  const showingText = (f.length > 100 && !rosShowAll) ? " (แสดง 100 รายการแรก)" : "";
+  $("#rc").textContent = `รายชื่อทั้งหมด ${all.length} คน` + (q ? ` (ค้นพบ ${f.length} คน)` : "") + showingText;
+
+  const chkAll = $("#ros_chk_all");
+  if (chkAll) {
+    const visibleKeys = displayList.map(p => rk(p.no));
+    if (visibleKeys.length > 0 && visibleKeys.every(k => rosSel.has(k))) {
+      chkAll.checked = true;
+      chkAll.indeterminate = false;
+    } else if (visibleKeys.some(k => rosSel.has(k))) {
+      chkAll.checked = false;
+      chkAll.indeterminate = true;
+    } else {
+      chkAll.checked = false;
+      chkAll.indeterminate = false;
+    }
+  }
+
+  updateRosAdminBar();
+
+  if (isAdmin) {
+    const allChecked = displayList.length > 0 && displayList.every(p => rosSel.has(rk(p.no)));
+    const H = [
+      `<input type="checkbox" id="ros_chk_head" ${allChecked ? "checked" : ""} title="เลือกทั้งหมดในหน้านี้">`,
+      "เลข ผรม.",
+      "ชื่อ-สกุล",
+      "บริษัท",
+      "วันหมดอายุ",
+      "สถานะ",
+      "จัดการ"
+    ];
+    const rows = displayList.map(p => {
+      const k = rk(p.no);
+      const s = trn(p);
+      const isChecked = rosSel.has(k);
+      return [
+        `<input type="checkbox" class="ros-chk" data-rk="${k}" ${isChecked ? "checked" : ""}>`,
+        esc(p.no),
+        esc(p.name),
+        esc(p.co || "-"),
+        fd(p.exp),
+        `<b class="${s.k}">${s.t}</b>`,
+        `<div style="display:flex;gap:4px"><button class="warning" style="padding:3px 8px;font-size:12px" data-ros-ed="${k}">แก้ไข</button><button class="danger" style="padding:3px 8px;font-size:12px" data-ros-del="${k}">ลบ</button></div>`
+      ];
+    });
+    $("#rl").innerHTML = lb(H, rows, "ros-table");
+  } else {
+    const H = ["เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "วันหมดอายุ", "สถานะ"];
+    const rows = displayList.map(p => {
+      const s = trn(p);
+      return [esc(p.no), esc(p.name), esc(p.co || "-"), fd(p.exp), `<b class="${s.k}">${s.t}</b>`];
+    });
+    $("#rl").innerHTML = lb(H, rows);
+  }
 }
 
 function trkd() {
@@ -988,7 +1199,6 @@ function parsePasteRoster(text) {
 }
 
 function analyzeRosterRows(rows) {
-
   const today = lt();
   const seen = new Map();
   const invalidSkipped = [];
@@ -1197,6 +1407,7 @@ function cancelRos() {
 }
 
 async function goRos() {
+  if (userRole !== "admin") return alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถนำเข้ารายชื่อได้ครับ");
   if (!RV || !db) return;
   const allToSave = [...RV.toNew, ...RV.toUpdate];
   let n = 0;
@@ -1225,6 +1436,7 @@ async function goRos() {
 }
 
 async function goPasteRos() {
+  if (userRole !== "admin") return alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถนำเข้ารายชื่อได้ครับ");
   if (!RV_PASTE || !db) return;
   const allToSave = [...RV_PASTE.toNew, ...RV_PASTE.toUpdate];
   let n = 0;
@@ -1423,6 +1635,75 @@ document.addEventListener("click", async e => {
     if (confirm("ต้องการลบผู้ใช้งานนี้ใช่หรือไม่?")) {
       await db.doc("users/" + uid).delete();
       await loadUsers();
+    }
+  }
+
+  // Roster Single Edit (Admin)
+  if (x = q("[data-ros-ed]")) {
+    if (userRole !== "admin") return alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถแก้ไขรายชื่อได้ครับ");
+    const k = x.dataset.rosEd;
+    const p = roster[k];
+    if (!p) return;
+    $("#ed_ros_old_rk").value = k;
+    $("#ed_ros_no").value = p.no || "";
+    $("#ed_ros_name").value = p.name || "";
+    $("#ed_ros_co").value = p.co || "";
+    $("#ed_ros_exp").value = p.exp || "";
+    $("#ed_ros_msg").innerHTML = "";
+    $("#modal_ros_ed").style.display = "flex";
+  }
+
+  // Roster Single Delete (Admin)
+  if (x = q("[data-ros-del]")) {
+    if (userRole !== "admin") return alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถลบรายชื่อได้ครับ");
+    const k = x.dataset.rosDel;
+    const p = roster[k];
+    if (!p) return;
+    if (!confirm(`คุณต้องการลบรายชื่อ ผรม. [${p.no}] ${p.name} ใช่หรือไม่?`)) return;
+    try {
+      await T(db.doc("roster/" + k).delete());
+      rosSel.delete(k);
+      rosd();
+    } catch(e) {
+      alert("ลบไม่สำเร็จ: " + e.message);
+    }
+  }
+
+  // Roster Header Checkbox (Select all currently shown)
+  if (e.target && e.target.id === "ros_chk_head") {
+    const isChecked = e.target.checked;
+    const qVal = $("#rq").value.toLowerCase().trim();
+    const all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no));
+    const f = all.filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(qVal));
+    const targetList = rosShowAll ? f : f.slice(0, 100);
+
+    if (isChecked) {
+      targetList.forEach(p => rosSel.add(rk(p.no)));
+    } else {
+      targetList.forEach(p => rosSel.delete(rk(p.no)));
+    }
+    rosd();
+  }
+
+  // Roster Row Checkbox
+  if (e.target && e.target.classList.contains("ros-chk")) {
+    const k = e.target.dataset.rk;
+    if (e.target.checked) {
+      rosSel.add(k);
+    } else {
+      rosSel.delete(k);
+    }
+    updateRosAdminBar();
+    const qVal = $("#rq").value.toLowerCase().trim();
+    const all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no));
+    const f = all.filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(qVal));
+    const visibleKeys = (rosShowAll ? f : f.slice(0, 100)).map(p => rk(p.no));
+    const allChecked = visibleKeys.length > 0 && visibleKeys.every(key => rosSel.has(key));
+    const someChecked = visibleKeys.some(key => rosSel.has(key));
+    if ($("#ros_chk_head")) $("#ros_chk_head").checked = allChecked;
+    if ($("#ros_chk_all")) {
+      $("#ros_chk_all").checked = allChecked;
+      $("#ros_chk_all").indeterminate = !allChecked && someChecked;
     }
   }
 
@@ -1628,8 +1909,9 @@ $("#bx").onclick = async () => {
   $("#xm").innerHTML = `<span class="ok">เพิ่ม Work ${esc(n)} ปี ${y} เรียบร้อยแล้ว</span>${d!==D?` <button data-jump="${d}">ไปดูวันที่ ${fd(d)}</button>`:""}`;
 };
 
-/* Roster Single Add */
+/* Roster Single Add (Admin) */
 $("#bpa").onclick = async () => {
+  if (userRole !== "admin") return alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถเพิ่มรายชื่อ ผรม. ได้ครับ");
   if (!db) return;
   const no = $("#pn").value.trim(), name = $("#pnm").value.trim(), co = $("#pco").value.trim(), ex = $("#pex").value;
   if (!no || !name || !ex) return msg("#pm", "กรอกข้อมูลให้ครบ", "er");
@@ -1640,6 +1922,199 @@ $("#bpa").onclick = async () => {
   await T(db.doc("roster/" + rk(no)).set({ no, name, co, exp: ex, nat: (roster[rk(no)] || {}).nat || "" }));
   ["#pn", "#pnm", "#pco", "#pex"].forEach(s => $(s).value = "");
   msg("#pm", isExisting ? `อัปเดตข้อมูลและวันหมดอายุของ ${esc(name)} เรียบร้อยแล้ว` : "เพิ่มรายชื่อเรียบร้อย", "ok");
+};
+
+/* ==============================================================
+   ROSTER MANAGEMENT (ADMIN ACTIONS & BULK OPERATIONS)
+   ============================================================== */
+async function batchDeleteRoster(keys) {
+  const CHUNK_SIZE = 400;
+  for (let i = 0; i < keys.length; i += CHUNK_SIZE) {
+    const chunk = keys.slice(i, i + CHUNK_SIZE);
+    const b = db.batch();
+    chunk.forEach(k => b.delete(db.doc("roster/" + k)));
+    await T(b.commit());
+  }
+}
+
+async function batchUpdateRoster(updates) {
+  const CHUNK_SIZE = 400;
+  for (let i = 0; i < updates.length; i += CHUNK_SIZE) {
+    const chunk = updates.slice(i, i + CHUNK_SIZE);
+    const b = db.batch();
+    chunk.forEach(u => b.set(db.doc("roster/" + u.key), u.data, { merge: true }));
+    await T(b.commit());
+  }
+}
+
+// Select All in toolbar
+$("#ros_chk_all").onchange = e => {
+  const isChecked = e.target.checked;
+  const qVal = $("#rq").value.toLowerCase().trim();
+  const all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no));
+  const f = all.filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(qVal));
+  const targetList = rosShowAll ? f : f.slice(0, 100);
+
+  if (isChecked) {
+    targetList.forEach(p => rosSel.add(rk(p.no)));
+  } else {
+    targetList.forEach(p => rosSel.delete(rk(p.no)));
+  }
+  rosd();
+};
+
+// Toggle show 100 vs all
+$("#btn_ros_show_toggle").onclick = () => {
+  rosShowAll = !rosShowAll;
+  rosd();
+};
+
+// Bulk Edit Modal Open
+$("#btn_ros_bulk_ed").onclick = () => {
+  if (userRole !== "admin") return alert("เฉพาะผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถแก้ไขรายชื่อได้ครับ");
+  if (rosSel.size === 0) return alert("กรุณาเลือกรายชื่อ ผรม. ที่ต้องการแก้ไขก่อนครับ");
+
+  $("#bulk_ros_summary").textContent = `รายการที่เลือกทั้งหมด ${rosSel.size} คน`;
+  $("#chk_bulk_co").checked = false;
+  $("#chk_bulk_exp").checked = false;
+  $("#bulk_ros_co").value = "";
+  $("#bulk_ros_co").disabled = true;
+  $("#bulk_ros_exp").value = "";
+  $("#bulk_ros_exp").disabled = true;
+  $("#bulk_ros_msg").innerHTML = "";
+  $("#modal_ros_bulk").style.display = "flex";
+};
+
+$("#chk_bulk_co").onchange = e => {
+  $("#bulk_ros_co").disabled = !e.target.checked;
+  if (e.target.checked) $("#bulk_ros_co").focus();
+};
+
+$("#chk_bulk_exp").onchange = e => {
+  $("#bulk_ros_exp").disabled = !e.target.checked;
+};
+
+$("#btn_ros_bulk_close").onclick = () => $("#modal_ros_bulk").style.display = "none";
+$("#btn_ros_bulk_cancel").onclick = () => $("#modal_ros_bulk").style.display = "none";
+
+// Bulk Edit Save
+$("#btn_ros_bulk_save").onclick = async () => {
+  if (userRole !== "admin") return alert("เฉพาะ Admin เท่านั้น");
+  const doCo = $("#chk_bulk_co").checked;
+  const doExp = $("#chk_bulk_exp").checked;
+  const newCo = $("#bulk_ros_co").value.trim();
+  const newExp = $("#bulk_ros_exp").value;
+
+  if (!doCo && !doExp) {
+    return msg("#bulk_ros_msg", "กรุณาติ๊กเลือกอย่างน้อย 1 รายการที่ต้องการแก้ไข (บริษัท หรือ วันหมดอายุ)", "er");
+  }
+  if (doExp && !newExp) {
+    return msg("#bulk_ros_msg", "กรุณาระบุวันหมดอายุใหม่", "er");
+  }
+
+  const count = rosSel.size;
+  if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการแก้ไขข้อมูลของ ผรม. ที่เลือกจำนวน ${count} คน?`)) return;
+
+  msg("#bulk_ros_msg", "กำลังบันทึกข้อมูล…", "mu");
+  const updates = [];
+  for (const k of rosSel) {
+    const cur = roster[k];
+    if (!cur) continue;
+    const upd = { ...cur };
+    if (doCo) upd.co = newCo;
+    if (doExp) upd.exp = newExp;
+    updates.push({ key: k, data: upd });
+  }
+
+  try {
+    await batchUpdateRoster(updates);
+    $("#modal_ros_bulk").style.display = "none";
+    alert(`แก้ไขข้อมูล ผรม. เรียบร้อยแล้ว ${updates.length} คน`);
+    rosSel.clear();
+    rosd();
+  } catch(e) {
+    msg("#bulk_ros_msg", "บันทึกไม่สำเร็จ: " + e.message, "er");
+  }
+};
+
+// Bulk Delete Action
+$("#btn_ros_bulk_del").onclick = async () => {
+  if (userRole !== "admin") return alert("เฉพาะ Admin เท่านั้น");
+  if (rosSel.size === 0) return alert("กรุณาเลือกรายชื่อ ผรม. ที่ต้องการลบก่อนครับ");
+  const count = rosSel.size;
+  if (!confirm(`⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบรายชื่อ ผรม. ที่เลือกจำนวน ${count} คน?\n\n(การลบนี้จะลบออกจากฐานข้อมูลทันทีและไม่สามารถกู้คืนได้)`)) return;
+
+  try {
+    const keys = Array.from(rosSel);
+    await batchDeleteRoster(keys);
+    rosSel.clear();
+    alert(`ลบรายชื่อ ผรม. ที่เลือกจำนวน ${keys.length} คน เรียบร้อยแล้ว`);
+    rosd();
+  } catch(e) {
+    alert("ลบไม่สำเร็จ: " + e.message);
+  }
+};
+
+// Delete All Roster Action
+$("#btn_ros_del_all").onclick = async () => {
+  if (userRole !== "admin") return alert("เฉพาะ Admin เท่านั้น");
+  const total = Object.keys(roster).length;
+  if (total === 0) return alert("ไม่มีรายชื่อ ผรม. ในระบบ");
+
+  const ans = prompt(`⚠️ คำเตือนร้ายแรง!\nคุณกำลังจะลบรายชื่อ ผรม. ทั้งหมดในระบบ (${total} คน)\n\nหากต้องการลบทั้งหมดจริงๆ กรุณาพิมพ์คำว่า "ยืนยันลบทั้งหมด" ลงในช่องด้านล่าง:`);
+  if (ans !== "ยืนยันลบทั้งหมด") {
+    if (ans !== null) alert("ข้อความยืนยันไม่ถูกต้อง ระบบยกเลิกการลบ");
+    return;
+  }
+
+  try {
+    const keys = Object.keys(roster);
+    await batchDeleteRoster(keys);
+    rosSel.clear();
+    alert(`ลบรายชื่อ ผรม. ทั้งหมด ${total} คน ออกจากระบบเรียบร้อยแล้ว`);
+    rosd();
+  } catch(e) {
+    alert("ลบไม่สำเร็จ: " + e.message);
+  }
+};
+
+// Single Edit Modal Cancel/Close/Save
+$("#btn_ros_ed_close").onclick = () => $("#modal_ros_ed").style.display = "none";
+$("#btn_ros_ed_cancel").onclick = () => $("#modal_ros_ed").style.display = "none";
+
+$("#btn_ros_ed_save").onclick = async () => {
+  if (userRole !== "admin") return alert("เฉพาะ Admin เท่านั้น");
+  const oldK = $("#ed_ros_old_rk").value;
+  const no = $("#ed_ros_no").value.trim();
+  const name = $("#ed_ros_name").value.trim();
+  const co = $("#ed_ros_co").value.trim();
+  const exp = $("#ed_ros_exp").value;
+
+  if (!no || !name || !exp) {
+    return msg("#ed_ros_msg", "กรุณากรอกเลข ผรม., ชื่อ-สกุล และวันหมดอายุให้ครบ", "er");
+  }
+  const newK = rk(no);
+  if (newK !== oldK && roster[newK]) {
+    if (!confirm(`มีรายชื่อเลข ผรม. ${no} อยู่ในระบบแล้ว ต้องการบันทึกแทนที่หรือไม่?`)) return;
+  }
+
+  const curData = roster[oldK] || {};
+  const nat = curData.nat || "";
+
+  try {
+    if (newK !== oldK) {
+      await T(db.doc("roster/" + oldK).delete());
+      if (rosSel.has(oldK)) {
+        rosSel.delete(oldK);
+        rosSel.add(newK);
+      }
+    }
+    await T(db.doc("roster/" + newK).set({ no, name, co, exp, nat }));
+    $("#modal_ros_ed").style.display = "none";
+    rosd();
+  } catch(e) {
+    msg("#ed_ros_msg", "บันทึกไม่สำเร็จ: " + e.message, "er");
+  }
 };
 
 /* ==============================================================
@@ -1705,6 +2180,7 @@ $("#go").onclick = async () => {
       setD(lt());
     }
     await loadUsers();
+    draw();
   } catch(e) {
     $("#le").textContent = "ข้อผิดพลาดเชื่อมต่อ Firebase: " + e.message;
   }
@@ -1713,6 +2189,8 @@ $("#go").onclick = async () => {
 $("#btn_logout").onclick = () => {
   currentUser = null; who = ""; userRole = "staff";
   $("#nm").value = ""; $("#pin").value = ""; $("#le").textContent = "";
+  rosSel.clear();
+  draw();
   $("#lock").style.display = "flex";
 };
 
