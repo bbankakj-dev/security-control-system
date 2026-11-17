@@ -924,7 +924,7 @@ function parseRos(aoa) {
     const e = r.findIndex(x => /หมดอายุ|expir/.test(x));
     if (e < 0) continue;
     const f = re => r.findIndex((x, j) => j !== e && re.test(x));
-    const mNo = f(/เลข|รหัส|^no\b|id/);
+    const mNo = f(/contractor\s*no|เลข|รหัส|^no\b|id/);
     const mName = f(/ชื่อ|name/);
     const mTrain = f(/อบรม|train/);
     if (mNo >= 0 && mName >= 0) {
@@ -952,7 +952,7 @@ function parsePasteRoster(text) {
   lines.forEach((line, i) => {
     const cols = line.split("\t").map(c => c.trim());
     const parts = cols.length === 1 && cols[0].includes(",") ? cols[0].split(",").map(c => c.trim()) : cols;
-    if (i === 0 && parts.some(p => /เลข|รหัส|ชื่อ|หมดอายุ|อบรม/i.test(p))) return;
+    if (i === 0 && parts.some(p => /contractor\s*no|เลข|รหัส|ชื่อ|หมดอายุ|อบรม/i.test(p))) return;
     let no = "", name = "", train = "", exp = "";
     if (parts.length >= 4) {
       no = parts[0]; name = parts[1]; train = sd(parts[2]); exp = sd(parts[3]);
