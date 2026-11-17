@@ -2,6 +2,8 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Security Control System v2.0 (Firebase Cloud)</title>
 <style>
@@ -383,19 +385,20 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
     <div class="c">
       <b>เพิ่มรายชื่อ ผรม. ที่ผ่านการอบรม</b>
       <div class="r" style="margin-top:8px"><input id="pn" placeholder="เลข ผรม."><input id="pnm" placeholder="ชื่อ-สกุล"></div>
-      <div class="r" style="margin-top:6px"><span class="mu">วันที่อบรม</span><input id="ptr" type="date" style="flex:1"><span class="mu">หมดอายุ</span><input id="pex" type="date" style="flex:1"><button class="p" id="bpa">เพิ่ม</button></div>
+      <div class="r" style="margin-top:6px"><input id="pco" placeholder="บริษัท"></div>
+      <div class="r" style="margin-top:6px"><span class="mu">หมดอายุ</span><input id="pex" type="date" style="flex:1"><button class="p" id="bpa">เพิ่ม</button></div>
       <div id="pm"></div>
     </div>
 
     <div class="c">
       <b>นำเข้ารายชื่อจากไฟล์ Excel</b>
-      <div class="mu">คอลัมน์: เลข ผรม. · ชื่อสกุล · วันที่อบรม · วันหมดอายุ</div>
+      <div class="mu">คอลัมน์: เลข ผรม. · ชื่อสกุล · บริษัท · วันหมดอายุ (อ่านจากหัวตาราง ไม่ต้องเรียงลำดับ · คอลัมน์วันที่อบรม ถ้ามีจะไม่ถูกนำมาใช้)</div>
       <div class="r" style="margin-top:8px"><input type="file" id="rfx" accept=".xlsx,.xls" style="flex:1"><button id="rfc" hidden>✕ ยกเลิก</button></div>
       <div class="r" style="margin-top:6px"><span class="mu">ชีต</span><select id="rsh" style="flex:1"></select></div>
       <div id="rpv" style="margin-top:8px"></div>
       <details style="margin-top:8px">
         <summary class="mu">หรือคัดลอกจาก Excel มาวาง</summary>
-        <textarea id="imp" placeholder="C0001&#9;ชื่อ นามสกุล&#9;01/10/2026&#9;01/10/2027" style="margin-top:6px"></textarea>
+        <textarea id="imp" placeholder="C0001&#9;ชื่อ นามสกุล&#9;ชื่อบริษัท&#9;01/10/2027" style="margin-top:6px"></textarea>
         <div class="r" style="margin-top:6px"><button class="p" id="bim">ตรวจสอบข้อมูลที่วาง</button></div>
         <div id="im"></div>
       </details>
@@ -595,23 +598,23 @@ function rpk() {
   const q = $("#ps").value.trim().toLowerCase();
   if (pick) {
     const s = trn(pick);
-    $("#pk").innerHTML = `<div class="chip"><span><b>${esc(pick.no)}</b> ${esc(pick.name)}<br><span class="mu">อบรม ${fd(pick.train)} · หมดอายุ ${fd(pick.exp)} · </span><b class="${s.k}">${s.t}</b></span><button data-x="1">ยกเลิก</button></div>`;
+    $("#pk").innerHTML = `<div class="chip"><span><b>${esc(pick.no)}</b> ${esc(pick.name)}<br><span class="mu">${pick.co ? esc(pick.co) + " · " : ""}หมดอายุ ${fd(pick.exp)} · </span><b class="${s.k}">${s.t}</b></span><button data-x="1">ยกเลิก</button></div>`;
     return;
   }
   if (!q) { $("#pk").innerHTML = ""; return; }
-  const m = Object.values(roster).filter(p => (p.no + " " + p.name).toLowerCase().includes(q)).slice(0, 6);
+  const m = Object.values(roster).filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(q)).slice(0, 6);
   $("#pk").innerHTML = m.map(p => {
     const s = trn(p);
-    return `<div class="chip pk" data-p="${esc(rk(p.no))}"><span><b>${esc(p.no)}</b> ${esc(p.name)}</span><b class="${s.k}">${s.t}</b></div>`;
+    return `<div class="chip pk" data-p="${esc(rk(p.no))}"><span><b>${esc(p.no)}</b> ${esc(p.name)}${p.co ? ` <span class="mu">· ${esc(p.co)}</span>` : ""}</span><b class="${s.k}">${s.t}</b></div>`;
   }).join("") || `<div class="mu" style="margin-top:6px">ไม่พบในรายชื่อ · <button data-go="ros">เพิ่มรายชื่อ</button> หรือรับบัตรโดยไม่เลือกรายชื่อได้</div>`;
 }
 
 function rosd() {
-  const q = $("#rq").value.toLowerCase(), all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no)), f = all.filter(p => (p.no + " " + p.name).toLowerCase().includes(q));
+  const q = $("#rq").value.toLowerCase(), all = Object.values(roster).sort((a, b) => a.no.localeCompare(b.no)), f = all.filter(p => (p.no + " " + p.name + " " + (p.co || "")).toLowerCase().includes(q));
   $("#rc").textContent = `รายชื่อทั้งหมด ${all.length} คน` + (f.length > 100 ? " (แสดง 100 รายการแรก)" : "");
-  $("#rl").innerHTML = lb(["เลข ผรม.", "ชื่อ-สกุล", "วันที่อบรม", "วันหมดอายุ", "สถานะ"], f.slice(0, 100).map(p => {
+  $("#rl").innerHTML = lb(["เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "วันหมดอายุ", "สถานะ"], f.slice(0, 100).map(p => {
     const s = trn(p);
-    return [esc(p.no), esc(p.name), fd(p.train), fd(p.exp), `<b class="${s.k}">${s.t}</b>`];
+    return [esc(p.no), esc(p.name), esc(p.co || "-"), fd(p.exp), `<b class="${s.k}">${s.t}</b>`];
   }));
 }
 
@@ -917,31 +920,50 @@ const sd = v => {
   return pd(v);
 };
 
+const cleanTxt = v => String(v ?? "").replace(/\s+/g, " ").trim();
+
+/* หา "แถวหัวตาราง" แล้วจับคู่คอลัมน์: เลข ผรม. / ชื่อ / บริษัท / วันหมดอายุ (วันที่อบรมไม่ถูกใช้) */
+function mapHeader(cells) {
+  const r = (cells || []).map(x => String(x).toLowerCase());
+  const e = r.findIndex(x => /หมดอายุ|expir/.test(x));
+  if (e < 0) return null;
+  const mCo = r.findIndex((x, j) => j !== e && /บริษัท|company|vendor|supplier|สังกัด/.test(x));
+  const mNo = r.findIndex((x, j) => j !== e && j !== mCo && /contractor\s*no|เลข|รหัส|^no\b|id/.test(x));
+  const mName = r.findIndex((x, j) => j !== e && j !== mCo && j !== mNo && /ชื่อ|name/.test(x));
+  return (mNo >= 0 && mName >= 0) ? { no: mNo, name: mName, co: mCo, exp: e } : null;
+}
+
+/* กรณีไม่มีหัวตาราง: คอลัมน์ที่ 3 เป็นต้นไป -> ข้อความ = บริษัท, วันที่ = (วันอบรม,) วันหมดอายุ (ใช้วันที่ตัวสุดท้าย) */
+function restCols(cells) {
+  let co = "", dates = [];
+  cells.forEach(c => {
+    const s = String(c ?? "").trim(); if (!s) return;
+    const d = sd(c);
+    if (d) dates.push(d); else if (!co) co = cleanTxt(s);
+  });
+  return { co, exp: dates.length ? dates[dates.length - 1] : "", anyDate: dates.length > 0 };
+}
+
+function rosRow(c, mp) {
+  c = c || [];
+  if (mp) return { no: cleanTxt(c[mp.no]), name: cleanTxt(c[mp.name]), co: mp.co >= 0 ? cleanTxt(c[mp.co]) : "", exp: sd(c[mp.exp]), anyDate: true };
+  const rest = restCols(c.slice(2));
+  return { no: cleanTxt(c[0]), name: cleanTxt(c[1]), co: rest.co, exp: rest.exp, anyDate: rest.anyDate };
+}
+
 function parseRos(aoa) {
-  let hi = -1, mp = { no: 0, name: 1, train: 2, exp: 3 };
+  let hi = -1, mp = null;
   for (let i = 0; i < Math.min(aoa.length, 15); i++) {
-    const r = (aoa[i] || []).map(x => String(x).toLowerCase());
-    const e = r.findIndex(x => /หมดอายุ|expir/.test(x));
-    if (e < 0) continue;
-    const f = re => r.findIndex((x, j) => j !== e && re.test(x));
-    const mNo = f(/contractor\s*no|เลข|รหัส|^no\b|id/);
-    const mName = f(/ชื่อ|name/);
-    const mTrain = f(/อบรม|train/);
-    if (mNo >= 0 && mName >= 0) {
-      hi = i;
-      mp = { no: mNo, name: mName, train: mTrain >= 0 ? mTrain : -1, exp: e };
-      break;
-    }
+    const m = mapHeader(aoa[i]);
+    if (m) { hi = i; mp = m; break; }
   }
   const out = [];
   aoa.forEach((r, i) => {
     if (i <= hi) return;
-    const no = String(r[mp.no] ?? "").trim();
-    const name = String(r[mp.name] ?? "").replace(/\s+/g, " ").trim();
-    const tr = mp.train >= 0 ? sd(r[mp.train]) : "";
-    const ex = sd(r[mp.exp]);
-    if (!no && !name) return;
-    out.push({ row: i + 1, no, name, train: tr, exp: ex, ok: !!(no && name && ex) });
+    const x = rosRow(r, mp);
+    if (!x.no && !x.name) return;
+    if (!mp && i === 0 && !x.anyDate) return;   // แถวแรกที่ดูเป็นหัวตาราง
+    out.push({ row: i + 1, no: x.no, name: x.name, co: x.co, exp: x.exp, ok: !!(x.no && x.name && x.exp) });
   });
   return out;
 }
@@ -949,25 +971,24 @@ function parseRos(aoa) {
 function parsePasteRoster(text) {
   const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
   const rows = [];
+  let mp = null;
   lines.forEach((line, i) => {
     const cols = line.split("\t").map(c => c.trim());
     const parts = cols.length === 1 && cols[0].includes(",") ? cols[0].split(",").map(c => c.trim()) : cols;
-    if (i === 0 && parts.some(p => /contractor\s*no|เลข|รหัส|ชื่อ|หมดอายุ|อบรม/i.test(p))) return;
-    let no = "", name = "", train = "", exp = "";
-    if (parts.length >= 4) {
-      no = parts[0]; name = parts[1]; train = sd(parts[2]); exp = sd(parts[3]);
-    } else if (parts.length === 3) {
-      no = parts[0]; name = parts[1]; exp = sd(parts[2]);
-    } else if (parts.length === 2) {
-      no = parts[0]; name = parts[1];
+    if (i === 0) {
+      mp = mapHeader(parts);
+      if (mp) return;
+      if (!rosRow(parts, null).anyDate && parts.some(p => /contractor\s*no|เลข|รหัส|ชื่อ|หมดอายุ|อบรม|บริษัท|company/i.test(p))) return;
     }
-    if (!no && !name) return;
-    rows.push({ row: i + 1, no, name, train, exp, ok: !!(no && name && exp) });
+    const x = rosRow(parts, mp);
+    if (!x.no && !x.name) return;
+    rows.push({ row: i + 1, no: x.no, name: x.name, co: x.co, exp: x.exp, ok: !!(x.no && x.name && x.exp) });
   });
   return rows;
 }
 
 function analyzeRosterRows(rows) {
+
   const today = lt();
   const seen = new Map();
   const invalidSkipped = [];
@@ -989,7 +1010,8 @@ function analyzeRosterRows(rows) {
     const k = rk(r.no);
     if (seen.has(k)) {
       const prev = seen.get(k);
-      if (r.exp > prev.exp) seen.set(k, r);
+      if (r.exp > prev.exp) seen.set(k, { ...r, co: r.co || prev.co });
+      else if (!prev.co && r.co) seen.set(k, { ...prev, co: r.co });
       return;
     }
     seen.set(k, r);
@@ -1001,14 +1023,19 @@ function analyzeRosterRows(rows) {
     if (ex) {
       const expChanged = ex.exp !== r.exp;
       const nameChanged = r.name && ex.name !== r.name;
-      const trainChanged = r.train && ex.train !== r.train;
-      if (expChanged || nameChanged || trainChanged) {
+      const coChanged = r.co && (ex.co || "") !== r.co;
+      if (expChanged || nameChanged || coChanged) {
         toUpdate.push({
           ...r,
           oldExp: ex.exp || "",
           oldName: ex.name || "",
-          oldTrain: ex.train || "",
+          oldCo: ex.co || "",
           expChanged,
+          changes: [
+            expChanged ? `วันหมดอายุ ${fd(ex.exp)} ➔ ${fd(r.exp)}` : "",
+            coChanged ? `บริษัท ${ex.co || "-"} ➔ ${r.co}` : "",
+            nameChanged ? `ชื่อ ${ex.name} ➔ ${r.name}` : ""
+          ].filter(Boolean).join(" · "),
           status: "update"
         });
       } else {
@@ -1021,18 +1048,18 @@ function analyzeRosterRows(rows) {
 
   // Prepare clipboard strings
   const cpUpd = [
-    ["เลข ผรม.", "ชื่อ-สกุล", "วันหมดอายุเดิม", "วันหมดอายุใหม่"].join("\t"),
-    ...toUpdate.map(p => [p.no, p.name, p.oldExp || "-", p.exp].join("\t"))
+    ["เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "วันหมดอายุเดิม", "วันหมดอายุใหม่"].join("\t"),
+    ...toUpdate.map(p => [p.no, p.name, p.co || p.oldCo || "-", p.oldExp || "-", p.exp].join("\t"))
   ].join("\n");
 
   const cpExp = [
-    ["เลข ผรม.", "ชื่อ-สกุล", "วันหมดอายุ", "สถานะ"].join("\t"),
-    ...expiredSkipped.map(p => [p.no, p.name, p.exp, "วันอบรมหมดอายุแล้ว (ไม่นำเข้า)"].join("\t"))
+    ["เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "วันหมดอายุ", "สถานะ"].join("\t"),
+    ...expiredSkipped.map(p => [p.no, p.name, p.co || "-", p.exp, "วันอบรมหมดอายุแล้ว (ไม่นำเข้า)"].join("\t"))
   ].join("\n");
 
   const cpInv = [
-    ["แถว", "เลข ผรม.", "ชื่อ-สกุล", "สาเหตุ"].join("\t"),
-    ...invalidSkipped.map(p => [p.row || "-", p.no || "-", p.name || "-", p.reason].join("\t"))
+    ["แถว", "เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "สาเหตุ"].join("\t"),
+    ...invalidSkipped.map(p => [p.row || "-", p.no || "-", p.name || "-", p.co || "-", p.reason].join("\t"))
   ].join("\n");
 
   return {
@@ -1044,28 +1071,39 @@ function analyzeRosterRows(rows) {
     same,
     cpUpd,
     cpExp,
-    cpInv
+    cpInv,
+    noCo: [...toNew, ...toUpdate].filter(p => !p.co && !(roster[rk(p.no)] || {}).co).length
   };
 }
 
 function renderRosterAlertHtml(an) {
   let html = "";
 
+  // 0. New people to be imported (with company + expiry date only)
+  if (an.toNew.length > 0) {
+    html += `
+    <div style="margin-top:10px">
+      <b style="font-size:13.5px">➕ รายชื่อใหม่ที่จะนำเข้า (${an.toNew.length} คน)</b>
+      <div style="max-height:240px;overflow:auto;margin-top:6px">${lb(["เลข ผรม.", "ชื่อ-สกุล", "บริษัท", "วันหมดอายุ"], an.toNew.slice(0, 200).map(p => [esc(p.no), esc(p.name), esc(p.co || "-"), fd(p.exp)]))}</div>
+      ${an.toNew.length > 200 ? `<div class="mu">แสดง 200 รายการแรก</div>` : ""}
+    </div>`;
+  }
+
   // 1. Auto-update Existing Roster Box (Blue Alert)
   if (an.toUpdate.length > 0) {
     html += `
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #2563eb;padding:12px;border-radius:8px;margin-top:10px">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-        <b style="color:#1e40af;font-size:13.5px">🔄 ตรวจพบรายชื่อเดิมในระบบ (${an.toUpdate.length} คน) — จะอัปเดตวันหมดอายุให้อัตโนมัติ:</b>
+        <b style="color:#1e40af;font-size:13.5px">🔄 ตรวจพบรายชื่อเดิมในระบบ (${an.toUpdate.length} คน) — จะอัปเดตข้อมูลให้อัตโนมัติ:</b>
         <button type="button" id="btn_cp_ros_upd" style="padding:4px 10px;font-size:12px;background:#fff;border:1px solid #2563eb;color:#1e40af;border-radius:6px;font-weight:600">📋 คัดลอกรายชื่อที่อัปเดต</button>
       </div>
       <div class="mu" style="font-size:12px;margin-top:4px;color:#1e3a8a">
-        รายชื่อเหล่านี้มีในระบบแล้ว และวันอบรมยังไม่หมดอายุ ระบบจะบันทึกอัปเดตวันหมดอายุใหม่ให้ทันทีเมื่อกดยืนยัน:
+        รายชื่อเหล่านี้มีในระบบแล้ว และวันอบรมยังไม่หมดอายุ ระบบจะบันทึกอัปเดตข้อมูลใหม่ให้ทันทีเมื่อกดยืนยัน:
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:130px;overflow-y:auto;background:#fff;padding:8px;border-radius:6px;border:1px solid #bfdbfe">
         ${an.toUpdate.map(p => `<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">
-          <b>${esc(p.no)}</b> ${esc(p.name)}
-          <span style="font-size:11px;font-weight:400;color:#15803d">(เดิม: ${esc(p.oldExp || "-")} ➔ <b>ใหม่: ${esc(p.exp)}</b>)</span>
+          <b>${esc(p.no)}</b> ${esc(p.name)}${p.co ? ` · ${esc(p.co)}` : ""}
+          <span style="font-size:11px;font-weight:400;color:#15803d">(${esc(p.changes)})</span>
         </span>`).join("")}
       </div>
     </div>`;
@@ -1084,8 +1122,8 @@ function renderRosterAlertHtml(an) {
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;max-height:130px;overflow-y:auto;background:#fff;padding:8px;border-radius:6px;border:1px solid #fed7aa">
         ${an.expiredSkipped.map(p => `<span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;padding:3px 8px;border-radius:4px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px">
-          <b>${esc(p.no)}</b> ${esc(p.name)}
-          <span style="font-size:11px;font-weight:400;color:#7f1d1d">(หมดอายุ: <b>${esc(p.exp)}</b>)</span>
+          <b>${esc(p.no)}</b> ${esc(p.name)}${p.co ? ` · ${esc(p.co)}` : ""}
+          <span style="font-size:11px;font-weight:400;color:#7f1d1d">(หมดอายุ: <b>${fd(p.exp)}</b>)</span>
         </span>`).join("")}
       </div>
     </div>`;
@@ -1134,8 +1172,9 @@ function prevRos() {
     <div style="margin-top:4px">
       พบทั้งหมด ${rawRows.length} แถว · 
       <b class="ok">คนใหม่ ${an.toNew.length} คน</b> · 
-      <b style="color:#2563eb">อัปเดตวันหมดอายุ ${an.toUpdate.length} คน</b>
+      <b style="color:#2563eb">อัปเดตข้อมูล ${an.toUpdate.length} คน</b>
       ${an.same.length ? ` · <span class="mu">ข้อมูลเดิม ${an.same.length} คน</span>` : ""}
+      ${an.noCo ? ` · <span class="wa">ไม่ระบุบริษัท ${an.noCo} คน</span>` : ""}
       ${an.expiredSkipped.length ? ` · <b class="wa">ข้ามหมดอายุ ${an.expiredSkipped.length} คน</b>` : ""}
       ${an.invalidSkipped.length ? ` · <b class="er">ข้อมูลไม่ครบ ${an.invalidSkipped.length} แถว</b>` : ""}
     </div>
@@ -1167,7 +1206,7 @@ async function goRos() {
       T(db.doc("roster/" + rk(p.no)).set({
         no: p.no,
         name: p.name,
-        train: p.train || "",
+        co: p.co || (roster[rk(p.no)] || {}).co || "",
         exp: p.exp,
         nat: (roster[rk(p.no)] || {}).nat || ""
       })).then(() => n++)
@@ -1179,7 +1218,7 @@ async function goRos() {
   const invCount = RV.invalidSkipped.length;
   cancelRos();
   $("#rpv").innerHTML = `
-    <span class="ok">นำเข้าและอัปเดตรายชื่อสำเร็จแล้ว ${n} คน (คนใหม่ ${newCount} · อัปเดตวันหมดอายุ ${updCount})</span>
+    <span class="ok">นำเข้าและอัปเดตรายชื่อสำเร็จแล้ว ${n} คน (คนใหม่ ${newCount} · อัปเดต ${updCount})</span>
     ${expCount ? ` · <span class="wa">ข้ามคนที่หมดอายุแล้ว ${expCount} คน</span>` : ""}
     ${invCount ? ` · <span class="er">ข้ามข้อมูลไม่ครบ ${invCount} แถว</span>` : ""}
   `;
@@ -1195,7 +1234,7 @@ async function goPasteRos() {
       T(db.doc("roster/" + rk(p.no)).set({
         no: p.no,
         name: p.name,
-        train: p.train || "",
+        co: p.co || (roster[rk(p.no)] || {}).co || "",
         exp: p.exp,
         nat: (roster[rk(p.no)] || {}).nat || ""
       })).then(() => n++)
@@ -1208,7 +1247,7 @@ async function goPasteRos() {
   RV_PASTE = null;
   $("#imp").value = "";
   $("#im").innerHTML = `
-    <span class="ok">นำเข้าและอัปเดตรายชื่อสำเร็จแล้ว ${n} คน (คนใหม่ ${newCount} · อัปเดตวันหมดอายุ ${updCount})</span>
+    <span class="ok">นำเข้าและอัปเดตรายชื่อสำเร็จแล้ว ${n} คน (คนใหม่ ${newCount} · อัปเดต ${updCount})</span>
     ${expCount ? ` · <span class="wa">ข้ามคนที่หมดอายุแล้ว ${expCount} คน</span>` : ""}
     ${invCount ? ` · <span class="er">ข้ามข้อมูลไม่ครบ ${invCount} แถว</span>` : ""}
   `;
@@ -1304,8 +1343,9 @@ $("#bim").onclick = () => {
     <div style="margin-top:6px">
       พบทั้งหมด ${rows.length} แถว · 
       <b class="ok">คนใหม่ ${an.toNew.length} คน</b> · 
-      <b style="color:#2563eb">อัปเดตวันหมดอายุ ${an.toUpdate.length} คน</b>
+      <b style="color:#2563eb">อัปเดตข้อมูล ${an.toUpdate.length} คน</b>
       ${an.same.length ? ` · <span class="mu">ข้อมูลเดิม ${an.same.length} คน</span>` : ""}
+      ${an.noCo ? ` · <span class="wa">ไม่ระบุบริษัท ${an.noCo} คน</span>` : ""}
       ${an.expiredSkipped.length ? ` · <b class="wa">ข้ามหมดอายุ ${an.expiredSkipped.length} คน</b>` : ""}
       ${an.invalidSkipped.length ? ` · <b class="er">ข้อมูลไม่ครบ ${an.invalidSkipped.length} แถว</b>` : ""}
     </div>
@@ -1591,14 +1631,14 @@ $("#bx").onclick = async () => {
 /* Roster Single Add */
 $("#bpa").onclick = async () => {
   if (!db) return;
-  const no = $("#pn").value.trim(), name = $("#pnm").value.trim(), tr = $("#ptr").value, ex = $("#pex").value;
+  const no = $("#pn").value.trim(), name = $("#pnm").value.trim(), co = $("#pco").value.trim(), ex = $("#pex").value;
   if (!no || !name || !ex) return msg("#pm", "กรอกข้อมูลให้ครบ", "er");
   if (ex < lt()) {
     if (!confirm(`คำเตือน: วันหมดอายุ (${fd(ex)}) ผ่านมาแล้ว (หมดอายุแล้ว) ต้องการบันทึกหรือไม่?`)) return;
   }
   const isExisting = !!roster[rk(no)];
-  await T(db.doc("roster/" + rk(no)).set({ no, name, train: tr, exp: ex, nat: (roster[rk(no)] || {}).nat || "" }));
-  ["#pn", "#pnm", "#ptr", "#pex"].forEach(s => $(s).value = "");
+  await T(db.doc("roster/" + rk(no)).set({ no, name, co, exp: ex, nat: (roster[rk(no)] || {}).nat || "" }));
+  ["#pn", "#pnm", "#pco", "#pex"].forEach(s => $(s).value = "");
   msg("#pm", isExisting ? `อัปเดตข้อมูลและวันหมดอายุของ ${esc(name)} เรียบร้อยแล้ว` : "เพิ่มรายชื่อเรียบร้อย", "ok");
 };
 
