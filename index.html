@@ -5,7 +5,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Security Control System v2.0 (Firebase Cloud)</title>
+<title>Security Control Gate System v2.0 (Firebase Cloud)</title>
 <style>
 :root{--bg:#f4f6f8;--sf:#fff;--tx:#1b1f24;--mu:#667085;--bd:#c9d0d8;--ac:#1d5fd1;--ok:#13795b;--wa:#b54708;--er:#c4322b;--hd:#e9edf2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--sf:#1d2128;--tx:#e8ebef;--mu:#98a2b3;--bd:#3a424d;--ac:#6aa0ff;--ok:#4cc9a0;--wa:#f5a24b;--er:#ff7a72;--hd:#262c35;color-scheme:dark}}
@@ -186,7 +186,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
       <div style="display:flex;align-items:center;gap:10px">
         <span style="font-size:24px">🛡️</span>
         <div>
-          <h1 style="color:#fff;font-size:17.5px;font-weight:700;line-height:1.2;margin:0">Security Control</h1>
+          <h1 style="color:#fff;font-size:17.5px;font-weight:700;line-height:1.2;margin:0">Security Control Gate System</h1>
           <div style="font-size:11px;color:#93c5fd;font-weight:500">ระบบควบคุมความปลอดภัย ป้อม รปภ.</div>
         </div>
       </div>
@@ -208,6 +208,9 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
           <input id="pin" type="password" placeholder="Password" autocomplete="current-password">
           <button class="p" id="go" style="margin-top:10px;padding:11px;font-size:14.5px;font-weight:600;background:linear-gradient(135deg,#1d5fd1,#1e40af)">เข้าสู่ระบบ ➔</button>
           <div id="le" class="er" style="font-size:13px;margin-top:6px;text-align:center"></div>
+          <div style="text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid #cbd5e1">
+            <button type="button" id="btn_login_qr" style="background:none;border:none;color:#1d5fd1;font-size:12.5px;font-weight:600;cursor:pointer">📱 สแกน QR Code เปิดบนมือถือ</button>
+          </div>
         </div>
       </div>
 
