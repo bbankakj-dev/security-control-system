@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
@@ -68,6 +68,15 @@ textarea{width:100%;box-sizing:border-box;min-height:90px;font:inherit;font-size
 .nav button[data-t="sum"].on{background:#0284c7;border-color:#0284c7;color:#fff}
 .nav button[data-t="emg"].on{background:#dc2626;border-color:#dc2626;color:#fff}
 .nav button[data-t="usr"].on{background:#9333ea;border-color:#9333ea;color:#fff}
+
+/* Work Issue & Return Distinct Button Styles */
+.btn-work-issue{background:#059669!important;border-color:#047857!important;color:#fff!important;font-weight:700!important;padding:8px 14px!important;box-shadow:0 1px 3px rgba(5,150,105,0.3)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;cursor:pointer}
+.btn-work-issue:hover{background:#047857!important}
+.btn-work-return{background:#ea580c!important;border-color:#c2410c!important;color:#fff!important;font-weight:700!important;padding:8px 14px!important;box-shadow:0 1px 3px rgba(234,88,12,0.3)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;cursor:pointer}
+.btn-work-return:hover{background:#c2410c!important}
+.btn-work-nav{background:#d97706!important;border-color:#b45309!important;color:#fff!important;font-weight:700!important;padding:8px 14px!important;box-shadow:0 1px 3px rgba(217,119,6,0.3)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;cursor:pointer}
+.btn-work-nav:hover{background:#b45309!important}
+.cat-panel{background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:8px 10px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
 
 /* Category Switcher Colors */
 #cat button[data-cat="c"].on{background:#1d5fd1;border-color:#1d5fd1;color:#fff}
@@ -230,6 +239,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
           <input id="reg_nm" placeholder="ตั้งชื่อผู้ใช้งาน (User / Email)" autocomplete="off">
           <input id="reg_fullname" placeholder="ชื่อ - นามสกุลจริง (และสังกัด เช่น ป้อม 1)">
           <input id="reg_pin" type="password" placeholder="ตั้งรหัสผ่าน">
+          <input id="reg_pin2" type="password" placeholder="ยืนยันรหัสผ่าน">
           <button class="p" id="reg_go" style="margin-top:6px;padding:10px;font-size:14px;font-weight:600">ส่งคำขอลงทะเบียน</button>
           <div id="reg_msg" style="font-size:13px;margin-top:6px;text-align:center"></div>
         </div>
@@ -423,6 +433,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
     </div>
     <div style="display:flex;align-items:center;gap:8px">
       <span id="who" class="mu"></span>
+      <button id="btn_refresh" title="รีเฟรชข้อมูลล่าสุดโดยไม่หลุดจากระบบ" style="padding:4px 9px;font-size:12.5px;font-weight:500;display:inline-flex;align-items:center;gap:4px;cursor:pointer;background:#f8fafc;border:1px solid #cbd5e1">🔄 รีเฟรช</button>
       <button id="btn_logout" style="padding:4px 8px;font-size:12px">ออกจากระบบ</button>
     </div>
   </div>
@@ -439,10 +450,16 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
     <div id="date_perm_msg" class="wa" style="font-size:12px;display:none;margin-top:4px">🔒 คุณอยู่ในสิทธิ์เจ้าหน้าที่ทั่วไป ดูและบันทึกได้เฉพาะวันปัจจุบัน (Admin เท่านั้นที่แก้ย้อนหลังได้)</div>
   </div>
 
-  <div class="seg" id="cat">
-    <button data-cat="c" class="on">Contractor</button>
-    <button data-cat="g1">Transportor G1</button>
-    <button data-cat="g2">Transportor G2</button>
+  <div class="cat-panel">
+    <div style="font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;display:flex;align-items:center;gap:5px">
+      <span>🏢 หมวดหมู่หลัก (Category)</span>
+      <span class="mu" style="font-weight:400;font-size:11.5px">— เลือกกลุ่มงานเพื่อดำเนินการ</span>
+    </div>
+    <div class="seg m" id="cat" style="margin-bottom:0">
+      <button data-cat="c" class="on" style="font-size:14px;padding:9px 4px;font-weight:600">👷 Contractor</button>
+      <button data-cat="g1" style="font-size:14px;padding:9px 4px;font-weight:600">🚛 Transportor G1</button>
+      <button data-cat="g2" style="font-size:14px;padding:9px 4px;font-weight:600">🚚 Transportor G2</button>
+    </div>
   </div>
 
   <div class="nav" id="nav">
@@ -469,7 +486,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
 
     <div class="c">
       <div id="sel" class="mu">ยังไม่ได้เลือก Work</div>
-      <div class="r" style="margin-top:6px"><button id="bis2">ผรม. รับ Work</button><button id="bw2">คืน Work →</button></div>
+      <div class="r" style="margin-top:6px"><button id="bis2" class="btn-work-issue">📝 ผรม. รับ Work</button><button id="bw2" class="btn-work-nav">📋 คืน Work →</button></div>
       <div class="r" style="margin-top:8px"><input id="ps" placeholder="เลือกรายชื่อ ผรม. (เลข/ชื่อ) ไม่บังคับ"></div>
       <div id="pk"></div>
       <div class="seg" id="nat" style="margin-top:8px"><button data-nat="th">ไทย</button><button data-nat="fo">ต่างชาติ</button><button data-nat="mg">ต่างด้าว</button></div>
@@ -531,7 +548,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
       <div id="wd"></div>
       <div id="wi" class="mu" style="margin-top:6px">เลือก Work จากแท็บ “รับ/คืนบัตร” ก่อน</div>
       <div class="r" style="margin-top:8px;align-items:center">
-        <button id="bis">ผรม. รับ Work แล้ว</button>
+        <button id="bis" class="btn-work-issue">📝 ผรม. รับ Work แล้ว</button>
         <span class="mu">OT ถึง</span>
         <div style="display:inline-flex;align-items:center;gap:4px">
           <input id="ot" placeholder="เช่น 20.00" inputmode="decimal" style="width:75px">
@@ -549,7 +566,7 @@ th{background:#e2e8f0;color:#1e293b;font-weight:700;border-bottom:2px solid var(
         <button type="button" class="ot-quick" data-ot="22.00" style="padding:3px 7px;font-size:11.5px">22.00</button>
         <button type="button" class="ot-quick" data-ot="24.00" style="padding:3px 7px;font-size:11.5px">24.00</button>
       </div>
-      <div class="r" style="margin-top:8px"><input id="rb" placeholder="ชื่อผู้คืน Work"><button class="p" id="bret">คืน Work</button></div>
+      <div class="r" style="margin-top:8px"><input id="rb" placeholder="ชื่อผู้คืน Work"><button class="btn-work-return" id="bret">🏁 คืน Work</button></div>
       <div id="wm"></div>
     </div>
 
@@ -1103,6 +1120,19 @@ const strip = s => String(s || "").replace(/<[^>]*>/g, "").trim();
 const lb = (h, rows, cls) => `<table class="lb ${cls || ""}"><thead><tr>${h.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((x, i) => `<td data-l="${strip(h[i])}">${x}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${h.length}" class="mu">ไม่มีรายการ</td></tr>`}</tbody></table>`;
 const selT = w => `<table class="lt"><thead><tr><th class="nw n">เลขที่</th><th>บริษัท · พื้นที่ · เจ้าของงาน</th></tr></thead><tbody><tr><td class="no">${esc(w.no)}</td><td><div class="co">${esc(w.c)}</div><div class="sub">${esc(w.a)}${w.o ? " · เจ้าของงาน: " + esc(w.o) : ""}</div></td></tr></tbody></table>`;
 
+function checkUnreceivedWork(targetWorkId) {
+  if (!cur || (targetWorkId && cur === targetWorkId)) return true;
+  const w = wf(cur);
+  if (!w || w.x) return true;
+  const entered = cnt(w.id);
+  if (entered > 0 && !I(w)) {
+    const proceed = confirm("⚠️ แจ้งเตือน: Work เลขที่ " + w.no + " (" + (w.c || "-") + ")\nมีการแลกบัตร ผรม. เข้าทำงานแล้ว (" + entered + " คน) แต่ยังไม่ได้กด \"ผรม. รับ Work\"\n\nต้องการเปลี่ยนรายการโดยยังไม่กดรับ Work หรือไม่?\n\n• กด \"ตกลง (OK)\" เพื่อยืนยันเปลี่ยนรายการ\n• กด \"ยกเลิก (Cancel)\" เพื่อกลับไปกดปุ่ม \"📝 ผรม. รับ Work\" ก่อน");
+    return proceed;
+  }
+  return true;
+}
+
+
 function status(w) {
   const n = cnt(w.id);
   return w.x ? "ยกเลิก" : R(w) ? (n ? "คืนแล้ว" : "คืนแล้ว · ไม่มีคนเข้า") : I(w) ? (n ? "รับ Work แล้ว · มีคนเข้า" : "รับ Work แล้ว · ยังไม่มีคนเข้า") : (n ? "มีคนเข้า (ยังไม่บันทึกรับ Work)" : "ยังไม่รับ Work");
@@ -1361,6 +1391,18 @@ function dash() {
   });
   const dn = k => new Set(all.filter(c => c.nat === k).map(c => c.card)).size, tk = g => trucks.filter(t => t.g === g);
   const wr = ws.filter(w => !w.x && (w.issAt || w.retAt)), wt = `<div class="c"><div class="th"><b>เวลารับ / คืน Work</b><span class="mu">รับแล้ว ${ws.filter(w => !w.x && w.issAt).length} · คืนแล้ว ${ws.filter(w => !w.x && w.retAt).length} · ยังไม่คืน ${ws.filter(w => !w.x && w.issAt && !w.retAt).length}</span></div>${lb(["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน"], wr.map(w => [`<b>${esc(w.no)}</b>`, esc(w.c), tm(w.issAt), tm(w.retAt), esc(w.retBy || "-")]))}</div>`;
+
+  // Work ที่ต่อ OT สำหรับ Dashboard
+  const otWorks = ws.filter(w => !w.x && hasOT(w));
+  const otTable = otWorks.length ? lb(["เลขที่ Work", "บริษัท", "พื้นที่", "เวลาปกติ", "ต่อ OT ถึง", "คนเข้า", "ในพื้นที่", "สถานะ"], otWorks.map(w => {
+    const entered = cnt(w.id), inArea = act(w.id).length;
+    return [`<b>${esc(w.no)}</b>`, esc(w.c), esc(w.a), win(w), `<b class="wa">⏰ ${dt(endR(w))}</b>`, entered, `<span class="${inArea ? "wa" : "ok"}">${inArea}</span>`, esc(status(w))];
+  })) : '<div class="mu" style="margin-top:4px">ไม่มี Work ที่ต่อเวลา OT ในวันนี้</div>';
+  const otCard = `<div class="c" style="border-top:3px solid #d97706;background:#fffbeb;border:1px solid #fde68a">
+    <div class="th"><b style="color:#b45309;font-size:15px;display:flex;align-items:center;gap:6px">⏰ Work ที่ต่อเวลา OT (${otWorks.length} งาน)</b><span class="mu">คนทำ OT ในพื้นที่: ${otWorks.reduce((s, w) => s + act(w.id).length, 0)} คน</span></div>
+    ${otTable}
+  </div>`;
+
   const det = Object.keys(m).sort().map(c => {
     const ws2 = m[c], ids = ws2.flatMap(w => of(w.id)), n = new Set(ids.map(x => x.card)).size, a = ids.filter(x => !x.outAt).length;
     return `<details data-co="${esc(c)}" ${op.has(c) ? "open" : ""}><summary>${esc(c)} · Work ${ws2.length} · เข้า ${n} · <span class="${a ? "wa" : "ok"}">ในพื้นที่ ${a}</span> · ออกแล้ว ${n-a}</summary>${ws2.map(w => `<div class="wk"><b>${esc(w.no)}</b> · ${esc(w.a)} · เจ้าของ ${esc(w.o || "-")}<br><span class="mu">${times(w)}${hasOT(w) ? ` · OT ถึง ${dt(endR(w))}` : ""}</span>${of(w.id).length ? `<table><tr><th>บัตร</th><th>ชื่อ</th><th>ประเภท</th><th>เข้า</th><th>ออก</th></tr>${of(w.id).map(x => `<tr><td>${esc(x.card)}</td><td>${esc(x.pname || "-")}</td><td>${NT[x.nat] || ""}</td><td>${tm(x.inAt)}</td><td class="${x.outAt ? "" : "wa"}">${x.outAt ? tm(x.outAt) : "อยู่ในพื้นที่"}</td></tr>`).join("")}</table>` : '<div class="mu">ยังไม่มีคนเข้า</div>'}</div>`).join("")}</details>`;
@@ -1389,6 +1431,7 @@ function dash() {
     </div>
   </div>
   ${wt}
+  ${otCard}
   <div class="c"><b>เรื่องที่ต้องตาม (${al.length+pl.length})</b>
     ${pl.map(p=>`<div class="wa r" style="justify-content:space-between"><span>⚠ บัตร ${esc(p.card)} ค้างจากวันที่ ${fd(p.day)} · Work ${esc(p.wno)} ${esc(p.co||"")}${p.pname?" · "+esc(p.pname):""}</span><button data-res="${esc(p.card)}">เอาออกจากรายการ</button></div>`).join("")}
     ${al.map(a=>`<div class="wa">⚠ ${esc(a)}</div>`).join("")}
@@ -1396,6 +1439,7 @@ function dash() {
   </div>
   <div class="c"><b>Contractor แยกตามบริษัท</b> ${det||'<div class="mu" style="margin-top:6px">ยังไม่มีบันทึก</div>'}</div>`;
 }
+
 
 function emg() {
   const pl = Object.values(pend).filter(p => p.day < lt()).sort((a, b) => a.day < b.day ? -1 : 1);
@@ -1430,9 +1474,22 @@ function emg() {
 }
 
 function tbl(i, t, h, rows, tot) {
-  const no = h[0] === "No.";
-  TS[i] = [t, h.join("\t"), ...rows.map(r => r.join("\t")), tot ? ["", "รวม", ...tot].join("\t") : ""].join("\n");
-  return `<div class="c"><div class="th"><b>${esc(t)}</b><button data-cp="${i}">คัดลอกตารางนี้</button></div><table><tr>${h.map((x, j) => `<th class="${!j&&no?"n":""}">${esc(x)}</th>`).join("")}</tr>${rows.map(r => `<tr>${r.map((x, j) => `<td class="${!j&&no?"n":""}">${esc(x)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${h.length}" class="mu">ไม่มีรายการ</td></tr>`}${tot ? `<tr class="tot"><td class="n" colspan="2">รวม</td>${tot.map(x => `<td>${x}</td>`).join("")}</tr>` : ""}</table></div>`;
+  let finalH = [...h], finalRows = [...rows];
+  if (finalH[0] !== "No.") {
+    finalH = ["No.", ...finalH];
+    finalRows = finalRows.map((r, idx) => [idx + 1, ...r]);
+  }
+  const no = true;
+  TS[i] = [t, finalH.join("\t"), ...finalRows.map(r => r.join("\t")), tot ? ["", "รวม", ...tot].join("\t") : ["", "รวมทั้งหมด " + finalRows.length + " รายการ"].join("\t")].join("\n");
+  
+  let totRowHtml = "";
+  if (tot) {
+    totRowHtml = `<tr class="tot"><td class="n">รวม</td>${tot.map(x => `<td>${x}</td>`).join("")}</tr>`;
+  } else {
+    totRowHtml = `<tr class="tot"><td class="n">รวม</td><td colspan="${finalH.length - 1}">ทั้งหมด <b>${finalRows.length}</b> รายการ</td></tr>`;
+  }
+
+  return `<div class="c"><div class="th"><b>${esc(t)}</b><button data-cp="${i}">คัดลอกตารางนี้</button></div><table><thead><tr>${finalH.map((x, j) => `<th class="${!j&&no?"n":""}">${esc(x)}</th>`).join("")}</tr></thead><tbody>${finalRows.map(r => `<tr>${r.map((x, j) => `<td class="${!j&&no?"n":""}">${x}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${finalH.length}" class="mu">ไม่มีรายการ</td></tr>`}</tbody><tfoot>${totRowHtml}</tfoot></table></div>`;
 }
 
 function sumr() {
@@ -1442,35 +1499,48 @@ function sumr() {
     if (b[c.nat]) b[c.nat].add(c.card);
   }));
   const nm = Object.keys(by).sort((a, b) => a.localeCompare(b));
-  let h = tbl(1, `1. CONTRACTOR : ${DL}`, ["No.", "บริษัท", "ไทย", "ต่างชาติ", "ต่างด้าว"], nm.map((k, i) => [i + 1, k, z(by[k].th.size), z(by[k].fo.size), z(by[k].mg.size)]), ["th", "fo", "mg"].map(k => nm.reduce((s, n) => s + by[n][k].size, 0)));
-  // 2. WORK ที่ไม่ต่อ OT
-  h += tbl(2, `2. WORK ที่ไม่ต่อ OT : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "เวลาทำงาน", "คนเข้า"], ok.filter(w => !hasOT(w)).map(w => [w.no, w.c, w.a, z(w.o), win(w), cnt(w.id)]));
-  
-  // 3. WORK ที่ไม่ได้รับ (ไม่มีคนเข้าทำงาน) - ตัด Work ที่รับแล้วออกไป
+  let h = tbl(1, `1. CONTRACTOR แยกตามบริษัท : ${DL}`, ["บริษัท", "ไทย", "ต่างชาติ", "ต่างด้าว", "รวม"], nm.map(k => [k, z(by[k].th.size), z(by[k].fo.size), z(by[k].mg.size), by[k].th.size + by[k].fo.size + by[k].mg.size]), ["บริษัททั้งหมด " + nm.length + " แห่ง", nm.reduce((s, n) => s + by[n].th.size, 0), nm.reduce((s, n) => s + by[n].fo.size, 0), nm.reduce((s, n) => s + by[n].mg.size, 0), nm.reduce((s, n) => s + by[n].th.size + by[n].fo.size + by[n].mg.size, 0)]);
+
+  // 2. WORK ที่ต่อ OT
+  const otList = ok.filter(w => hasOT(w));
+  h += tbl(2, `2. WORK ที่ต่อ OT : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "เวลาปกติ", "ต่อ OT ถึง", "คนเข้า", "ในพื้นที่", "สถานะ"], otList.map(w => [w.no, w.c, w.a, z(w.o), win(w), dt(endR(w)), cnt(w.id), act(w.id).length, status(w)]), ["รวม " + otList.length + " งาน", "-", "-", "-", "-", "-", "รวม " + otList.reduce((s, w) => s + cnt(w.id), 0) + " คน", "ในพื้นที่ " + otList.reduce((s, w) => s + act(w.id).length, 0) + " คน", "-"]);
+
+  // 3. WORK ที่ไม่ต่อ OT
+  const nonOtList = ok.filter(w => !hasOT(w));
+  h += tbl(3, `3. WORK ที่ไม่ต่อ OT : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "เวลาทำงาน", "คนเข้า", "ในพื้นที่", "สถานะ"], nonOtList.map(w => [w.no, w.c, w.a, z(w.o), win(w), cnt(w.id), act(w.id).length, status(w)]), ["รวม " + nonOtList.length + " งาน", "-", "-", "-", "-", "รวม " + nonOtList.reduce((s, w) => s + cnt(w.id), 0) + " คน", "ในพื้นที่ " + nonOtList.reduce((s, w) => s + act(w.id).length, 0) + " คน", "-"]);
+
+  // 4. WORK ที่ไม่ได้รับ (ไม่มีคนเข้าทำงาน)
   const unissuedNoEntry = ok.filter(w => !I(w) && !cnt(w.id));
-  h += tbl(3, `3. WORK ที่ไม่ได้รับ (ไม่มีคนเข้าทำงาน · รอ Safety ยืนยันยกเลิก) : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "สถานะ"], unissuedNoEntry.map(w => [w.no, w.c, w.a, z(w.o), "ยังไม่ได้รับ Work (0 คน)"]));
-  
-  // 4. WORK ที่มีการรับ / เข้าทำงาน (รวม Work ที่รับแล้วแม้ไม่มีคนเข้า)
+  h += tbl(4, `4. WORK ที่ไม่ได้รับ (ไม่มีคนเข้าทำงาน · รอ Safety ยืนยันยกเลิก) : ${DL}`, ["เลขที่ Work", "บริษัท", "พื้นที่", "เจ้าของงาน", "สถานะ"], unissuedNoEntry.map(w => [w.no, w.c, w.a, z(w.o), "ยังไม่ได้รับ Work (0 คน)"]));
+
+  // 5. WORK ที่มีการรับ / เข้าทำงาน
   const receivedOrEntered = ok.filter(w => I(w) || R(w) || cnt(w.id));
-  h += tbl(4, `4. WORK ที่มีการรับ / เข้าทำงาน : ${DL}`, ["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน", "คนเข้า", "สถานะ"], receivedOrEntered.map(w => {
+  h += tbl(5, `5. WORK ที่มีการรับ / เข้าทำงาน : ${DL}`, ["เลขที่ Work", "บริษัท", "รับ Work", "คืน Work", "ผู้คืน", "คนเข้า", "สถานะ"], receivedOrEntered.map(w => {
     const n = cnt(w.id);
     const stLabel = !n && I(w) ? "รับ Work แล้ว (ไม่มีคนเข้า)" : n > 0 ? `เข้าทำงาน ${n} คน` : status(w);
     return [w.no, w.c, tm(w.issAt), tm(w.retAt), R(w) ? w.retBy : "-", n, stLabel];
-  }));
-  
+  }), ["รวม " + receivedOrEntered.length + " งาน", "-", "-", "-", "-", "รวม " + receivedOrEntered.reduce((s, w) => s + cnt(w.id), 0) + " คน", "-"]);
+
+  // 6 & 7. TRANSPORTOR G1, G2
   [1, 2].forEach(g => {
     const b = {};
-    trucks.filter(t => t.g === g).forEach(t => {
+    const trkList = trucks.filter(t => t.g === g);
+    trkList.forEach(t => {
       const typeLabel = t.type || "ทั่วไป";
       const o = b[t.co] || (b[t.co] = { "ผู้รับเหมา": 0, "รับส่งของทั่วไป": 0, "รับยาง": 0, "อื่นๆ": 0 });
       if (o[typeLabel] !== undefined) o[typeLabel]++; else o["อื่นๆ"]++;
     });
     const n = Object.keys(b).sort();
-    h += tbl(4 + g, `${4 + g}. TRANSPORTOR G${g} แยกตามประเภท : ${DL}`, ["No.", "บริษัท", "ผู้รับเหมา", "รับส่งของทั่วไป", "รับยาง", "อื่นๆ"], n.map((k, i) => [i + 1, k, z(b[k]["ผู้รับเหมา"]), z(b[k]["รับส่งของทั่วไป"]), z(b[k]["รับยาง"]), z(b[k]["อื่นๆ"])]), ["ผู้รับเหมา", "รับส่งของทั่วไป", "รับยาง", "อื่นๆ"].map(j => n.reduce((s, k) => s + b[k][j], 0)));
+    h += tbl(5 + g, `${5 + g}. TRANSPORTOR G${g} แยกตามประเภท : ${DL}`, ["บริษัท", "ผู้รับเหมา", "รับส่งของทั่วไป", "รับยาง", "อื่นๆ", "รวมเที่ยว"], n.map(k => [k, z(b[k]["ผู้รับเหมา"]), z(b[k]["รับส่งของทั่วไป"]), z(b[k]["รับยาง"]), z(b[k]["อื่นๆ"]), b[k]["ผู้รับเหมา"] + b[k]["รับส่งของทั่วไป"] + b[k]["รับยาง"] + b[k]["อื่นๆ"]]), ["บริษัท " + n.length + " แห่ง", ["ผู้รับเหมา", "รับส่งของทั่วไป", "รับยาง", "อื่นๆ"].map(j => n.reduce((s, k) => s + b[k][j], 0)).concat(trkList.length)].flat());
   });
-  h += tbl(7, `7. บัตรที่เอาออกจากรายการติดตาม : ${DL}`, ["บัตร", "Work", "บริษัท", "หมายเหตุ", "เวลา", "ผู้บันทึก"], cards.filter(c => c.lost).map(c => [c.card, c.wno, c.co || "-", c.lostNote || "-", tm(c.outAt), c.outBy || "-"]));
+
+  // 8. บัตรที่เอาออกจากรายการติดตาม
+  const lostCards = cards.filter(c => c.lost);
+  h += tbl(8, `8. บัตรที่เอาออกจากรายการติดตาม : ${DL}`, ["บัตร", "Work", "บริษัท", "หมายเหตุ", "เวลา", "ผู้บันทึก"], lostCards.map(c => [c.card, c.wno, c.co || "-", c.lostNote || "-", tm(c.outAt), c.outBy || "-"]));
+
   $("#sumh").innerHTML = h;
 }
+
 
 /* ==============================================================
    USER MANAGEMENT & 3-YEAR RETENTION FUNCTIONS
@@ -2124,7 +2194,7 @@ $("#iy").onchange = prev;
 document.addEventListener("click", async e => {
   const target = e.target, q = s => target.closest(s);
   let x;
-  if (x = q(".it[data-n]")) { cur = x.dataset.n; cf = {}; $("#msg").innerHTML = ""; loadEd(); draw(); return; }
+  if (x = q(".it[data-n]")) { if (!checkUnreceivedWork(x.dataset.n)) return; cur = x.dataset.n; cf = {}; $("#msg").innerHTML = ""; loadEd(); draw(); return; }
   if ((x = q("[data-o]")) && db) {
     const c = cards.find(k => k.id === x.dataset.o);
     await T(db.doc(`cards/${D}/items/${x.dataset.o}`).update({ outAt: Date.now(), outBy: who }));
@@ -2338,11 +2408,11 @@ document.addEventListener("click", async e => {
     $("#bl_temp_box").style.display = $("#bl_type_temp").checked ? "block" : "none";
   }
 
-  if (x = q("#cat button")) setCat(x.dataset.cat);
-  if (x = q("#nav button")) tab(x.dataset.t);
+  if (x = q("#cat button")) { if (!checkUnreceivedWork()) return; setCat(x.dataset.cat); }
+  if (x = q("#nav button")) { if (x.dataset.t !== "gate" && !checkUnreceivedWork()) return; tab(x.dataset.t); }
 });
 
-$("#cpa").onclick = e => cp([1, 2, 3, 4, 5, 6, 7].map(i => TS[i]).join("\n\n"), e.target);
+$("#cpa").onclick = e => cp([1, 2, 3, 4, 5, 6, 7, 8].map(i => TS[i]).join("\n\n"), e.target);
 $("#btn_check_retention").onclick = checkRetention;
 
 /* Card Issue */
@@ -2742,7 +2812,9 @@ $("#tb_reg").onclick = () => {
 
 // Register
 $("#reg_go").onclick = async () => {
-  const u = $("#reg_nm").value.trim().toLowerCase(), f = $("#reg_fullname").value.trim(), p = $("#reg_pin").value;
+  const u = $("#reg_nm").value.trim().toLowerCase(), f = $("#reg_fullname").value.trim(), p = $("#reg_pin").value, p2 = ($("#reg_pin2") ? $("#reg_pin2").value : p);
+  if (!u || !f || !p || !p2) return $("#reg_msg").innerHTML = '<span class="er">กรุณากรอกข้อมูลให้ครบทุกช่อง</span>';
+  if (p !== p2) return $("#reg_msg").innerHTML = '<span class="er">รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง</span>';
   if (!u || !f || !p) return $("#reg_msg").innerHTML = '<span class="er">กรุณากรอกข้อมูลให้ครบถ้วน</span>';
   try {
     const isSuperAdmin = (u === "bbank.akj@gmail.com");
@@ -2754,7 +2826,7 @@ $("#reg_go").onclick = async () => {
       status: isSuperAdmin ? "approved" : "pending",
       createdAt: Date.now()
     });
-    $("#reg_nm").value = ""; $("#reg_fullname").value = ""; $("#reg_pin").value = "";
+    $("#reg_nm").value = ""; $("#reg_fullname").value = ""; $("#reg_pin").value = ""; if ($("#reg_pin2")) $("#reg_pin2").value = "";
     if (isSuperAdmin) {
       $("#reg_msg").innerHTML = '<span class="ok">ลงทะเบียน Super Admin สำเร็จ! สามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้ทันที</span>';
     } else {
@@ -2796,6 +2868,21 @@ $("#go").onclick = async () => {
     $("#le").textContent = "ข้อผิดพลาดเชื่อมต่อ Firebase: " + e.message;
   }
 };
+
+$("#btn_refresh").onclick = () => {
+  const btn = $("#btn_refresh");
+  btn.disabled = true;
+  const oldText = btn.innerHTML;
+  btn.innerHTML = "🔄 กำลังรีเฟรช...";
+  SUB.ym = null;
+  resub();
+  draw();
+  setTimeout(() => {
+    btn.innerHTML = oldText;
+    btn.disabled = false;
+  }, 600);
+};
+
 
 $("#btn_logout").onclick = () => {
   currentUser = null; who = ""; userRole = "staff";
